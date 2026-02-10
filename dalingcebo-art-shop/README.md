@@ -26,14 +26,9 @@ A minimal, production-ready e-commerce platform for contemporary art, inspired b
 
 ## Getting Started
 
-### Prerequisites
+⚠️ **Important:** Before running the application, you must set up your environment variables. See the detailed [SETUP-GUIDE.md](./SETUP-GUIDE.md) for step-by-step instructions.
 
-- Node.js 18+
-- npm or yarn
-- Supabase account
-- Stripe account
-
-### Installation
+### Quick Start
 
 1. Clone the repository:
 ```bash
@@ -49,22 +44,30 @@ npm install
 3. Set up environment variables:
 ```bash
 cp .env.example .env.local
-# Edit .env.local with your keys
+# Edit .env.local with your Supabase credentials and other keys
+# See SETUP-GUIDE.md for detailed instructions
 ```
 
-4. Run the development server:
+**Required environment variables:**
+- `NEXT_PUBLIC_SUPABASE_URL` - Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Your Supabase anonymous key
+- `NEXTAUTH_SECRET` - Generate with: `openssl rand -base64 32`
 
+4. Test your Supabase connection (optional but recommended):
+```bash
+node test-supabase.mjs
+```
+
+5. Run the development server:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+### Troubleshooting
+
+If you encounter errors like "Invalid supabaseUrl", see the [SETUP-GUIDE.md](./SETUP-GUIDE.md) for common issues and solutions.
 
 ## Project Structure
 
