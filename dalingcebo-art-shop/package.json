@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "catalogs:sync": "node scripts/import-catalogs.mjs"
+    "catalogs:sync": "node scripts/import-catalogs.mjs",
+    "verify:production": "node scripts/verify-production.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
