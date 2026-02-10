@@ -10,11 +10,12 @@ export async function createClient() {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
   // Validate environment variables with helpful error messages
+  // After validation, we can safely assert these are strings
   validateSupabaseConfig(supabaseUrl, supabaseAnonKey)
 
   return createServerClient<Database>(
-    supabaseUrl,
-    supabaseAnonKey,
+    supabaseUrl!,
+    supabaseAnonKey!,
     {
       cookies: {
         getAll() {

@@ -1,10 +1,13 @@
 /**
  * Validates Supabase environment variables
  * Throws descriptive errors if variables are missing, invalid, or contain placeholder values
+ * @param url - The Supabase URL from environment variables
+ * @param anonKey - The Supabase anonymous key from environment variables
+ * @throws {Error} If validation fails
  */
-export function validateSupabaseConfig(url: string | undefined, anonKey: string | undefined): void {
+export function validateSupabaseConfig(url: string | undefined, anonKey: string | undefined): asserts url is string {
   // Check for missing or empty environment variables
-  if (!url || !anonKey || url?.trim() === '' || anonKey?.trim() === '') {
+  if (!url || !anonKey || url.trim() === '' || anonKey.trim() === '') {
     throw new Error(
       'Missing or invalid Supabase environment variables.\n' +
       'Please ensure you have created a .env.local file with valid values:\n' +
