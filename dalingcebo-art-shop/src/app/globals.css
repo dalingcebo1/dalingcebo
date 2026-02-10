@@ -320,12 +320,16 @@ body {
 }
 
 .yeezy-nav-link svg {
-  stroke: #000000;
-  fill: none;
+  stroke: #000000 !important;
+  fill: none !important;
 }
 
 .yeezy-nav-link:hover {
   color: #666;
+}
+
+.yeezy-nav-link:hover svg {
+  stroke: #666 !important;
 }
 
 /* Hero section */
