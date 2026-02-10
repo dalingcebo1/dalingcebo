@@ -84,7 +84,9 @@ INSERT INTO page_content (page_key, section_key, content_key, content_text, sort
 ('footer', 'links', 'terms', 'Terms', 48);
 
 -- Insert home page video content (for landing loop)
--- Note: This requires the standalone_videos table from migration 005_video_content.sql
+-- DEPENDENCY: This requires the standalone_videos table from migration 005_video_content.sql
+-- If migration 005 hasn't been run, this INSERT will fail with a table not found error.
+-- The ON CONFLICT clause ensures this is idempotent and safe to run multiple times.
 INSERT INTO standalone_videos (title, description, video_type, storage_url, is_featured, published) VALUES
 ('Studio Glimpse', 'A low-fi, soundless loop showing the artist''s workspace', 'studio_tour', '/videos/landing-loop.mp4', true, true)
 ON CONFLICT DO NOTHING;
