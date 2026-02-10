@@ -304,12 +304,6 @@ body {
   transform: none;
 }
 
-@media (max-width: 767px) {
-  .yeezy-nav-links {
-    display: none;
-  }
-}
-
 .yeezy-nav-link {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
@@ -361,6 +355,10 @@ body {
 @media (max-width: 768px) {
   :root {
     --nav-height: 80px;
+  }
+
+  .yeezy-nav-links {
+    display: none;
   }
 
   .yeezy-grid {

@@ -186,7 +186,7 @@ export default function Home() {
                       </div>
                       <div className="p-3 md:p-4 flex-1 flex flex-col justify-between">
                         <div>
-                          <p className="text-[9px] uppercase tracking-[0.3em] text-gray-500 mb-1">
+                          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-1">
                             {artwork.category} • {artwork.size}
                           </p>
                           <h2 className="yeezy-heading text-lg mb-1">{artwork.title}</h2>
@@ -225,7 +225,7 @@ export default function Home() {
                     </div>
                     <div className="p-3 md:p-4 flex-1 flex flex-col justify-between">
                       <div>
-                        <p className="text-[9px] uppercase tracking-[0.3em] text-gray-500 mb-1">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-1">
                           {artwork.category} • {artwork.size}
                         </p>
                         <h2 className="yeezy-heading text-lg mb-1">{artwork.title}</h2>
@@ -280,7 +280,7 @@ export default function Home() {
               </video>
             )}
           </div>
-          <p className="mt-3 text-[9px] uppercase tracking-[0.3em] text-gray-400">
+          <p className="mt-3 text-[10px] uppercase tracking-[0.3em] text-gray-500">
             {featuredVideo?.title || 'Studio glimpse'} • low-fi, soundless loop
           </p>
         </div>
