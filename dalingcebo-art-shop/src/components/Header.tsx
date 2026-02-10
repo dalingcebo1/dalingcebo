@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useCart } from '@/context/CartContext'
 
 interface HeaderProps {
   zoomLevel: number
@@ -10,6 +11,7 @@ interface HeaderProps {
 
 export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { totalItems } = useCart()
 
   const handleZoomToggle = () => {
     setZoomLevel(prev => (prev + 1) % 3)
@@ -71,13 +73,18 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
 
           {/* Cart on far right */}
           <div className="yeezy-nav-right hidden md:flex">
-            <button className="yeezy-nav-link" title="Cart">
+            <Link href="/cart" className="yeezy-nav-link relative" title="Cart">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="8" cy="21" r="1"/>
                 <circle cx="19" cy="21" r="1"/>
                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6"/>
               </svg>
-            </button>
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -164,8 +171,9 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
               </div>
 
               {/* Cart */}
-              <button 
-                className="yeezy-nav-link"
+              <Link 
+                href="/cart"
+                className="yeezy-nav-link relative"
                 title="Cart"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -173,7 +181,12 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
                   <circle cx="19" cy="21" r="1"/>
                   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6"/>
                 </svg>
-              </button>
+                {totalItems > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-black text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </Link>
             </div>
           </div>
         )}

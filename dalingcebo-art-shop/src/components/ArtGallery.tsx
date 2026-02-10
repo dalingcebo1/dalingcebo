@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { Artwork } from '@/types/database'
 import LoadingSpinner from './LoadingSpinner'
+import { useCart } from '@/context/CartContext'
+import Toast from './Toast'
 
 interface ArtGalleryProps {
   sizeFilter?: 'small' | 'large' | 'all'
@@ -15,6 +17,9 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const { addToCart } = useCart()
 
   const fetchArtworks = useCallback(async () => {
     try {
@@ -24,12 +29,12 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
       let query = supabase
         .from('artworks')
         .select('*')
-        .eq('available', true)
+        .eq('in_stock', true)
         .order('created_at', { ascending: false })
 
       // Apply size filter if not 'all'
       if (sizeFilter !== 'all') {
-        query = query.or(`size_category.eq.${sizeFilter},size_category.eq.all`)
+        query = query.eq('scale', sizeFilter)
       }
 
       const { data, error: fetchError } = await query
@@ -60,10 +65,18 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
   }, [fetchArtworks])
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleArtworkClick = (artworkId: string) => {
+  const handleArtworkClick = (artworkId: number) => {
     // TODO: Implement artwork detail page navigation
     // Future: router.push(`/artwork/${artworkId}`)
     // For now, this provides the hook for future functionality
+  }
+
+  const handleAddToCart = (e: React.MouseEvent, artwork: Artwork) => {
+    e.stopPropagation()
+    addToCart(artwork)
+    setToastMessage(`${artwork.title} added to cart`)
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   if (loading) {
@@ -108,9 +121,9 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
             >
               {/* Placeholder for artwork image */}
               <div className="yeezy-image bg-gray-100 flex items-center justify-center">
-                {artwork.image_url ? (
+                {artwork.image ? (
                   <Image 
-                    src={artwork.image_url} 
+                    src={artwork.image} 
                     alt={artwork.title}
                     fill
                     className="object-cover"
@@ -141,11 +154,17 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="yeezy-price text-black">
-                        ${typeof artwork.price === 'number' 
-                          ? artwork.price.toFixed(0) 
+                      <p className="yeezy-price text-black mb-2">
+                        R{typeof artwork.price === 'number' 
+                          ? artwork.price.toLocaleString() 
                           : artwork.price}
                       </p>
+                      <button
+                        onClick={(e) => handleAddToCart(e, artwork)}
+                        className="btn-yeezy text-xs px-3 py-2"
+                      >
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -163,6 +182,9 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
           </div>
         )}
       </div>
+      
+      {/* Toast Notification */}
+      {showToast && <Toast message={toastMessage} />}
     </section>
   )
 }
@@ -170,99 +192,187 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
 // Fallback artworks data (used when Supabase is not configured or fails)
 const fallbackArtworks: Artwork[] = [
   {
-    id: '1',
+    id: 1,
     title: "Urban Silence",
+    artist: "Dalingcebo",
     price: 850,
     category: "painting",
+    scale: "large",
     size: "24×36",
-    year: "2024",
-    available: true,
-    size_category: 'large',
+    year: 2024,
+    medium: "Acrylic on Canvas",
+    description: "A contemplative piece exploring urban solitude",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["urban", "contemporary"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '2',
+    id: 2,
     title: "Cultural Echo",
+    artist: "Dalingcebo",
     price: 1200,
     category: "mixed-media",
+    scale: "large",
     size: "30×40",
-    year: "2024",
-    available: true,
-    size_category: 'large',
+    year: 2024,
+    medium: "Mixed Media on Canvas",
+    description: "Exploring cultural heritage through modern techniques",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["cultural", "mixed-media"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '3',
+    id: 3,
     title: "Modern Heritage",
+    artist: "Dalingcebo",
     price: 950,
     category: "painting",
+    scale: "small",
     size: "18×24",
-    year: "2023",
-    available: true,
-    size_category: 'small',
+    year: 2023,
+    medium: "Oil on Canvas",
+    description: "Contemporary interpretation of traditional motifs",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["heritage", "modern"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '4',
+    id: 4,
     title: "Abstract Form",
+    artist: "Dalingcebo",
     price: 750,
     category: "abstract",
+    scale: "large",
     size: "20×30",
-    year: "2024",
-    available: true,
-    size_category: 'large',
+    year: 2024,
+    medium: "Acrylic on Canvas",
+    description: "Pure abstraction exploring form and color",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["abstract", "contemporary"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '5',
+    id: 5,
     title: "Digital Nature",
+    artist: "Dalingcebo",
     price: 650,
     category: "digital",
+    scale: "small",
     size: "16×20",
-    year: "2024",
-    available: true,
-    size_category: 'small',
+    year: 2024,
+    medium: "Digital Print",
+    description: "Nature reimagined through digital mediums",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["digital", "nature"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '6',
+    id: 6,
     title: "Minimal Space",
+    artist: "Dalingcebo",
     price: 1100,
     category: "minimalist",
+    scale: "large",
     size: "36×48",
-    year: "2023",
-    available: true,
-    size_category: 'large',
+    year: 2023,
+    medium: "Acrylic on Canvas",
+    description: "Minimalist exploration of space and void",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["minimalist", "space"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '7',
+    id: 7,
     title: "City Dreams",
+    artist: "Dalingcebo",
     price: 900,
     category: "painting",
+    scale: "large",
     size: "24×32",
-    year: "2024",
-    available: true,
-    size_category: 'large',
+    year: 2024,
+    medium: "Acrylic on Canvas",
+    description: "Urban landscapes from the subconscious",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["urban", "landscape"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
+    base_processing_days: 7,
+    processing_notes: null,
   },
   {
-    id: '8',
+    id: 8,
     title: "Texture Study",
+    artist: "Dalingcebo",
     price: 800,
-    category: "mixed-media",
-    size: "22×28",
-    year: "2023",
-    available: true,
-    size_category: 'small',
+    category: "experimental",
+    scale: "small",
+    size: "20×20",
+    year: 2024,
+    medium: "Mixed Media",
+    description: "Experimental work focusing on texture",
+    details: null,
+    in_stock: true,
+    inventory: 1,
+    edition: "Original",
+    image: "",
+    images: [],
+    tags: ["experimental", "texture"],
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
-  }
+    base_processing_days: 7,
+    processing_notes: null,
+  },
 ]

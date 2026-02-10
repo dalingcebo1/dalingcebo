@@ -28,7 +28,7 @@ export default function SmallPaintings() {
         </div>
       </section>
 
-      <ArtGallery zoomLevel={zoomLevel} sizeFilter="small" />
+      <ArtGallery sizeFilter="small" />
       <Footer />
     </main>
   )
