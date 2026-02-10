@@ -143,17 +143,17 @@ export default function Home() {
       {/* Featured works: 2-column grid */}
       <section className="yeezy-section flex-1">
         <div className="yeezy-container">
-          <div className="mb-12 text-center max-w-2xl mx-auto">
-            <h1 className="yeezy-heading text-3xl md:text-5xl mb-4">
+          <div className="mb-6 md:mb-8 text-center max-w-2xl mx-auto">
+            <h1 className="yeezy-heading text-2xl md:text-4xl mb-3">
               DALINGCEBO
             </h1>
-            <p className="yeezy-body text-sm md:text-base text-gray-600 leading-relaxed">
+            <p className="yeezy-body text-xs md:text-sm text-gray-600 leading-relaxed">
               Contemporary art that bridges cultures. Each piece is crafted with intention, 
               speaking to the modern soul.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-8">
             {isLoading && (
               <>
                 <div className="col-span-1 h-80 bg-gray-100 animate-pulse rounded" />
@@ -184,17 +184,17 @@ export default function Home() {
                           sizes="(min-width: 768px) 50vw, 100vw"
                         />
                       </div>
-                      <div className="p-4 md:p-6 flex-1 flex flex-col justify-between">
+                      <div className="p-3 md:p-4 flex-1 flex flex-col justify-between">
                         <div>
-                          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">
+                          <p className="text-[9px] uppercase tracking-[0.3em] text-gray-500 mb-1">
                             {artwork.category} • {artwork.size}
                           </p>
-                          <h2 className="yeezy-heading text-xl mb-1">{artwork.title}</h2>
-                          <p className="text-xs text-gray-600 mb-3">
+                          <h2 className="yeezy-heading text-lg mb-1">{artwork.title}</h2>
+                          <p className="text-xs text-gray-600 mb-2">
                             {artwork.medium} • {artwork.year}
                           </p>
                         </div>
-                        <p className="yeezy-price text-lg mt-2">
+                        <p className="yeezy-price text-base mt-2">
                           R{artwork.price.toLocaleString()}
                         </p>
                       </div>
@@ -223,17 +223,17 @@ export default function Home() {
                         sizes="(min-width: 768px) 50vw, 100vw"
                       />
                     </div>
-                    <div className="p-4 md:p-6 flex-1 flex flex-col justify-between">
+                    <div className="p-3 md:p-4 flex-1 flex flex-col justify-between">
                       <div>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">
+                        <p className="text-[9px] uppercase tracking-[0.3em] text-gray-500 mb-1">
                           {artwork.category} • {artwork.size}
                         </p>
-                        <h2 className="yeezy-heading text-xl mb-1">{artwork.title}</h2>
-                        <p className="text-xs text-gray-600 mb-3">
+                        <h2 className="yeezy-heading text-lg mb-1">{artwork.title}</h2>
+                        <p className="text-xs text-gray-600 mb-2">
                           {artwork.medium} • {artwork.year}
                         </p>
                       </div>
-                      <p className="yeezy-price text-lg mt-2">
+                      <p className="yeezy-price text-base mt-2">
                         R{artwork.price.toLocaleString()}
                       </p>
                     </div>
@@ -244,7 +244,7 @@ export default function Home() {
           </div>
 
           {/* Simple CTA */}
-          <div className="text-center mt-12">
+          <div className="text-center mt-8">
             <Link href="/shop" className="btn-yeezy-primary inline-block">
               View All Artworks
             </Link>
@@ -280,7 +280,7 @@ export default function Home() {
               </video>
             )}
           </div>
-          <p className="mt-4 text-[10px] uppercase tracking-[0.3em] text-gray-400">
+          <p className="mt-3 text-[9px] uppercase tracking-[0.3em] text-gray-400">
             {featuredVideo?.title || 'Studio glimpse'} • low-fi, soundless loop
           </p>
         </div>

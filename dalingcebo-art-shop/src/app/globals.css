@@ -256,7 +256,13 @@ body {
 }
 
 .yeezy-section {
-  padding: 72px 0;
+  padding: 40px 0;
+}
+
+@media (min-width: 768px) {
+  .yeezy-section {
+    padding: 48px 0;
+  }
 }
 
 /* Minimal navigation */
@@ -290,7 +296,7 @@ body {
 
 .yeezy-nav-links {
   display: flex;
-  gap: 40px;
+  gap: 32px;
   align-items: center;
   flex: 1;
   justify-content: center;
@@ -298,19 +304,34 @@ body {
   transform: none;
 }
 
+@media (max-width: 767px) {
+  .yeezy-nav-links {
+    display: none;
+  }
+}
+
 .yeezy-nav-link {
   font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 11px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #666;
+  color: #000;
   text-decoration: none;
   transition: color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.yeezy-nav-link svg {
+  stroke: currentColor;
+  fill: none;
 }
 
 .yeezy-nav-link:hover {
-  color: black;
+  color: #666;
 }
 
 /* Hero section */
@@ -340,10 +361,6 @@ body {
 @media (max-width: 768px) {
   :root {
     --nav-height: 80px;
-  }
-
-  .yeezy-nav-links {
-    display: none;
   }
   
   .yeezy-grid {

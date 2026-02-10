@@ -14,8 +14,8 @@ const navIconLinks = [
   {
     href: '/large-paintings',
     title: 'Large Paintings',
-    renderIcon: (className = 'w-5 h-5') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    renderIcon: (className = 'w-6 h-6') => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <path d="M12 2l2 4h2l-2 4 2 4h2l-2 4-2-4-2 4-2-4 2-4-2-4h2l2-4z" />
         <circle cx="12" cy="6" r="1" />
         <circle cx="8" cy="10" r="1" />
@@ -29,8 +29,8 @@ const navIconLinks = [
   {
     href: '/small-paintings',
     title: 'Small Paintings',
-    renderIcon: (className = 'w-4 h-5') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    renderIcon: (className = 'w-5 h-6') => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="8" r="3" />
         <path d="M12 11v5" />
         <path d="M8 16h8" />
@@ -41,8 +41,8 @@ const navIconLinks = [
   {
     href: '/about',
     title: 'About',
-    renderIcon: (className = 'w-5 h-5') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    renderIcon: (className = 'w-6 h-6') => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="12" r="10" />
         <path d="M12 16v-4m0-4h.01" />
       </svg>
@@ -51,8 +51,8 @@ const navIconLinks = [
   {
     href: '/cart',
     title: 'Cart',
-    renderIcon: (className = 'w-5 h-5') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+    renderIcon: (className = 'w-6 h-6') => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="8" cy="21" r="1" />
         <circle cx="19" cy="21" r="1" />
         <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6" />
@@ -102,11 +102,11 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
           aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
         >
           {zoomLevel >= 2 ? (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14" />
             </svg>
           ) : (
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 5v14m-7-7h14" />
             </svg>
           )}
@@ -165,11 +165,11 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
               aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
             >
               {zoomLevel >= 2 ? (
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14" />
                 </svg>
               ) : (
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M12 5v14m-7-7h14" />
                 </svg>
               )}
