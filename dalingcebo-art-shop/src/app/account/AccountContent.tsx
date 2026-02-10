@@ -2,19 +2,25 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { useSupabase } from '@/components/SupabaseProvider'
 import type { User } from '@supabase/supabase-js'
 import type { Database } from '@/lib/db/schema'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import Breadcrumb from '@/components/Breadcrumb'
 import { OrderRecord } from '@/types/inquiry'
 
 export default function AccountContent({ user }: { user: User }) {
-  const [zoomLevel, setZoomLevel] = useState(0)
   const [orders, setOrders] = useState<OrderRecord[]>([])
   const [loading, setLoading] = useState(true)
+  const [isVisible, setIsVisible] = useState(false)
   const { supabase } = useSupabase()
   const router = useRouter()
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -38,23 +44,34 @@ export default function AccountContent({ user }: { user: User }) {
 
   return (
     <main className="min-h-screen bg-white">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+      <Header showBackButton={true} />
       
-      <div className="max-w-[1920px] mx-auto px-4 md:px-8 py-20 md:py-32">
-        <div className="max-w-6xl mx-auto space-y-20">
-          <header className="space-y-6 animate-fade-in">
-            <h1 className="yeezy-heading text-5xl md:text-8xl tracking-tight">ACCOUNT</h1>
-            <p className="yeezy-subheading text-lg md:text-xl text-gray-500">
-              WELCOME BACK, {user?.user_metadata?.full_name || user?.email}
-            </p>
-          </header>
+      <section className="border-b border-gray-200 bg-white">
+        <div className="yeezy-container py-4">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Account' }]} />
+        </div>
+      </section>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
-            <section className="space-y-8">
-              <h2 className="yeezy-subheading text-xl md:text-2xl border-b border-black pb-4 flex justify-between items-center">
-                <span>MY ORDERS</span>
-                <span className="text-sm text-gray-400">{orders.length}</span>
-              </h2>
+      <section className="yeezy-hero bg-black text-white">
+        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <h1 className="yeezy-main-logo text-white mb-8">
+            ACCOUNT
+          </h1>
+          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
+            Welcome back, {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Collector'}
+          </p>
+        </div>
+      </section>
+      
+      <section className="yeezy-section">
+        <div className="yeezy-container max-w-6xl">
+          <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
+              <section className="space-y-8">
+                <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600 border-b border-gray-200 pb-4 flex justify-between items-center">
+                  <span>MY ORDERS</span>
+                  <span className="text-sm text-gray-400">{orders.length}</span>
+                </h2>
               
               {loading ? (
                  <div className="h-64 flex flex-col items-center justify-center bg-zinc-50 border border-zinc-100">
@@ -63,7 +80,7 @@ export default function AccountContent({ user }: { user: User }) {
               ) : orders.length > 0 ? (
                 <div className="space-y-4">
                   {orders.map((order) => (
-                    <div key={order.id} className="border border-black p-6 space-y-4 hover:bg-zinc-50 transition-colors">
+                    <div key={order.id} className="border border-gray-200 p-6 space-y-4 hover:bg-gray-50 transition-colors rounded-lg">
                       <div className="flex justify-between items-start">
                         <div>
                            <p className="text-xs uppercase text-gray-500 tracking-widest mb-1">Order ID</p>
@@ -97,19 +114,19 @@ export default function AccountContent({ user }: { user: User }) {
                   ))}
                 </div>
               ) : (
-                <div className="h-64 flex flex-col items-center justify-center bg-zinc-50 border border-zinc-100">
+                <div className="h-64 flex flex-col items-center justify-center bg-gray-50 border border-gray-200 rounded-lg">
                   <p className="yeezy-body text-gray-400 uppercase tracking-widest text-sm">
                     NO ORDERS FOUND
                   </p>
-                  <button className="mt-6 text-xs uppercase underline underline-offset-4 hover:text-gray-600 transition-colors">
+                  <Link href="/" className="mt-6 text-xs uppercase underline underline-offset-4 hover:text-gray-600 transition-colors">
                     START SHOPPING
-                  </button>
+                  </Link>
                 </div>
               )}
             </section>
 
             <section className="space-y-8">
-              <h2 className="yeezy-subheading text-xl md:text-2xl border-b border-black pb-4">
+              <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600 border-b border-gray-200 pb-4">
                 ACCOUNT DETAILS
               </h2>
               <div className="space-y-8 yeezy-body">
@@ -141,8 +158,9 @@ export default function AccountContent({ user }: { user: User }) {
           </div>
         </div>
       </div>
+    </section>
 
-      <Footer />
-    </main>
-  )
+    <Footer />
+  </main>
+)
 }

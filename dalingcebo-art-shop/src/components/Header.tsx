@@ -1,13 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import AccountButton from './AccountButton'
 import { useCart } from '@/contexts/CartContext'
 
 interface HeaderProps {
-  zoomLevel: number
-  setZoomLevel: (value: number | ((prev: number) => number)) => void
+  zoomLevel?: number
+  setZoomLevel?: (value: number | ((prev: number) => number)) => void
+  showBackButton?: boolean
 }
 
 const navIconLinks = [
@@ -62,10 +64,11 @@ const mobileNavLinks = [
   { label: 'Contact', href: '/contact' },
 ]
 
-export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
+export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = false }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const { itemCount } = useCart()
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 24)
@@ -81,31 +84,51 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
   }, [isMenuOpen])
 
   const handleZoomToggle = () => {
-    setZoomLevel(prev => (prev + 1) % 3)
+    if (setZoomLevel) {
+      setZoomLevel(prev => (prev + 1) % 3)
+    }
+  }
+
+  const handleBack = () => {
+    router.back()
   }
 
   return (
     <nav className={`yeezy-nav sticky top-0 z-40 bg-white transition-shadow ${isScrolled ? 'shadow-[0_1px_0_rgba(0,0,0,0.08)]' : ''}`}>
       <div className="yeezy-nav-content flex items-center justify-between gap-4">
-        <button
-          type="button"
-          onClick={handleZoomToggle}
-          className="yeezy-nav-link"
-          title={zoomLevel >= 2 ? 'Zoom Out' : 'Zoom In'}
-          aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
-        >
-          {zoomLevel >= 2 ? (
+        {showBackButton ? (
+          <button
+            type="button"
+            onClick={handleBack}
+            className="yeezy-nav-link"
+            title="Go Back"
+            aria-label="Go back to previous page"
+          >
             <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35M11 8v6" />
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-          ) : (
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="11" cy="11" r="8" />
-              <path d="M21 21l-4.35-4.35M11 8v6m-3-3h6" />
-            </svg>
-          )}
-        </button>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={handleZoomToggle}
+            className="yeezy-nav-link"
+            title={zoomLevel >= 2 ? 'Zoom Out' : 'Zoom In'}
+            aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
+          >
+            {zoomLevel >= 2 ? (
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M11 8v6" />
+              </svg>
+            ) : (
+              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M11 8v6m-3-3h6" />
+              </svg>
+            )}
+          </button>
+        )}
 
         <div className="yeezy-nav-links">
           {navIconLinks.map(link => {
@@ -152,25 +175,39 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
       {isMenuOpen && (
         <div className="md:hidden mt-6 pt-6 border-t border-gray-200">
           <div className="flex justify-between items-center px-4">
-            <button
-              type="button"
-              onClick={handleZoomToggle}
-              className="yeezy-nav-link"
-              title={zoomLevel >= 2 ? 'Zoom Out' : 'Zoom In'}
-              aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
-            >
-              {zoomLevel >= 2 ? (
+            {showBackButton ? (
+              <button
+                type="button"
+                onClick={handleBack}
+                className="yeezy-nav-link"
+                title="Go Back"
+                aria-label="Go back to previous page"
+              >
                 <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="M21 21l-4.35-4.35M11 8v6" />
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
-              ) : (
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="11" cy="11" r="8" />
-                  <path d="M21 21l-4.35-4.35M11 8v6m-3-3h6" />
-                </svg>
-              )}
-            </button>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleZoomToggle}
+                className="yeezy-nav-link"
+                title={zoomLevel >= 2 ? 'Zoom Out' : 'Zoom In'}
+                aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
+              >
+                {zoomLevel >= 2 ? (
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35M11 8v6" />
+                  </svg>
+                ) : (
+                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35M11 8v6m-3-3h6" />
+                  </svg>
+                )}
+              </button>
+            )}
 
             <div className="flex space-x-6">
               {navIconLinks.map(link => {
