@@ -39,15 +39,24 @@ export default function About() {
                 <p className="text-gray-400 yeezy-body">Artist Portrait</p>
               </div>
               <div className="space-y-6">
+                <div className="mb-4">
+                  <h3 className="yeezy-title text-xl mb-2">Dalingcebo (Dali) Ngubane</h3>
+                  <p className="yeezy-body text-gray-600">Born 1997, Kwa-Ngwanase, South Africa</p>
+                  <p className="yeezy-body text-gray-600">Based in Johannesburg, South Africa</p>
+                </div>
                 <p className="yeezy-body text-lg leading-relaxed">
-                  Dalingcebo is a contemporary artist whose work explores the intersection of 
-                  traditional African aesthetics and modern minimalism. Each piece is a dialogue 
-                  between past and present, culture and innovation.
+                  Dalingcebo Ngubane is a self-taught visual artist whose work interrogates emotion 
+                  in relation to contemporary life. His practice draws heavily from the people he meets, 
+                  their lived experiences, and the stories they share.
                 </p>
                 <p className="yeezy-body text-lg leading-relaxed">
-                  Based in South Africa, Dalingcebo&rsquo;s work has been exhibited internationally, 
-                  gaining recognition for its bold use of color, texture, and symbolic imagery 
-                  that challenges conventional narratives.
+                  Ngubane works primarily in oil on canvas, using dramatic palettes and bold linework 
+                  to explore the complexity of the human journey. His figures often have undetailed or 
+                  obscured faces, making them universal representational figures rather than specific individuals.
+                </p>
+                <p className="yeezy-body text-lg leading-relaxed">
+                  In his own words, his artistic approach reflects the tension between motion and stillness 
+                  in life—capturing both through figurative painting that allows for freedom, accident, and chance.
                 </p>
               </div>
             </div>
@@ -85,40 +94,51 @@ export default function About() {
           <div className={`border-t border-gray-200 pt-16 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
             <h2 className="yeezy-subheading text-4xl mb-8">Process</h2>
             <p className="yeezy-body text-lg leading-relaxed mb-8">
-              Each artwork begins with meditation and reflection. The creative process is 
-              intuitive yet disciplined, balancing spontaneity with technical precision. 
-              Using mixed media, acrylics, and digital elements, the work evolves organically, 
-              revealing its final form through layers of meaning and texture.
+              Ngubane's work captures the tension between motion and stillness in life. His figurative 
+              paintings allow for freedom, accident, and chance—reflecting the spontaneity of human 
+              experience while maintaining a strong compositional structure. Working primarily in oil on 
+              canvas, he employs dramatic palettes and bold linework to create emotionally charged narratives.
+            </p>
+            <p className="yeezy-body text-lg leading-relaxed mb-8">
+              The artist deliberately obscures or simplifies facial features, transforming his subjects 
+              into universal figures that represent collective rather than individual experiences. This 
+              approach invites viewers to project their own stories onto the work, creating a deeply 
+              personal connection with each piece.
             </p>
             <div className="grid md:grid-cols-2 gap-1 bg-gray-200">
               <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                <p className="text-gray-400 yeezy-body">Studio Process 1</p>
+                <p className="text-gray-400 yeezy-body">Studio Process</p>
               </div>
               <div className="aspect-video bg-gray-100 flex items-center justify-center">
-                <p className="text-gray-400 yeezy-body">Studio Process 2</p>
+                <p className="text-gray-400 yeezy-body">Work in Progress</p>
               </div>
             </div>
           </div>
 
           {/* Recognition */}
           <div className={`border-t border-gray-200 pt-16 pb-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
-            <h2 className="yeezy-subheading text-4xl mb-8">Recognition</h2>
+            <h2 className="yeezy-subheading text-4xl mb-8">Exhibitions & Recognition</h2>
             <div className="space-y-6 yeezy-body text-gray-600">
               <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-                <span>Featured in Contemporary African Art Magazine</span>
-                <span className="text-sm">2024</span>
+                <div>
+                  <p className="font-bold">CHAOS, A THEORY</p>
+                  <p className="text-sm text-gray-500">Solo Exhibition presented by Candice Berman Gallery, Johannesburg</p>
+                </div>
+                <span className="text-sm whitespace-nowrap ml-4">April 20 – May 10, 2024</span>
               </div>
               <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-                <span>Solo Exhibition - Johannesburg Art Fair</span>
-                <span className="text-sm">2023</span>
+                <div>
+                  <p className="font-bold">Gallery Representation</p>
+                  <p className="text-sm text-gray-500">Candice Berman Gallery, Johannesburg</p>
+                </div>
+                <span className="text-sm whitespace-nowrap ml-4">Current</span>
               </div>
               <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-                <span>Emerging Artist Award</span>
-                <span className="text-sm">2023</span>
-              </div>
-              <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-                <span>Group Exhibition - Cape Town International</span>
-                <span className="text-sm">2022</span>
+                <div>
+                  <p className="font-bold">Artist Profile</p>
+                  <p className="text-sm text-gray-500">Featured on Artsy</p>
+                </div>
+                <span className="text-sm whitespace-nowrap ml-4">2024</span>
               </div>
             </div>
           </div>

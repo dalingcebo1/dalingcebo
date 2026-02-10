@@ -42,13 +42,27 @@ CREATE TABLE IF NOT EXISTS newsletter_subscribers (
 -- ========================================
 
 -- Add processing time and delivery estimate fields to orders
-ALTER TABLE orders 
-ADD COLUMN estimated_processing_days INTEGER,
-ADD COLUMN estimated_ship_date TIMESTAMPTZ,
-ADD COLUMN estimated_delivery_date TIMESTAMPTZ,
-ADD COLUMN actual_processing_days INTEGER,
-ADD COLUMN processing_started_at TIMESTAMPTZ,
-ADD COLUMN processing_completed_at TIMESTAMPTZ;
+DO $$ 
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='estimated_processing_days') THEN
+    ALTER TABLE orders ADD COLUMN estimated_processing_days INTEGER;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='estimated_ship_date') THEN
+    ALTER TABLE orders ADD COLUMN estimated_ship_date TIMESTAMPTZ;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='estimated_delivery_date') THEN
+    ALTER TABLE orders ADD COLUMN estimated_delivery_date TIMESTAMPTZ;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='actual_processing_days') THEN
+    ALTER TABLE orders ADD COLUMN actual_processing_days INTEGER;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='processing_started_at') THEN
+    ALTER TABLE orders ADD COLUMN processing_started_at TIMESTAMPTZ;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='orders' AND column_name='processing_completed_at') THEN
+    ALTER TABLE orders ADD COLUMN processing_completed_at TIMESTAMPTZ;
+  END IF;
+END $$;
 
 -- Create order_invoices table
 CREATE TABLE IF NOT EXISTS order_invoices (
@@ -112,6 +126,7 @@ CREATE INDEX IF NOT EXISTS idx_order_updates_created_at ON order_updates(created
 -- TRIGGERS
 -- ========================================
 
+DROP TRIGGER IF EXISTS update_updates_updated_at ON updates;
 CREATE TRIGGER update_updates_updated_at BEFORE UPDATE ON updates
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -138,6 +153,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS set_update_slug_trigger ON updates;
 CREATE TRIGGER set_update_slug_trigger
   BEFORE INSERT OR UPDATE ON updates
   FOR EACH ROW
@@ -157,6 +173,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS log_order_status_change_trigger ON orders;
 CREATE TRIGGER log_order_status_change_trigger
   AFTER UPDATE ON orders
   FOR EACH ROW

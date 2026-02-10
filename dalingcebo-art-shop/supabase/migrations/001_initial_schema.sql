@@ -171,20 +171,26 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Apply updated_at triggers
+DROP TRIGGER IF EXISTS update_customers_updated_at ON customers;
 CREATE TRIGGER update_customers_updated_at BEFORE UPDATE ON customers
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_addresses_updated_at ON addresses;
 CREATE TRIGGER update_addresses_updated_at BEFORE UPDATE ON addresses
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_artworks_updated_at ON artworks;
 CREATE TRIGGER update_artworks_updated_at BEFORE UPDATE ON artworks
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_orders_updated_at ON orders;
 CREATE TRIGGER update_orders_updated_at BEFORE UPDATE ON orders
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_inquiries_updated_at ON inquiries;
 CREATE TRIGGER update_inquiries_updated_at BEFORE UPDATE ON inquiries
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_payment_transactions_updated_at ON payment_transactions;
 CREATE TRIGGER update_payment_transactions_updated_at BEFORE UPDATE ON payment_transactions
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

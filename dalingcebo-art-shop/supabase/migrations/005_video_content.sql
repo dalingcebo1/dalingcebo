@@ -67,9 +67,11 @@ CREATE INDEX IF NOT EXISTS idx_standalone_videos_published ON standalone_videos(
 CREATE INDEX IF NOT EXISTS idx_standalone_videos_slug ON standalone_videos(slug);
 
 -- Add updated_at triggers
+DROP TRIGGER IF EXISTS update_artwork_videos_updated_at ON artwork_videos;
 CREATE TRIGGER update_artwork_videos_updated_at BEFORE UPDATE ON artwork_videos
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
+DROP TRIGGER IF EXISTS update_standalone_videos_updated_at ON standalone_videos;
 CREATE TRIGGER update_standalone_videos_updated_at BEFORE UPDATE ON standalone_videos
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
@@ -91,6 +93,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger to set slug before insert
+DROP TRIGGER IF EXISTS set_video_slug_trigger ON standalone_videos;
 CREATE TRIGGER set_video_slug_trigger
   BEFORE INSERT ON standalone_videos
   FOR EACH ROW
@@ -129,11 +132,13 @@ ALTER TABLE artwork_videos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE standalone_videos ENABLE ROW LEVEL SECURITY;
 
 -- Anyone can view artwork videos (since artworks are public)
+DROP POLICY IF EXISTS "Anyone can view artwork videos" ON artwork_videos;
 CREATE POLICY "Anyone can view artwork videos"
   ON artwork_videos FOR SELECT
   USING (true);
 
 -- Anyone can view published standalone videos
+DROP POLICY IF EXISTS "Anyone can view published videos" ON standalone_videos;
 CREATE POLICY "Anyone can view published videos"
   ON standalone_videos FOR SELECT
   USING (published = true);

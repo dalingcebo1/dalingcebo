@@ -20,5 +20,6 @@ CREATE TABLE IF NOT EXISTS catalogs (
 CREATE INDEX IF NOT EXISTS idx_catalogs_release_date ON catalogs (release_date DESC NULLS LAST);
 CREATE INDEX IF NOT EXISTS idx_catalogs_featured ON catalogs (is_featured);
 
+DROP TRIGGER IF EXISTS update_catalogs_updated_at ON catalogs;
 CREATE TRIGGER update_catalogs_updated_at BEFORE UPDATE ON catalogs
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();

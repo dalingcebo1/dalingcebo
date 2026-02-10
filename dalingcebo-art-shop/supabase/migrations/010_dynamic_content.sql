@@ -28,6 +28,7 @@ CREATE INDEX IF NOT EXISTS idx_page_content_section_key ON page_content(section_
 CREATE INDEX IF NOT EXISTS idx_page_content_published ON page_content(is_published);
 
 -- Add updated_at trigger
+DROP TRIGGER IF EXISTS update_page_content_updated_at ON page_content;
 CREATE TRIGGER update_page_content_updated_at BEFORE UPDATE ON page_content
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
