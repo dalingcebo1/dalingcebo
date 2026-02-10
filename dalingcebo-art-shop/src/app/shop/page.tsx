@@ -1,12 +1,9 @@
 'use client'
 
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import Header from '@/components/Header'
-import Hero from '@/components/Hero'
 import ArtGallery from '@/components/ArtGallery'
 import Footer from '@/components/Footer'
-import LoadingSpinner from '@/components/LoadingSpinner'
-import Breadcrumb from '@/components/Breadcrumb'
 
 export default function Shop() {
   const [zoomLevel, setZoomLevel] = useState(0)
@@ -14,23 +11,24 @@ export default function Shop() {
   return (
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Shop' }]} />
+      
+      {/* Hero Section */}
+      <section className="yeezy-hero" style={{ height: '40vh' }}>
+        <div className="yeezy-hero-content">
+          <div className="fade-in-slow" style={{ animationDelay: '0.3s' }}>
+            <h1 className="yeezy-main-logo text-black" style={{ fontSize: 'clamp(2rem, 6vw, 6rem)' }}>
+              SHOP
+            </h1>
+          </div>
+          <div className="fade-in-slow" style={{ animationDelay: '0.6s' }}>
+            <p className="yeezy-body text-gray-600">
+              Browse our complete collection of contemporary art.
+            </p>
+          </div>
         </div>
       </section>
-      <Hero />
-      <Suspense
-        fallback={(
-          <section className="yeezy-section" id="collection">
-            <div className="yeezy-container flex items-center justify-center py-16">
-              <LoadingSpinner size="lg" />
-            </div>
-          </section>
-        )}
-      >
-        <ArtGallery zoomLevel={zoomLevel} />
-      </Suspense>
+
+      <ArtGallery />
       <Footer />
     </main>
   )

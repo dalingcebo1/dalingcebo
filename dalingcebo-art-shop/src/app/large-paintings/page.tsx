@@ -1,139 +1,34 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
+import { useState } from 'react'
 import Header from '@/components/Header'
+import ArtGallery from '@/components/ArtGallery'
 import Footer from '@/components/Footer'
-import LoadingSpinner from '@/components/LoadingSpinner'
-import Breadcrumb from '@/components/Breadcrumb'
-import { useArtworks } from '@/hooks/useArtworks'
-import { getArtworkAspectRatio, getArtworkPrimaryImage } from '@/lib/media'
 
 export default function LargePaintings() {
   const [zoomLevel, setZoomLevel] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const router = useRouter()
-  const { artworks, isLoading, error, reload } = useArtworks()
-
-  const largeArtworks = useMemo(
-    () => artworks.filter((artwork) => artwork.scale === 'large'),
-    [artworks]
-  )
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
-
-  const getGridColumns = () => {
-    switch (zoomLevel) {
-      case 0:
-        return 'grid-cols-2 md:grid-cols-4'
-      case 1:
-        return 'grid-cols-1 md:grid-cols-3'
-      case 2:
-        return 'grid-cols-1 md:grid-cols-2'
-      default:
-        return 'grid-cols-2 md:grid-cols-4'
-    }
-  }
 
   return (
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Shop', href: '/shop' }, { label: 'Large Paintings' }]} />
-        </div>
-      </section>
       
       {/* Hero Section */}
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            LARGE PAINTINGS
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Statement pieces that command attention and transform spaces.
-          </p>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section className="yeezy-section">
-        <div className="yeezy-container">
-          <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
-            {isLoading && (
-              <div className="col-span-full flex justify-center py-16">
-                <LoadingSpinner />
-              </div>
-            )}
-
-            {error && !isLoading && (
-              <div className="col-span-full text-center py-12">
-                <p className="yeezy-body text-gray-600">{error}</p>
-                <button className="btn-yeezy mt-6" onClick={reload}>
-                  Try Again
-                </button>
-              </div>
-            )}
-
-            {!isLoading && !error && largeArtworks.length === 0 && (
-              <div className="col-span-full text-center py-12">
-                <p className="yeezy-body text-gray-600">
-                  No large-scale works are available right now. Please check back soon.
-                </p>
-              </div>
-            )}
-
-            {!isLoading && !error && largeArtworks.map((artwork) => {
-              const primaryImage = getArtworkPrimaryImage(artwork)
-              const aspectRatio = getArtworkAspectRatio(artwork.size)
-
-              return (
-              <div
-                key={artwork.id}
-                onClick={() => router.push(`/artwork/${artwork.id}`)}
-                className="yeezy-grid-item yeezy-transition group cursor-pointer"
-              >
-                <div
-                  className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden rounded-lg"
-                  style={{ aspectRatio }}
-                >
-                  <Image
-                    src={primaryImage}
-                    alt={artwork.title}
-                    fill
-                    className="object-contain transition-transform duration-700 group-hover:scale-[1.02]"
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                </div>
-
-                <div className="yeezy-overlay">
-                  <div className="w-full">
-                    <div className="flex justify-between items-end">
-                      <div>
-                        <h3 className="yeezy-title text-black mb-1">
-                          {artwork.title}
-                        </h3>
-                        <p className="text-xs text-gray-700 yeezy-body">
-                          {artwork.size} • {artwork.year}
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="yeezy-price text-black">
-                          ${artwork.price.toLocaleString()}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )})}
+      <section className="yeezy-hero" style={{ height: '40vh' }}>
+        <div className="yeezy-hero-content">
+          <div className="fade-in-slow" style={{ animationDelay: '0.3s' }}>
+            <h1 className="yeezy-main-logo text-black" style={{ fontSize: 'clamp(2rem, 6vw, 6rem)' }}>
+              LARGE PAINTINGS
+            </h1>
+          </div>
+          <div className="fade-in-slow" style={{ animationDelay: '0.6s' }}>
+            <p className="yeezy-body text-gray-600">
+              Statement pieces that command attention.
+            </p>
           </div>
         </div>
       </section>
 
+      <ArtGallery sizeFilter="large" />
       <Footer />
     </main>
   )
