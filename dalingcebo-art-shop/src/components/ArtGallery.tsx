@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -14,14 +14,9 @@ interface ArtGalleryProps {
 }
 
 export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGalleryProps) {
-  const [isVisible, setIsVisible] = useState(false)
   const { artworks, isLoading, error, reload, stats } = useArtworks()
   const [showAvailableOnly, setShowAvailableOnly] = useState(true)
   const router = useRouter()
-
-  useEffect(() => {
-    setIsVisible(true)
-  }, [])
 
   const getGridColumns = () => {
     switch (zoomLevel) {
@@ -95,7 +90,7 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
         </div>
 
         {/* Gallery Grid */}
-        <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           {isLoading && (
             <div className="col-span-full flex items-center justify-center py-16">
               <LoadingSpinner />
@@ -171,7 +166,7 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
         </div>
 
         {/* Load More */}
-        <div className={`text-center mt-16 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
+        <div className="text-center mt-16 fade-in-slow" style={{ animationDelay: '0.9s' }}>
           <Link href="/shop" className="btn-yeezy">
             View More ({filteredArtworks.length} of {stats.total})
           </Link>
