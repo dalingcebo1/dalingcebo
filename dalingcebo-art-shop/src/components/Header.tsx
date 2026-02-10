@@ -29,7 +29,7 @@ const navIconLinks = [
   {
     href: '/small-paintings',
     title: 'Small Paintings',
-    renderIcon: (className = 'w-5 h-6') => (
+    renderIcon: (className = 'w-6 h-6') => (
       <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
         <circle cx="12" cy="8" r="3" />
         <path d="M12 11v5" />
