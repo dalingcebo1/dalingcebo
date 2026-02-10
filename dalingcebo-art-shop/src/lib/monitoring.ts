@@ -59,13 +59,20 @@ export default Sentry
 
 // Placeholder export for when Sentry is not configured
 export const captureException = (error: Error) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.error('Error captured:', error)
+  // Always log errors to console
+  console.error('Error captured:', error)
+  
+  // In production, errors should be sent to a monitoring service
+  if (process.env.NODE_ENV === 'production') {
+    console.error('WARNING: Sentry not configured. Error tracking disabled.')
   }
 }
 
 export const captureMessage = (message: string) => {
-  if (process.env.NODE_ENV === 'development') {
-    console.log('Message captured:', message)
+  // Always log messages to console
+  console.log('Message captured:', message)
+  
+  if (process.env.NODE_ENV === 'production') {
+    console.log('INFO: Sentry not configured. Message tracking disabled.')
   }
 }

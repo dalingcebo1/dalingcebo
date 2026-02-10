@@ -10,8 +10,8 @@ import { useEffect } from 'react'
  */
 export default function PerformanceMonitoring() {
   useEffect(() => {
-    // Only run in production and in the browser
-    if (typeof window === 'undefined' || process.env.NODE_ENV !== 'production') {
+    // Only run in the browser
+    if (typeof window === 'undefined') {
       return
     }
 
