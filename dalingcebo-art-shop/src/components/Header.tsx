@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 
 interface HeaderProps {
@@ -10,40 +10,33 @@ interface HeaderProps {
 
 export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
 
   const handleZoomToggle = () => {
     setZoomLevel(prev => (prev + 1) % 3)
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
     <>
       <nav className="yeezy-nav">
         <div className="yeezy-nav-content">
           {/* Zoom toggle button on far left */}
-          <button 
-            onClick={handleZoomToggle}
-            className="yeezy-nav-link"
-            title={zoomLevel >= 2 ? "Zoom Out" : "Zoom In"}
-          >
-            {zoomLevel >= 2 ? (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M5 12h14"/>
-              </svg>
-            ) : (
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M12 5v14m-7-7h14"/>
-              </svg>
-            )}
-          </button>
+          <div className="yeezy-nav-left">
+            <button 
+              onClick={handleZoomToggle}
+              className="yeezy-nav-link"
+              title={zoomLevel >= 2 ? "Zoom Out" : "Zoom In"}
+            >
+              {zoomLevel >= 2 ? (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M5 12h14"/>
+                </svg>
+              ) : (
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M12 5v14m-7-7h14"/>
+                </svg>
+              )}
+            </button>
+          </div>
 
           {/* Center Navigation */}
           <div className="yeezy-nav-links">
@@ -77,13 +70,15 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
           </div>
 
           {/* Cart on far right */}
-          <button className="yeezy-nav-link" title="Cart">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="8" cy="21" r="1"/>
-              <circle cx="19" cy="21" r="1"/>
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6"/>
-            </svg>
-          </button>
+          <div className="yeezy-nav-right hidden md:flex">
+            <button className="yeezy-nav-link" title="Cart">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="8" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6"/>
+              </svg>
+            </button>
+          </div>
 
           {/* Mobile menu button */}
           <button
