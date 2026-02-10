@@ -99,7 +99,7 @@ export default function YocoCheckout({
       </button>
 
       <div className="flex items-center justify-center gap-3 text-gray-400">
-``` <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2L2 19h20L12 2zm0 5l6 11H6l6-11z"/>
         </svg>
         <span className="yeezy-body text-xs">Secured by Yoco</span>

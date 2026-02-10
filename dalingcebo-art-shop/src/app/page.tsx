@@ -101,6 +101,7 @@ export default function Home() {
               muted
               loop
               playsInline
+              aria-label="Studio glimpse - a low-fi, soundless loop showing the artist's workspace"
             >
               <source src="/videos/landing-loop.mp4" type="video/mp4" />
             </video>
