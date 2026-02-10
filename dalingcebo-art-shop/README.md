@@ -1,5 +1,30 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Prerequisites
+
+- Node.js 20+ and npm
+- A Supabase account and project ([supabase.com](https://supabase.com))
+
+## Setup
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure environment variables:**
+   ```bash
+   cp .env.example .env.local
+   ```
+   
+   Then edit `.env.local` and fill in your actual credentials:
+   - Get Supabase credentials from your [Supabase Project Settings > API](https://supabase.com/dashboard/project/_/settings/api)
+   - Click "Legacy anon, service_role API keys" tab to get the keys
+   - Update `NEXT_PUBLIC_SUPABASE_URL` with your project URL
+   - Update `NEXT_PUBLIC_SUPABASE_ANON_KEY` with your anon key
+   - Update `SUPABASE_SERVICE_KEY` with your service role key
+   - Update other credentials as needed for your integrations
+
 ## Getting Started
 
 First, run the development server:
