@@ -267,6 +267,19 @@ body {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
+  position: relative;
+}
+
+.yeezy-nav-left,
+.yeezy-nav-right {
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  min-width: 50px;
+}
+
+.yeezy-nav-right {
+  justify-content: flex-end;
 }
 
 .yeezy-nav-links {
@@ -276,6 +289,24 @@ body {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.yeezy-nav-links > * {
+  pointer-events: auto;
+}
+
+/* Prevent overlap on smaller screens */
+@media (max-width: 900px) {
+  .yeezy-nav-links {
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .yeezy-nav-links {
+    gap: 16px;
+  }
 }
 
 .yeezy-nav-link {
