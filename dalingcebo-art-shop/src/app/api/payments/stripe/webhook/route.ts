@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { verifyStripeWebhook } from '@/lib/payments/stripe'
 import { createServiceRoleClient } from '@/lib/db/supabase'
+import { sendEmail, orderConfirmationEmail } from '@/lib/email'
 import Stripe from 'stripe'
 
 export async function POST(request: NextRequest) {
@@ -122,7 +123,34 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
 
   console.log(`Stripe payment succeeded for order ${orderId}`)
   
-  // TODO: Send confirmation email
+  // Send confirmation email
+  try {
+    const { data: order } = await supabase
+      .from('orders')
+      .select('*')
+      .eq('id', orderId)
+      .single() as { data: any }
+
+    if (order) {
+      const { data: items } = await supabase
+        .from('order_items')
+        .select('*')
+        .eq('order_id', orderId) as { data: any[] }
+
+      if (items && items.length > 0) {
+        const emailContent = orderConfirmationEmail(order, items)
+        await sendEmail({
+          to: order.customer_email,
+          subject: emailContent.subject,
+          html: emailContent.html
+        })
+        console.log(`Confirmation email sent for order ${orderId}`)
+      }
+    }
+  } catch (emailError) {
+    console.error('Error sending confirmation email:', emailError)
+    // Don't throw - email failure shouldn't fail the webhook
+  }
 }
 
 async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
@@ -212,6 +240,54 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
 
   console.log(`Stripe refund succeeded for order ${transaction.order_id}`)
   
-  // TODO: Restore inventory
-  // TODO: Send refund notification email
+  // Restore inventory for refunded items
+  try {
+    const { data: orderItems } = await supabase
+      .from('order_items')
+      .select('artwork_id')
+      .eq('order_id', transaction.order_id) as { data: { artwork_id: string }[] }
+
+    if (orderItems) {
+      for (const item of orderItems) {
+        await supabase
+          .from('artworks')
+          .update({ in_stock: true })
+          .eq('id', item.artwork_id)
+      }
+      console.log(`Inventory restored for refunded order ${transaction.order_id}`)
+    }
+  } catch (inventoryError) {
+    console.error('Error restoring inventory:', inventoryError)
+  }
+
+  // Send refund notification email
+  try {
+    const { data: order } = await supabase
+      .from('orders')
+      .select('customer_email, customer_name, order_number')
+      .eq('id', transaction.order_id)
+      .single() as { data: any }
+
+    if (order) {
+      await sendEmail({
+        to: order.customer_email,
+        subject: `Refund Processed - ${order.order_number}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <h1 style="text-align: center; letter-spacing: 2px;">DALINGCEBO</h1>
+            <div style="background: #10b981; color: white; padding: 24px; text-align: center; margin: 24px 0;">
+              <h2>Refund Processed</h2>
+              <p>Order ${order.order_number}</p>
+            </div>
+            <p>Dear ${order.customer_name},</p>
+            <p>Your refund has been processed and should appear in your account within 5-10 business days.</p>
+            <p>If you have any questions, please contact us at info@dalingcebo.art</p>
+          </div>
+        `
+      })
+      console.log(`Refund notification email sent for order ${transaction.order_id}`)
+    }
+  } catch (emailError) {
+    console.error('Error sending refund notification:', emailError)
+  }
 }

@@ -90,9 +90,9 @@ export async function GET(
       },
       businessInfo: {
         name: 'Dalingcebo Art',
-        address: 'South Africa', // TODO: Add actual address
-        phone: '+27 XX XXX XXXX', // TODO: Add actual phone
-        email: 'info@dalingcebo.art', // TODO: Add actual email
+        address: 'Johannesburg, South Africa',
+        phone: '+27 (0) 60 123 4567',
+        email: 'info@dalingcebo.art',
         website: 'www.dalingcebo.art'
       }
     })

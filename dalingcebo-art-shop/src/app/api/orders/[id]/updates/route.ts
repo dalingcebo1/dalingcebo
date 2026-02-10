@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/db/supabase'
+import { sendEmail } from '@/lib/email'
 
 type RouteContext = {
   params: Promise<{ id: string }>
@@ -81,7 +82,47 @@ export async function POST(
 
     if (error) throw error
 
-    // TODO: Send email notification to customer if visible
+    // Send email notification to customer if visible
+    if (isCustomerVisible !== false) {
+      try {
+        const { data: order } = await supabase
+          .from('orders')
+          .select('customer_email, customer_name, order_number')
+          .eq('id', id)
+          .single() as { data: any }
+
+        if (order) {
+          await sendEmail({
+            to: order.customer_email,
+            subject: `Order Update - ${order.order_number}`,
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+                <h1 style="text-align: center; letter-spacing: 2px;">DALINGCEBO</h1>
+                <div style="background: #000; color: white; padding: 24px; text-align: center; margin: 24px 0;">
+                  <h2>${title}</h2>
+                  <p>Order ${order.order_number}</p>
+                </div>
+                <p>Dear ${order.customer_name},</p>
+                <p>${message}</p>
+                <p style="margin-top: 24px;">
+                  <a href="${process.env.NEXT_PUBLIC_BASE_URL || 'https://dalingcebo.art'}/orders/track?email=${encodeURIComponent(order.customer_email)}&orderNumber=${order.order_number}" 
+                     style="color: #000; text-decoration: underline;">
+                    Track your order
+                  </a>
+                </p>
+                <div style="margin-top: 40px; padding-top: 24px; border-top: 1px solid #e5e5e5; text-align: center; color: #666; font-size: 14px;">
+                  <p>Questions? Contact us at info@dalingcebo.art</p>
+                </div>
+              </div>
+            `
+          })
+          console.log(`Update notification email sent for order ${id}`)
+        }
+      } catch (emailError) {
+        console.error('Error sending update notification:', emailError)
+        // Don't throw - email failure shouldn't fail the update
+      }
+    }
 
     return NextResponse.json({ update: data }, { status: 201 })
   } catch (error: unknown) {
