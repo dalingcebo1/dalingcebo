@@ -1,7 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPaymentIntent } from '@/lib/payments/stripe'
+import { rateLimit, getClientIp } from '@/lib/rate-limit'
 
 export async function POST(request: NextRequest) {
+  // Apply rate limiting: 10 requests per minute per IP
+  const clientIp = getClientIp(request)
+  const rateLimitResult = rateLimit(`payment-intent:${clientIp}`, {
+    maxRequests: 10,
+    windowMs: 60000
+  })
+
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { 
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+          'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+          'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString(),
+        }
+      }
+    )
+  }
+
   try {
     const body = await request.json()
     const { amount, currency, metadata } = body

@@ -1,8 +1,58 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Dalingcebo Art Shop
+
+A minimal, production-ready e-commerce platform for contemporary art, inspired by the clean aesthetics of yeezy.com. Built with Next.js, Supabase, and Stripe.
+
+## Features
+
+- 🎨 Minimal, yeezy-inspired design
+- 💳 Stripe payment integration
+- 📧 Automated email notifications
+- 🔐 Supabase authentication and database
+- 📱 Fully responsive mobile experience
+- 🛡️ Production-ready security headers
+- ⚡ Optimized performance
+- 🎯 Rate limiting on API routes
+
+## Tech Stack
+
+- **Framework**: Next.js 15 (App Router)
+- **Database**: Supabase (PostgreSQL)
+- **Payments**: Stripe
+- **Styling**: Tailwind CSS
+- **Email**: Resend
+- **Deployment**: Vercel (recommended)
+
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+- Supabase account
+- Stripe account
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/dalingcebo1/dalingcebo.git
+cd dalingcebo/dalingcebo-art-shop
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Set up environment variables:
+```bash
+cp .env.example .env.local
+# Edit .env.local with your keys
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
@@ -14,11 +64,102 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/
+├── app/              # Next.js app router pages
+├── components/       # React components
+├── contexts/         # React context providers
+├── hooks/           # Custom React hooks
+├── lib/             # Utility functions and integrations
+│   ├── payments/    # Stripe/Yoco payment logic
+│   ├── email.ts     # Email templates and sending
+│   └── supabase/    # Supabase client setup
+└── types/           # TypeScript type definitions
+
+supabase/
+└── migrations/      # Database migrations
+```
+
+## Key Pages
+
+- `/` - Homepage with featured artworks
+- `/shop` - Full artwork gallery
+- `/artwork/[id]` - Individual artwork details
+- `/cart` - Shopping cart
+- `/account` - User account management
+- `/admin` - Admin panel (protected)
+
+## Database Setup
+
+Apply Supabase migrations in order:
+
+```bash
+supabase migration up
+```
+
+Or manually run SQL files in the Supabase SQL editor.
+
+## Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+### Quick Deploy to Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/dalingcebo1/dalingcebo)
+
+After deployment, configure environment variables in Vercel dashboard.
+
+## Environment Variables
+
+See `.env.example` for all required variables:
+
+- Supabase configuration
+- Stripe API keys
+- Email service (Resend)
+- Application settings
+
+## Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run catalogs:sync` - Sync catalog data
+
+## Security
+
+- Production security headers configured
+- Rate limiting on payment endpoints
+- Row Level Security (RLS) in Supabase
+- Webhook signature verification
+- Environment variable validation
+
+## Design Philosophy
+
+The design follows yeezy.com's minimal aesthetic:
+
+- Clean, white backgrounds
+- Minimal navigation
+- Focus on content (artworks)
+- Typography-driven layout
+- Subtle animations
+- Easy access to all sections
+
+## Contributing
+
+This is a private art shop. For issues or questions, contact info@dalingcebo.art
+
+## License
+
+Private - All rights reserved
+
+---
+
+Built with ❤️ by Dalingcebo
 
 ## Supabase migrations
 

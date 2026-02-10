@@ -32,16 +32,17 @@ export default function Home() {
       {/* Featured works: very simple two-piece layout */}
       <section className="yeezy-section flex-1">
         <div className="yeezy-container">
-          <div className="mb-8 text-center">
-            <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">
-              Featured Works
-            </p>
-            <h1 className="yeezy-heading text-2xl md:text-3xl">
-              New from Dalingcebo
+          <div className="mb-12 text-center max-w-2xl mx-auto">
+            <h1 className="yeezy-heading text-3xl md:text-5xl mb-4">
+              DALINGCEBO
             </h1>
+            <p className="yeezy-body text-sm md:text-base text-gray-600 leading-relaxed">
+              Contemporary art that bridges cultures. Each piece is crafted with intention, 
+              speaking to the modern soul.
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 mb-12">
             {isLoading && (
               <div className="col-span-full h-80 bg-gray-100 animate-pulse rounded" />
             )}
@@ -79,6 +80,13 @@ export default function Home() {
                 </div>
               </article>
             ))}
+          </div>
+
+          {/* Simple CTA */}
+          <div className="text-center mt-12">
+            <a href="/shop" className="btn-yeezy-primary inline-block">
+              View All Artworks
+            </a>
           </div>
         </div>
       </section>
