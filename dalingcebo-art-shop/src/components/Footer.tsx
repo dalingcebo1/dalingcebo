@@ -44,47 +44,58 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Links */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+        {/* Links - Horizontal Layout with 1 row 6 columns */}
+        <div className="grid grid-cols-2 md:grid-cols-6 gap-8 mb-16">
           {/* Brand */}
-          <div className="md:col-span-2">
-            <h3 className="yeezy-logo text-xl mb-6">DALINGCEBO</h3>
-            <p className="yeezy-body text-gray-400 max-w-md leading-relaxed">
-              Contemporary art that bridges cultures and speaks to the modern soul. 
-              Each piece crafted with intention and purpose.
+          <div className="col-span-2">
+            <h3 className="yeezy-logo text-xl mb-4">DALINGCEBO</h3>
+            <p className="yeezy-body text-gray-400 text-sm leading-relaxed">
+              Contemporary art that bridges cultures and speaks to the modern soul.
             </p>
           </div>
 
-          {/* Navigation */}
+          {/* Shop */}
           <div>
-            <h4 className="yeezy-title text-white mb-6">Navigation</h4>
-            <div className="space-y-4">
-              {['Shop', 'About', 'Contact', 'Press'].map((link) => (
-                <Link 
-                  key={link}
-                  href={`/${link.toLowerCase()}`} 
-                  className="block yeezy-nav-link hover:text-white"
-                >
-                  {link}
-                </Link>
-              ))}
-            </div>
+            <h4 className="yeezy-title text-white mb-4 text-sm">Shop</h4>
+            <Link 
+              href="/shop" 
+              className="block yeezy-nav-link hover:text-white text-sm"
+            >
+              All Art
+            </Link>
+          </div>
+
+          {/* About */}
+          <div>
+            <h4 className="yeezy-title text-white mb-4 text-sm">About</h4>
+            <Link 
+              href="/about" 
+              className="block yeezy-nav-link hover:text-white text-sm"
+            >
+              Our Story
+            </Link>
+          </div>
+
+          {/* Contact */}
+          <div>
+            <h4 className="yeezy-title text-white mb-4 text-sm">Contact</h4>
+            <Link 
+              href="/contact" 
+              className="block yeezy-nav-link hover:text-white text-sm"
+            >
+              Get in Touch
+            </Link>
           </div>
 
           {/* Support */}
           <div>
-            <h4 className="yeezy-title text-white mb-6">Support</h4>
-            <div className="space-y-4">
-              {['Shipping', 'Returns', 'FAQ', 'Care'].map((link) => (
-                <Link 
-                  key={link}
-                  href={`/${link.toLowerCase()}`} 
-                  className="block yeezy-nav-link hover:text-white"
-                >
-                  {link}
-                </Link>
-              ))}
-            </div>
+            <h4 className="yeezy-title text-white mb-4 text-sm">Support</h4>
+            <Link 
+              href="/shipping" 
+              className="block yeezy-nav-link hover:text-white text-sm"
+            >
+              Shipping & Returns
+            </Link>
           </div>
         </div>
 
