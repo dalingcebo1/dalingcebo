@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
         product_data: {
           name: item.artwork.title,
           description: item.artwork.description || '',
-          images: item.artwork.image ? [item.artwork.image] : item.artwork.images?.slice(0, 1) || [],
+          // Use primary image if available, otherwise use first image from images array
+          images: item.artwork.image 
+            ? [item.artwork.image] 
+            : (item.artwork.images && item.artwork.images.length > 0 ? [item.artwork.images[0]] : []),
         },
         unit_amount: Math.round((item.artwork.price || 0) * 100), // Convert to cents
       },
