@@ -13,7 +13,7 @@ export default function Home() {
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
       <Hero />
-      <ArtGallery zoomLevel={zoomLevel} />
+      <ArtGallery />
       <Footer />
     </main>
   )

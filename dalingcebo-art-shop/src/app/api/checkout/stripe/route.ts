@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 
 const stripe = process.env.STRIPE_SECRET_KEY
   ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-      apiVersion: '2024-12-18.acacia',
+      apiVersion: '2026-01-28.clover',
     })
   : null
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const { items, shippingInfo } = await request.json()
 
     // Create line items for Stripe
-    const lineItems = items.map((item: any) => ({
+    const lineItems = items.map((item: { artwork: { title: string; description?: string; image_url?: string; price?: number }; quantity: number }) => ({
       price_data: {
         currency: 'zar',
         product_data: {
@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    return NextResponse.json({ sessionId: session.id })
+    return NextResponse.json({ sessionId: session.id, url: session.url })
   } catch (error) {
     console.error('Stripe checkout error:', error)
     return NextResponse.json(

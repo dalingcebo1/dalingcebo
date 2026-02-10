@@ -28,7 +28,7 @@ export default function LargePaintings() {
         </div>
       </section>
 
-      <ArtGallery zoomLevel={zoomLevel} sizeFilter="large" />
+      <ArtGallery sizeFilter="large" />
       <Footer />
     </main>
   )

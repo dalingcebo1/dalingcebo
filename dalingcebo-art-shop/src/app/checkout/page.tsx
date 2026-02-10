@@ -5,12 +5,6 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCart } from '@/context/CartContext'
-import { loadStripe } from '@stripe/stripe-js'
-
-// Initialize Stripe
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-  : null
 
 export default function Checkout() {
   const [zoomLevel, setZoomLevel] = useState(0)
@@ -53,15 +47,13 @@ export default function Checkout() {
         }),
       })
 
-      const { sessionId } = await response.json()
+      const { url } = await response.json()
       
-      const stripe = await stripePromise
-      if (stripe) {
-        const { error } = await stripe.redirectToCheckout({ sessionId })
-        if (error) {
-          console.error('Stripe checkout error:', error)
-          alert('Payment failed. Please try again.')
-        }
+      if (url) {
+        // Redirect to Stripe checkout URL
+        window.location.href = url
+      } else {
+        alert('Payment initialization failed. Please try again.')
       }
     } catch (error) {
       console.error('Checkout error:', error)

@@ -10,10 +10,9 @@ import Toast from './Toast'
 
 interface ArtGalleryProps {
   sizeFilter?: 'small' | 'large' | 'all'
-  zoomLevel?: number
 }
 
-export default function ArtGallery({ sizeFilter = 'all', zoomLevel = 0 }: ArtGalleryProps) {
+export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)

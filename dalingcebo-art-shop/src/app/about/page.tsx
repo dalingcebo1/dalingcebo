@@ -45,11 +45,11 @@ export default function About() {
               <p className="yeezy-body text-gray-700 leading-relaxed mb-4">
                 Every piece tells a story. The artistic process is one of intention and purpose, where each 
                 brushstroke is deliberate, and every color choice meaningful. The goal is to create works 
-                that transcend mere decoration and become part of the viewer's life and space.
+                that transcend mere decoration and become part of the viewer&apos;s life and space.
               </p>
               <p className="yeezy-body text-gray-700 leading-relaxed">
                 Art should be accessible yet exclusive, contemporary yet timeless. This philosophy drives 
-                the creation of both large statement pieces and intimate smaller works, ensuring there's 
+                the creation of both large statement pieces and intimate smaller works, ensuring there&apos;s 
                 something for every collector and every space.
               </p>
             </div>

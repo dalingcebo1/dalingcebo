@@ -1,14 +1,13 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { useCart } from '@/context/CartContext'
 
-export default function CheckoutSuccess() {
-  const [zoomLevel, setZoomLevel] = useState(0)
+function SuccessContent() {
   const { clearCart } = useCart()
   const searchParams = useSearchParams()
   const sessionId = searchParams.get('session_id')
@@ -19,9 +18,7 @@ export default function CheckoutSuccess() {
   }, [clearCart])
 
   return (
-    <main className="min-h-screen">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-      
+    <>
       <section className="yeezy-hero" style={{ height: '30vh' }}>
         <div className="yeezy-hero-content">
           <div className="fade-in-slow" style={{ animationDelay: '0.3s' }}>
@@ -68,7 +65,7 @@ export default function CheckoutSuccess() {
               <p className="yeezy-body text-gray-700 leading-relaxed mb-12">
                 You will receive a confirmation email with your order details and tracking 
                 information once your artwork ships. If you have any questions, please 
-                don't hesitate to contact us at info@dalingcebo.com.
+                don&apos;t hesitate to contact us at info@dalingcebo.com.
               </p>
             </div>
 
@@ -83,7 +80,25 @@ export default function CheckoutSuccess() {
           </div>
         </div>
       </section>
+    </>
+  )
+}
 
+export default function CheckoutSuccess() {
+  const [zoomLevel, setZoomLevel] = useState(0)
+
+  return (
+    <main className="min-h-screen">
+      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+      <Suspense fallback={
+        <section className="yeezy-section">
+          <div className="yeezy-container max-w-3xl text-center py-20">
+            <p className="yeezy-body text-gray-600">Loading...</p>
+          </div>
+        </section>
+      }>
+        <SuccessContent />
+      </Suspense>
       <Footer />
     </main>
   )

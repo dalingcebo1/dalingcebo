@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
           shippingProvince: shippingInfo.province || '',
           shippingPostalCode: shippingInfo.postalCode || '',
           shippingCountry: shippingInfo.country,
-          items: JSON.stringify(items.map((item: any) => ({
+          items: JSON.stringify(items.map((item: { artwork: { title: string; price?: number }; quantity: number }) => ({
             title: item.artwork.title,
             quantity: item.quantity,
             price: item.artwork.price,
