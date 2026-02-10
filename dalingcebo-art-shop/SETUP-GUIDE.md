@@ -155,18 +155,18 @@ The application should now be running at [http://localhost:3000](http://localhos
 **Cause:** The repository has a nested structure, or there are multiple `package-lock.json` files in parent directories.
 
 **Solution:**
-This has been fixed in `next.config.ts` by adding the turbopack root configuration:
+This has been fixed in `next.config.ts` by adding the turbopack root configuration at the top level:
 
 ```typescript
 const nextConfig: NextConfig = {
-  experimental: {
-    turbopack: {
-      root: process.cwd(),
-    },
+  turbopack: {
+    root: process.cwd(),
   },
   // ... other config
 };
 ```
+
+Note: In Next.js 15.3+, the `turbopack` configuration is at the top level, not under `experimental`.
 
 The warning should no longer appear in the latest version.
 

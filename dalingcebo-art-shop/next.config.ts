@@ -1,10 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbopack: {
-      root: process.cwd(),
-    },
+  turbopack: {
+    root: process.cwd(),
   },
   images: {
     dangerouslyAllowSVG: true,
