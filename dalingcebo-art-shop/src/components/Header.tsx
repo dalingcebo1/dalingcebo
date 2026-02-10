@@ -40,11 +40,22 @@ const navIconLinks = [
   },
   {
     href: '/about',
-    title: 'About the Artist',
+    title: 'About',
     renderIcon: (className = 'w-5 h-5') => (
       <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
         <circle cx="12" cy="12" r="10" />
         <path d="M12 16v-4m0-4h.01" />
+      </svg>
+    ),
+  },
+  {
+    href: '/cart',
+    title: 'Cart',
+    renderIcon: (className = 'w-5 h-5') => (
+      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6" />
       </svg>
     ),
   },
@@ -102,35 +113,31 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
         </button>
 
         <div className="yeezy-nav-links">
-          {navIconLinks.map(link => (
-            <Link key={link.href} href={link.href} className="yeezy-nav-link" title={link.title} aria-label={link.title}>
-              {link.renderIcon()}
-            </Link>
-          ))}
+          {navIconLinks.map(link => {
+            const isCart = link.href === '/cart'
+            return (
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={`yeezy-nav-link ${isCart ? 'relative' : ''}`}
+                title={link.title} 
+                aria-label={isCart && itemCount > 0 ? `Cart with ${itemCount} items` : link.title}
+              >
+                {link.renderIcon()}
+                {isCart && itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+                    {itemCount}
+                  </span>
+                )}
+              </Link>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
             <AccountButton />
           </div>
-
-          <Link
-            href="/cart"
-            className="yeezy-nav-link relative"
-            title="Cart"
-            aria-label={itemCount > 0 ? `Cart with ${itemCount} items` : 'Cart'}
-          >
-            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <circle cx="8" cy="21" r="1" />
-              <circle cx="19" cy="21" r="1" />
-              <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6" />
-            </svg>
-            {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                {itemCount}
-              </span>
-            )}
-          </Link>
 
           <button
             type="button"
@@ -169,38 +176,27 @@ export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
             </button>
 
             <div className="flex space-x-6">
-              {navIconLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="yeezy-nav-link"
-                  onClick={() => setIsMenuOpen(false)}
-                  title={link.title}
-                  aria-label={link.title}
-                >
-                  {link.renderIcon('w-6 h-6')}
-                </Link>
-              ))}
+              {navIconLinks.map(link => {
+                const isCart = link.href === '/cart'
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`yeezy-nav-link ${isCart ? 'relative' : ''}`}
+                    onClick={() => setIsMenuOpen(false)}
+                    title={link.title}
+                    aria-label={isCart && itemCount > 0 ? `Cart with ${itemCount} items` : link.title}
+                  >
+                    {link.renderIcon('w-6 h-6')}
+                    {isCart && itemCount > 0 && (
+                      <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+                        {itemCount}
+                      </span>
+                    )}
+                  </Link>
+                )
+              })}
             </div>
-
-            <Link
-              href="/cart"
-              className="yeezy-nav-link relative"
-              onClick={() => setIsMenuOpen(false)}
-              title="Cart"
-              aria-label={itemCount > 0 ? `Cart with ${itemCount} items` : 'Cart'}
-            >
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <circle cx="8" cy="21" r="1" />
-                <circle cx="19" cy="21" r="1" />
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 002 1.58h9.78a2 2 0 001.95-1.57L23 6H6" />
-              </svg>
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                  {itemCount}
-                </span>
-              )}
-            </Link>
           </div>
 
           <div className="mt-6 px-4 pb-4 space-y-3 text-sm yeezy-body">
