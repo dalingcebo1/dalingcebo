@@ -1,9 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project for Dalingcebo Art Shop - a contemporary art e-commerce platform with integrated payment solutions.
+
+## Features
+
+- 🎨 **Art Gallery**: Browse and view contemporary artworks
+- 🛒 **Shopping Cart**: Add items, manage quantities, persistent storage
+- 💳 **Payment Integration**: 
+  - Stripe for international payments
+  - Yoco for South African payments
+- 📱 **Responsive Design**: Minimalist Yeezy-inspired aesthetic
+- 🔒 **Secure Checkout**: Server-side payment processing
+- 📦 **Order Management**: Checkout flow with shipping information
+
+For detailed e-commerce feature documentation, see [ECOMMERCE.md](./ECOMMERCE.md).
 
 ## Prerequisites
 
 - Node.js 20+ and npm
 - A Supabase account and project ([supabase.com](https://supabase.com))
+- (Optional) Stripe account for payment processing ([stripe.com](https://stripe.com))
+- (Optional) Yoco account for South African payments ([yoco.com](https://www.yoco.com))
 
 ## Setup
 
@@ -23,7 +38,19 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
    - Update `NEXT_PUBLIC_SUPABASE_URL` with your project URL
    - Update `NEXT_PUBLIC_SUPABASE_ANON_KEY` with your anon key
    - Update `SUPABASE_SERVICE_KEY` with your service role key
+   - (Optional) Add Stripe keys for payment processing
+   - (Optional) Add Yoco keys for South African payments
    - Update other credentials as needed for your integrations
+
+## Pages
+
+- `/` - Home page with featured artworks
+- `/large-paintings` - Large artwork collection
+- `/small-paintings` - Small artwork collection
+- `/about` - About the artist
+- `/cart` - Shopping cart
+- `/checkout` - Checkout and payment
+- `/checkout/success` - Order confirmation
 
 ## Getting Started
 
