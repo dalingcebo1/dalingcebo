@@ -1,0 +1,12 @@
+[
+  {
+    "title": "ChaosX Season 01",
+    "description": "Limited-run process book featuring sketches, poetry fragments, and high-resolution plates from the ChaosX series.",
+    "pdfUrl": "https://drive.google.com/file/d/1ufvxnAZTY6coE5VgzeUEww3nXNIiy-87/view",
+    "coverImage": "https://placehold.co/900x1200.png?text=ChaosX+Catalog",
+    "slug": "chaosx-season-01",
+    "tags": ["limited", "process", "chaosx"],
+    "releaseDate": "2026-02-01",
+    "isFeatured": true
+  }
+]

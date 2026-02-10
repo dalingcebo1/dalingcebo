@@ -1,0 +1,238 @@
+[
+  {
+    "id": 1,
+    "title": "Urban Silence",
+    "artist": "Dalingcebo",
+    "price": 850,
+    "category": "painting",
+    "scale": "large",
+    "size": "24×36",
+    "year": 2024,
+    "medium": "Acrylic on Canvas",
+    "description": "A meditation on the quiet moments found within urban chaos.",
+    "details": "Layered textures and muted tones capture moments of contemplation amidst the city's noise.",
+    "inStock": false,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Urban+Silence",
+    "images": [
+      "https://placehold.co/800x1000?text=Urban+Silence",
+      "https://placehold.co/800x1000?text=Urban+Silence+II",
+      "https://placehold.co/800x1000?text=Urban+Silence+III",
+      "https://placehold.co/800x1000?text=Urban+Silence+IV"
+    ],
+    "tags": [
+      "urban",
+      "minimal"
+    ],
+    "inventory": 5
+  },
+  {
+    "id": 2,
+    "title": "Cultural Echo",
+    "artist": "Dalingcebo",
+    "price": 1200,
+    "category": "mixed-media",
+    "scale": "large",
+    "size": "30×40",
+    "year": 2024,
+    "medium": "Mixed Media on Canvas",
+    "description": "Bridging traditional African motifs with contemporary abstraction.",
+    "details": "Traditional patterns, contemporary paint techniques, and digital elements create a dialogue between past and present.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Cultural+Echo",
+    "images": [
+      "https://placehold.co/800x1000?text=Cultural+Echo",
+      "https://placehold.co/800x1000?text=Cultural+Echo+II",
+      "https://placehold.co/800x1000?text=Cultural+Echo+III",
+      "https://placehold.co/800x1000?text=Cultural+Echo+IV"
+    ],
+    "tags": [
+      "heritage",
+      "mixed"
+    ],
+    "inventory": 2
+  },
+  {
+    "id": 3,
+    "title": "Modern Heritage",
+    "artist": "Dalingcebo",
+    "price": 950,
+    "category": "painting",
+    "scale": "small",
+    "size": "18×24",
+    "year": 2023,
+    "medium": "Oil on Canvas",
+    "description": "An exploration of how ancestral wisdom informs contemporary life.",
+    "details": "Traditional oil painting techniques blended with modern composition.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Modern+Heritage",
+    "images": [
+      "https://placehold.co/800x1000?text=Modern+Heritage",
+      "https://placehold.co/800x1000?text=Modern+Heritage+II",
+      "https://placehold.co/800x1000?text=Modern+Heritage+III",
+      "https://placehold.co/800x1000?text=Modern+Heritage+IV"
+    ],
+    "tags": [
+      "heritage",
+      "oil"
+    ],
+    "inventory": 3
+  },
+  {
+    "id": 4,
+    "title": "Abstract Form",
+    "artist": "Dalingcebo",
+    "price": 750,
+    "category": "abstract",
+    "scale": "small",
+    "size": "20×30",
+    "year": 2024,
+    "medium": "Acrylic on Canvas",
+    "description": "Pure abstraction exploring form, color, and movement.",
+    "details": "Emerging from experiments with gesture and color theory.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Abstract+Form",
+    "images": [
+      "https://placehold.co/800x1000?text=Abstract+Form",
+      "https://placehold.co/800x1000?text=Abstract+Form+II",
+      "https://placehold.co/800x1000?text=Abstract+Form+III",
+      "https://placehold.co/800x1000?text=Abstract+Form+IV"
+    ],
+    "tags": [
+      "abstract",
+      "color"
+    ],
+    "inventory": 4
+  },
+  {
+    "id": 5,
+    "title": "Digital Nature",
+    "artist": "Dalingcebo",
+    "price": 650,
+    "category": "digital",
+    "scale": "small",
+    "size": "16×20",
+    "year": 2024,
+    "medium": "Digital Print",
+    "description": "Where technology meets organic forms in a limited edition print.",
+    "details": "Printed on museum-quality archival paper. Limited edition of 25.",
+    "inStock": true,
+    "edition": "5/25",
+    "image": "https://placehold.co/800x1000?text=Digital+Nature",
+    "images": [
+      "https://placehold.co/800x1000?text=Digital+Nature",
+      "https://placehold.co/800x1000?text=Digital+Nature+II",
+      "https://placehold.co/800x1000?text=Digital+Nature+III",
+      "https://placehold.co/800x1000?text=Digital+Nature+IV"
+    ],
+    "tags": [
+      "digital",
+      "nature"
+    ],
+    "inventory": 10
+  },
+  {
+    "id": 6,
+    "title": "Minimal Space",
+    "artist": "Dalingcebo",
+    "price": 1100,
+    "category": "minimalist",
+    "scale": "large",
+    "size": "36×48",
+    "year": 2023,
+    "medium": "Acrylic on Canvas",
+    "description": "A large-scale minimalist work that creates contemplative space.",
+    "details": "Explores the power of negative space and subtle tonal variations.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Minimal+Space",
+    "images": [
+      "https://placehold.co/800x1000?text=Minimal+Space",
+      "https://placehold.co/800x1000?text=Minimal+Space+II",
+      "https://placehold.co/800x1000?text=Minimal+Space+III",
+      "https://placehold.co/800x1000?text=Minimal+Space+IV"
+    ],
+    "tags": [
+      "minimal",
+      "space"
+    ],
+    "inventory": 1
+  },
+  {
+    "id": 7,
+    "title": "City Dreams",
+    "artist": "Dalingcebo",
+    "price": 900,
+    "category": "painting",
+    "scale": "large",
+    "size": "24×32",
+    "year": 2024,
+    "medium": "Acrylic on Canvas",
+    "description": "Urban landscapes filtered through memory and emotion.",
+    "details": "Layered painting techniques create depth and atmospheric perspective.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=City+Dreams",
+    "images": [
+      "https://placehold.co/800x1000?text=City+Dreams",
+      "https://placehold.co/800x1000?text=City+Dreams+II",
+      "https://placehold.co/800x1000?text=City+Dreams+III",
+      "https://placehold.co/800x1000?text=City+Dreams+IV"
+    ],
+    "tags": [
+      "urban",
+      "dream"
+    ],
+    "inventory": 6
+  },
+  {
+    "id": 8,
+    "title": "Texture Study",
+    "artist": "Dalingcebo",
+    "price": 800,
+    "category": "mixed-media",
+    "scale": "small",
+    "size": "22×28",
+    "year": 2023,
+    "medium": "Mixed Media on Board",
+    "description": "An exploration of surface, depth, and tactile quality.",
+    "details": "Layers of paint, paper, and fabric create rich textural depth.",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://placehold.co/800x1000?text=Texture+Study",
+    "images": [
+      "https://placehold.co/800x1000?text=Texture+Study",
+      "https://placehold.co/800x1000?text=Texture+Study+II",
+      "https://placehold.co/800x1000?text=Texture+Study+III",
+      "https://placehold.co/800x1000?text=Texture+Study+IV"
+    ],
+    "tags": [
+      "texture",
+      "mixed"
+    ],
+    "inventory": 0
+  },
+  {
+    "title": "Flowers",
+    "artist": "Dalingcebo",
+    "price": -1,
+    "category": "defiance",
+    "scale": "large",
+    "size": "50\" x 50\"",
+    "year": 2026,
+    "medium": "Oil on canvas",
+    "description": "Greatest painting of recent times",
+    "details": "Inspired by",
+    "inStock": true,
+    "edition": "Original",
+    "image": "https://drive.google.com/file/d/1qMEsSoyR4RxJzrgI5hwzM5w2eimLwi6n/view?usp=drive_link",
+    "images": [
+      "https://drive.google.com/file/d/1qMEsSoyR4RxJzrgI5hwzM5w2eimLwi6n/view?usp=drive_link"
+    ],
+    "inventory": 1,
+    "id": 9
+  }
+]

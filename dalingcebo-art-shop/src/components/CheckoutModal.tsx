@@ -1,0 +1,223 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CartItem } from '@/contexts/CartContext'
+import FormInput from '@/components/forms/FormInput'
+import FormTextarea from '@/components/forms/FormTextarea'
+import { checkoutFormSchema, type CheckoutFormValues } from '@/lib/validations/schemas'
+
+interface CheckoutModalProps {
+  isOpen: boolean
+  onClose: () => void
+  items: CartItem[]
+  total: number
+  onSuccess?: () => void
+}
+
+export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess }: CheckoutModalProps) {
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CheckoutFormValues>({
+    resolver: zodResolver(checkoutFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      notes: '',
+    },
+  })
+
+  useEffect(() => {
+    if (isOpen) {
+      reset()
+      setError(null)
+      setSuccess(null)
+    }
+  }, [isOpen, reset])
+
+  if (!isOpen) return null
+
+  const onSubmit = async (values: CheckoutFormValues) => {
+    setError(null)
+
+    try {
+      const payload = {
+        ...values,
+        total,
+        items: items.map((item) => ({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+      }
+
+      const response = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data?.message || 'Unable to submit order')
+      }
+
+      setSuccess('Request submitted. Our team will follow up with payment & shipping details.')
+      onSuccess?.()
+      setTimeout(onClose, 2000)
+    } catch (err) {
+      setError((err as Error).message)
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-center justify-center p-4" onClick={() => !isSubmitting && onClose()}>
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-2xl grid md:grid-cols-[1.2fr_1fr] max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="p-8 overflow-y-auto">
+          <div className="flex items-start justify-between mb-8">
+            <div className="flex-1">
+              <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] uppercase tracking-[0.2em] rounded-full inline-block mb-3">
+                Secure Checkout
+              </span>
+              <h2 className="text-2xl font-light tracking-tight">Collector Details</h2>
+            </div>
+            <button 
+              className="text-gray-400 hover:text-gray-600 transition-colors p-2 -mr-2 -mt-2" 
+              onClick={onClose} 
+              disabled={isSubmitting}
+              aria-label="Close modal"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+            <FormInput
+              label="Full Name"
+              registration={register('name')}
+              error={errors.name?.message}
+              placeholder="Your full name"
+            />
+
+            <div className="grid sm:grid-cols-2 gap-5">
+              <FormInput
+                label="Email"
+                type="email"
+                autoComplete="email"
+                registration={register('email')}
+                error={errors.email?.message}
+                placeholder="your@email.com"
+              />
+
+              <FormInput
+                label="Phone"
+                optionalText="optional"
+                type="tel"
+                inputMode="tel"
+                autoComplete="tel"
+                registration={register('phone')}
+                error={errors.phone?.message}
+                placeholder="(555) 123-4567"
+              />
+            </div>
+
+            <FormTextarea
+              label="Shipping Address"
+              rows={3}
+              registration={register('address')}
+              error={errors.address?.message}
+              placeholder="Street address, city, state, zip code"
+            />
+
+            <FormTextarea
+              label="Special Notes"
+              optionalText="optional"
+              rows={3}
+              registration={register('notes')}
+              error={errors.notes?.message}
+              placeholder="Framing preferences, delivery windows, or other special requests"
+            />
+
+            {error && (
+              <div className="rounded-lg p-4 text-sm bg-red-50 text-red-700 border border-red-200">
+                {error}
+              </div>
+            )}
+            
+            {success && (
+              <div className="rounded-lg p-4 text-sm bg-green-50 text-green-700 border border-green-200">
+                {success}
+              </div>
+            )}
+
+            <button 
+              type="submit" 
+              className="w-full px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Submitting...
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Confirm Purchase Request
+                </>
+              )}
+            </button>
+          </form>
+        </div>
+
+        <div className="bg-gray-50 p-8 overflow-y-auto border-l border-gray-200">
+          <h3 className="text-[10px] font-medium text-gray-500 uppercase tracking-[0.2em] mb-6">Order Summary</h3>
+          <div className="space-y-3 mb-6">
+            {items.map((item) => (
+              <div key={item.id} className="bg-white rounded-lg border border-gray-200 p-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium text-xs uppercase tracking-wide truncate mb-1">{item.title}</p>
+                    <p className="text-[10px] text-gray-500">Qty: {item.quantity}</p>
+                  </div>
+                  <p className="text-sm font-light whitespace-nowrap">${(item.price * item.quantity).toLocaleString()}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="border-t border-gray-300 pt-6">
+            <div className="flex items-baseline justify-between mb-6">
+              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-gray-500">Total</span>
+              <span className="text-2xl font-light">${total.toLocaleString()}</span>
+            </div>
+            <div className="bg-gray-100 border border-gray-200 rounded-lg p-3 text-[10px] uppercase tracking-wider text-gray-600">
+              <p className="flex items-start gap-2">
+                <svg className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span className="normal-case tracking-normal text-[11px]">This is a purchase inquiry. You will receive a secure invoice with shipping quotes and payment instructions within 24 hours.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

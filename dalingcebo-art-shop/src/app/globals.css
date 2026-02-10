@@ -10,6 +10,7 @@
   --accent: #666666;
   --muted: #f5f5f5;
   --border: #e5e5e5;
+  --nav-height: 96px;
 }
 
 * {
@@ -32,6 +33,7 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: var(--nav-height);
 }
 
 /* Yeezy-style scrollbar */
@@ -187,9 +189,16 @@ body {
 
 .yeezy-grid-item {
   background: var(--background);
-  aspect-ratio: 1;
   position: relative;
   overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
 }
 
 /* Image styles */
@@ -208,12 +217,14 @@ body {
 .yeezy-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.92);
   opacity: 0;
   transition: opacity 0.4s ease;
   display: flex;
   align-items: flex-end;
   padding: 20px;
+  border-radius: 0.75rem;
+  pointer-events: none;
 }
 
 .yeezy-grid-item:hover .yeezy-overlay {
@@ -239,13 +250,13 @@ body {
 
 /* Layout helpers */
 .yeezy-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
 }
 
 .yeezy-section {
-  padding: 60px 0;
+  padding: 72px 0;
 }
 
 /* Minimal navigation */
@@ -259,6 +270,13 @@ body {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
   border-bottom: 1px solid #e5e5e5;
+  transition: padding 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.yeezy-nav-scrolled {
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
 }
 
 .yeezy-nav-content {
@@ -267,15 +285,17 @@ body {
   align-items: center;
   max-width: 1400px;
   margin: 0 auto;
+  gap: 24px;
 }
 
 .yeezy-nav-links {
   display: flex;
   gap: 40px;
   align-items: center;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  flex: 1;
+  justify-content: center;
+  position: static;
+  transform: none;
 }
 
 .yeezy-nav-link {
@@ -318,6 +338,10 @@ body {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+  :root {
+    --nav-height: 80px;
+  }
+
   .yeezy-nav-links {
     display: none;
   }
@@ -332,5 +356,82 @@ body {
   
   .yeezy-container {
     padding: 0 15px;
+  }
+}
+
+/* ========================================
+   ICON SIZING UTILITIES
+   ======================================== */
+/* Standardized icon sizes across the application */
+.icon-xs {
+  width: 12px;
+  height: 12px;
+}
+
+.icon-sm {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-base {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-md {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-lg {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-xl {
+  width: 48px;
+  height: 48px;
+}
+
+/* Semantic icon classes for common use cases */
+.icon-nav {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-button {
+  width: 20px;
+  height: 20px;
+}
+
+.icon-empty-state {
+  width: 48px;
+  height: 48px;
+}
+
+.yeezy-container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .yeezy-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+.yeezy-section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .yeezy-section {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 }

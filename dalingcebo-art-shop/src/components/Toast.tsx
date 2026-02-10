@@ -29,10 +29,26 @@ export default function Toast({ message, type = 'info', duration = 3000, onClose
   }
 
   const icons = {
-    success: '✓',
-    error: '✗',
-    warning: '⚠',
-    info: 'ℹ'
+    success: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/>
+      </svg>
+    ),
+    error: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    ),
+    warning: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+    ),
+    info: (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+    )
   }
 
   return (
@@ -43,32 +59,21 @@ export default function Toast({ message, type = 'info', duration = 3000, onClose
         flex items-center gap-3 px-6 py-4 rounded-lg shadow-lg backdrop-blur-sm
         ${typeStyles[type]} border border-white/20
       `}>
-        <span className="text-lg">{icons[type]}</span>
+        <div className="flex-shrink-0">{icons[type]}</div>
         <span className="font-medium">{message}</span>
         <button 
           onClick={() => {
             setIsVisible(false)
             setTimeout(() => onClose?.(), 300)
           }}
-          className="ml-2 text-lg hover:scale-110 transition-transform"
+          className="ml-2 hover:opacity-70 transition-opacity flex-shrink-0"
+          aria-label="Close notification"
         >
-          ×
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
         </button>
       </div>
     </div>
   )
-}
-
-export function useToast() {
-  const [toast, setToast] = useState<ToastProps | null>(null)
-
-  const showToast = (message: string, type: ToastProps['type'] = 'info', duration = 3000) => {
-    setToast({ message, type, duration, onClose: () => setToast(null) })
-  }
-
-  return {
-    toast,
-    showToast,
-    ToastComponent: toast ? <Toast {...toast} /> : null
-  }
 }

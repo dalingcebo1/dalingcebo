@@ -20,17 +20,33 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Supabase migrations
 
-To learn more about Next.js, take a look at the following resources:
+Run the latest SQL before shipping new features:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `supabase/migrations/005_video_content.sql` – creates `artwork_videos` and `standalone_videos` plus supporting metadata.
+- `supabase/migrations/008_catalogs.sql` – adds the downloadable catalogs table used by the new `/catalogs` page.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Apply them in the Supabase SQL editor or with the CLI:
 
-## Deploy on Vercel
+```bash
+supabase migration up
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+(`supabase migration up` applies every pending migration; run it after pulling the latest repository changes.)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Catalog automation
+
+Populate `data/catalogs.json` with Drive (or Supabase Storage) URLs, then run:
+
+```bash
+npm run catalogs:sync
+```
+
+The script normalizes Google Drive links into direct downloads and upserts each row into the `catalogs` table. The `/catalogs` route and `/api/catalogs` endpoint consume the same data.
+
+## Video ingestion
+
+- Upload artwork-specific clips to Supabase Storage or YouTube, then insert rows into `artwork_videos`.
+- Standalone content (studio tours, interviews, etc.) goes into `standalone_videos` and can be queried via `/api/videos`.
+- The artwork detail page automatically surfaces any linked videos with a full-screen modal player.
