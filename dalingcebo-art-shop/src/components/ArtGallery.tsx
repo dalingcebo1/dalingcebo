@@ -7,7 +7,6 @@ import { Artwork } from '@/types/database'
 import LoadingSpinner from './LoadingSpinner'
 
 interface ArtGalleryProps {
-  zoomLevel?: number
   sizeFilter?: 'small' | 'large' | 'all'
 }
 
@@ -61,10 +60,9 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
   }, [fetchArtworks])
 
   const handleArtworkClick = (artworkId: string) => {
-    // For now, just log the click - you can expand this later
-    console.log('Artwork clicked:', artworkId)
-    // Future: Navigate to artwork detail page or open modal
-    // router.push(`/artwork/${artworkId}`)
+    // TODO: Implement artwork detail page navigation
+    // Future: router.push(`/artwork/${artworkId}`)
+    // For now, this provides the hook for future functionality
   }
 
   if (loading) {
@@ -94,7 +92,7 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
       <div className="yeezy-container">
         {/* Gallery Grid */}
         <div className={`yeezy-grid fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
-          {artworks.map((artwork) => (
+          {artworks.map((artwork, index) => (
             <div 
               key={artwork.id} 
               className="yeezy-grid-item yeezy-transition group cursor-pointer"
@@ -123,9 +121,7 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
                       {artwork.title}
                     </div>
                     <div className="text-2xl font-thin">
-                      {artworks.indexOf(artwork) + 1 < 10 
-                        ? `0${artworks.indexOf(artwork) + 1}` 
-                        : artworks.indexOf(artwork) + 1}
+                      {index + 1 < 10 ? `0${index + 1}` : index + 1}
                     </div>
                   </div>
                 )}
