@@ -5,16 +5,22 @@ import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { Artwork } from '@/types/database'
 import LoadingSpinner from './LoadingSpinner'
+import { useCart } from '@/context/CartContext'
+import Toast from './Toast'
 
 interface ArtGalleryProps {
   sizeFilter?: 'small' | 'large' | 'all'
+  zoomLevel?: number
 }
 
-export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
+export default function ArtGallery({ sizeFilter = 'all', zoomLevel = 0 }: ArtGalleryProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
+  const { addToCart } = useCart()
 
   const fetchArtworks = useCallback(async () => {
     try {
@@ -64,6 +70,14 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
     // TODO: Implement artwork detail page navigation
     // Future: router.push(`/artwork/${artworkId}`)
     // For now, this provides the hook for future functionality
+  }
+
+  const handleAddToCart = (e: React.MouseEvent, artwork: Artwork) => {
+    e.stopPropagation()
+    addToCart(artwork)
+    setToastMessage(`${artwork.title} added to cart`)
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   if (loading) {
@@ -141,11 +155,17 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="yeezy-price text-black">
-                        ${typeof artwork.price === 'number' 
-                          ? artwork.price.toFixed(0) 
+                      <p className="yeezy-price text-black mb-2">
+                        R{typeof artwork.price === 'number' 
+                          ? artwork.price.toLocaleString() 
                           : artwork.price}
                       </p>
+                      <button
+                        onClick={(e) => handleAddToCart(e, artwork)}
+                        className="btn-yeezy text-xs px-3 py-2"
+                      >
+                        Add to Cart
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -163,6 +183,9 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
           </div>
         )}
       </div>
+      
+      {/* Toast Notification */}
+      {showToast && <Toast message={toastMessage} />}
     </section>
   )
 }
