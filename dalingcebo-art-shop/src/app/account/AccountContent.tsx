@@ -153,14 +153,14 @@ export default function AccountContent({ user }: { user: User }) {
                     Log Out
                   </button>
                 </div>
-                </div>
               </div>
             </section>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <Footer />
-    </main>
-  )
+    <Footer />
+  </main>
+)
 }
