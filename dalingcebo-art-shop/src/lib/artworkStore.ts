@@ -116,16 +116,16 @@ export async function upsertArtwork(payload: Omit<Artwork, 'id'>, id?: number): 
   
   let result
   if (id) {
-     result = await query.update(dbPayload).eq('id', id).select().single()
+     result = await query.update(dbPayload as never).eq('id', id).select().single()
   } else {
-     result = await query.insert(dbPayload).select().single()
+     result = await query.insert(dbPayload as never).select().single()
   }
 
-  if (result.error) {
-    throw new Error(result.error.message)
+  if ((result as any).error) {
+    throw new Error((result as any).error.message)
   }
 
-  return mapRowToArtwork(result.data)
+  return mapRowToArtwork((result as any).data)
 }
 
 export async function deleteArtwork(id: number): Promise<Artwork> {

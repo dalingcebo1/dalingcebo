@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "catalogs:sync": "node scripts/import-catalogs.mjs",
-    "verify:production": "node scripts/verify-production.js"
+    "verify:production": "node scripts/verify-production.js",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

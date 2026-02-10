@@ -1,24 +1,59 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/contexts/CartContext";
 import { ArtworksProvider } from "@/hooks/useArtworks";
 import SupabaseProvider from "@/components/SupabaseProvider";
+import StructuredData from "@/components/StructuredData";
+import Analytics from "@/components/Analytics";
 import { createClient } from "@/lib/supabase/server";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "DALINGCEBO - Contemporary Art Gallery",
-  description: "Contemporary art that bridges cultures and speaks to the modern soul. Explore original paintings, mixed media, and digital art by Dalingcebo.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://dalingcebo.art'),
+  title: {
+    default: 'DALINGCEBO - Contemporary Art Gallery',
+    template: '%s | DALINGCEBO'
+  },
+  description: 'Contemporary art that bridges cultures and speaks to the modern soul. Explore original paintings, mixed media, and digital art by Dalingcebo.',
+  keywords: ['contemporary art', 'African art', 'paintings', 'original artwork', 'art gallery', 'Dalingcebo', 'South African artist'],
+  authors: [{ name: 'Dalingcebo' }],
+  creator: 'Dalingcebo',
+  publisher: 'Dalingcebo Art',
+  openGraph: {
+    type: 'website',
+    locale: 'en_ZA',
+    url: '/',
+    title: 'DALINGCEBO - Contemporary Art Gallery',
+    description: 'Contemporary art that bridges cultures and speaks to the modern soul.',
+    siteName: 'DALINGCEBO',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'DALINGCEBO Contemporary Art',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'DALINGCEBO - Contemporary Art Gallery',
+    description: 'Contemporary art that bridges cultures and speaks to the modern soul.',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export default async function RootLayout({
@@ -43,9 +78,9 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
+        <Analytics />
+        <StructuredData />
         <SupabaseProvider initialSession={session}>
           <CartProvider>
             <ArtworksProvider>

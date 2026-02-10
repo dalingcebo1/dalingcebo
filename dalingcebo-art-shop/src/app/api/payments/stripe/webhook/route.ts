@@ -245,14 +245,14 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     const { data: orderItems } = await supabase
       .from('order_items')
       .select('artwork_id')
-      .eq('order_id', transaction.order_id) as { data: { artwork_id: string }[] }
+      .eq('order_id', transaction.order_id)
 
-    if (orderItems) {
+    if (orderItems && Array.isArray(orderItems)) {
       for (const item of orderItems) {
         await supabase
           .from('artworks')
-          .update({ in_stock: true })
-          .eq('id', item.artwork_id)
+          .update({ in_stock: true } as never)
+          .eq('id', (item as { artwork_id: string }).artwork_id)
       }
       console.log(`Inventory restored for refunded order ${transaction.order_id}`)
     }
