@@ -16,7 +16,7 @@ interface ArtGalleryProps {
 export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGalleryProps) {
   const [isVisible, setIsVisible] = useState(false)
   const { artworks, isLoading, error, reload, stats } = useArtworks()
-  const [showAvailable, setShowAvailable] = useState(true)
+  const [showAvailableOnly, setShowAvailableOnly] = useState(true)
   const router = useRouter()
 
   useEffect(() => {
@@ -43,12 +43,12 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
         return false
       }
       // Apply availability filter
-      if (showAvailable && !artwork.inStock) {
+      if (showAvailableOnly && !artwork.inStock) {
         return false
       }
       return true
     })
-  }, [artworks, sizeFilter, showAvailable])
+  }, [artworks, sizeFilter, showAvailableOnly])
 
   return (
     <section className="yeezy-section" id="collection">
@@ -65,29 +65,29 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
             <div className="flex items-center gap-3">
               <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500">Show:</span>
               <button
-                onClick={() => setShowAvailable(!showAvailable)}
+                onClick={() => setShowAvailableOnly(!showAvailableOnly)}
                 className={`group flex items-center gap-2 px-4 py-2.5 rounded-md border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                  showAvailable
+                  showAvailableOnly
                     ? 'bg-black text-white border-black shadow-sm'
                     : 'bg-white text-gray-600 border-gray-300 hover:border-black hover:shadow-sm'
                 }`}
-                aria-pressed={showAvailable}
-                title={showAvailable ? 'Showing available works only' : 'Showing all works'}
+                aria-pressed={showAvailableOnly}
+                title={showAvailableOnly ? 'Showing available works only' : 'Showing all works'}
               >
                 <svg 
-                  className={`w-4 h-4 transition-transform duration-200 ${showAvailable ? 'scale-110' : ''}`}
+                  className={`w-4 h-4 transition-transform duration-200 ${showAvailableOnly ? 'scale-110' : ''}`}
                   fill="none" 
                   stroke="currentColor" 
                   viewBox="0 0 24 24"
                 >
-                  {showAvailable ? (
+                  {showAvailableOnly ? (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   ) : (
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   )}
                 </svg>
                 <span className="text-xs uppercase tracking-[0.25em] font-medium">
-                  {showAvailable ? 'Available Only' : 'All Works'}
+                  {showAvailableOnly ? 'Available Only' : 'All Works'}
                 </span>
               </button>
             </div>
@@ -117,7 +117,7 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
           {!isLoading && !error && filteredArtworks.length === 0 && (
             <div className="col-span-full text-center py-16">
               <p className="yeezy-body text-gray-500">
-                {showAvailable ? 'No available works found.' : 'No works found.'}
+                {showAvailableOnly ? 'No available works found.' : 'No works found.'}
               </p>
             </div>
           )}

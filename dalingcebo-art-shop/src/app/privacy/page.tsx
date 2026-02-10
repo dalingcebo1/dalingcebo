@@ -114,8 +114,8 @@ export default function PrivacyPage() {
                 </p>
               </div>
 
-              <div className="border-t border-gray-200 pt-8">
-                <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">SOCIAL MEDIA</h2>
+              <section className="border-t border-gray-200 pt-8" aria-labelledby="social-media-heading">
+                <h2 id="social-media-heading" className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">SOCIAL MEDIA</h2>
                 <p className="mb-4">
                   Follow us on Instagram to stay updated with new works and exhibitions:
                 </p>
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
                   </svg>
                   @dalingceb_
                 </a>
-              </div>
+              </section>
 
               <div className="border-t border-gray-200 pt-8">
                 <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">CHANGES TO THIS POLICY</h2>
