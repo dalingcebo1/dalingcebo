@@ -55,7 +55,7 @@ function checkRequiredEnvVars() {
   const requiredVars = {
     NEXT_PUBLIC_SUPABASE_URL: {
       name: 'Supabase URL',
-      pattern: /^https:\/\/[a-z0-9-]+\.supabase\.co$/,
+      pattern: /^https:\/\/[a-zA-Z0-9-]+\.supabase\.co$/,
       placeholder: 'your_supabase_project_url',
     },
     NEXT_PUBLIC_SUPABASE_ANON_KEY: {
@@ -65,7 +65,7 @@ function checkRequiredEnvVars() {
     },
     NEXTAUTH_SECRET: {
       name: 'NextAuth Secret',
-      pattern: /^[A-Za-z0-9+/=]{32,}$/,
+      pattern: /^[A-Za-z0-9+/]{32,}={0,2}$/,
       placeholder: 'your-nextauth-secret-here',
     },
   };
@@ -74,7 +74,9 @@ function checkRequiredEnvVars() {
   const issues = [];
 
   for (const [varName, config] of Object.entries(requiredVars)) {
-    const match = envContent.match(new RegExp(`${varName}=(.+)`));
+    // Escape special regex characters in variable name and match with multiline flag
+    const escapedVarName = varName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const match = envContent.match(new RegExp(`^${escapedVarName}=(.*)$`, 'm'));
     
     if (!match) {
       issues.push(`❌ ${config.name} (${varName}) is not set`);
