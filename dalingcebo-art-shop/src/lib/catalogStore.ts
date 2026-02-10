@@ -63,14 +63,14 @@ export async function upsertCatalog(payload: Omit<Catalog, 'id' | 'createdAt' | 
 
   const query = supabase.from('catalogs')
   const response = id
-    ? await query.update(dbPayload).eq('id', id).select().single()
-    : await query.insert(dbPayload).select().single()
+    ? await query.update(dbPayload as never).eq('id', id).select().single()
+    : await query.insert(dbPayload as never).select().single()
 
-  if (response.error || !response.data) {
-    throw new Error(response.error?.message ?? 'Unable to save catalog')
+  if ((response as any).error || !(response as any).data) {
+    throw new Error((response as any).error?.message ?? 'Unable to save catalog')
   }
 
-  return mapRowToCatalog(response.data)
+  return mapRowToCatalog((response as any).data)
 }
 
 export async function deleteCatalog(id: string): Promise<void> {

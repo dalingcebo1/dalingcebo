@@ -9,31 +9,32 @@ const preprocessString = (value: unknown) => {
 }
 
 const nameSchema = z
-  .string({ required_error: 'Name is required' })
+  .string({ message: 'Name is required' })
   .trim()
   .min(2, 'Name is required')
 
 const emailSchema = z
-  .string({ required_error: 'Email is required' })
+  .string({ message: 'Email is required' })
   .trim()
   .email('Valid email is required')
 
 const messageSchema = z
-  .string({ required_error: 'Message is required' })
+  .string({ message: 'Message is required' })
   .trim()
   .min(10, 'Message must be at least 10 characters')
 
 const addressSchema = z
-  .string({ required_error: 'Address is required' })
+  .string({ message: 'Address is required' })
   .trim()
   .min(10, 'Address must be at least 10 characters')
 
 const optionalTextSchema = z
-  .preprocess(preprocessString, z.string().trim().optional())
-  .transform((value) => (value && value.length > 0 ? value : undefined))
+  .string()
+  .optional()
 
 const optionalPhoneSchema = z
-  .preprocess(preprocessString, z.union([z.string(), z.undefined()]))
+  .string()
+  .optional()
   .refine((value) => !value || phoneRegex.test(value), 'Enter a valid phone number')
 
 const inquiryKindSchema = z.enum(['artwork', 'general'])
@@ -42,7 +43,7 @@ export const contactFormSchema = z.object({
   name: nameSchema,
   email: emailSchema,
   subject: z.enum(['purchase', 'commission', 'press', 'other'], {
-    errorMap: () => ({ message: 'Please select a subject' }),
+    message: 'Please select a subject',
   }),
   message: messageSchema,
 })
@@ -74,7 +75,7 @@ export const checkoutFormSchema = baseCheckoutSchema
 
 const orderItemSchema = z.object({
   id: z.number().int().positive('Invalid artwork identifier'),
-  title: z.string({ required_error: 'Artwork title is required' }).trim().min(1, 'Artwork title is required'),
+  title: z.string({ message: 'Artwork title is required' }).trim().min(1, 'Artwork title is required'),
   price: z.number().positive('Invalid item price'),
   quantity: z.number().int().positive('Invalid item quantity'),
 })

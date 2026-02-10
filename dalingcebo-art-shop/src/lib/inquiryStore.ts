@@ -55,7 +55,7 @@ export async function recordInquiry(input: InquiryInput): Promise<InquiryRecord>
       artwork_id: input.artworkId || null,
       artwork_title: input.artworkTitle || null,
       status: 'new'
-    })
+    } as never)
     .select()
     .single()
 
@@ -123,7 +123,7 @@ export async function recordOrder(input: OrderInput): Promise<OrderRecord> {
   // Prepare order data matching schema constraints
   const orderData = {
     order_number: orderNumber,
-    customer_id: customer?.id || null,
+    customer_id: (customer as any)?.id || null,
     customer_email: input.email,
     customer_name: input.name,
     customer_phone: input.phone || null,
@@ -144,16 +144,17 @@ export async function recordOrder(input: OrderInput): Promise<OrderRecord> {
 
   const { data: order, error: orderError } = await supabase
     .from('orders')
-    .insert(orderData)
+    .insert(orderData as never)
     .select()
     .single()
 
   if (orderError) throw new Error(`Order creation failed: ${orderError.message}`)
+  const typedOrder = order as any
 
   // Insert items
   if (input.items.length > 0) {
     const itemsData = input.items.map(item => ({
-      order_id: order.id,
+      order_id: typedOrder.id,
       artwork_id: item.id, // Assuming item.id matches artwork_id
       title: item.title,
       artist: 'Dalingcebo', // Default or fetch if known
@@ -163,7 +164,7 @@ export async function recordOrder(input: OrderInput): Promise<OrderRecord> {
 
     const { error: itemsError } = await supabase
       .from('order_items')
-      .insert(itemsData)
+      .insert(itemsData as never)
 
     if (itemsError) console.error('Error saving items:', itemsError)
   }
@@ -172,10 +173,10 @@ export async function recordOrder(input: OrderInput): Promise<OrderRecord> {
   const { data: completeOrder } = await supabase
     .from('orders')
     .select('*, items:order_items(*)')
-    .eq('id', order.id)
+    .eq('id', typedOrder.id)
     .single()
 
-  return mapDbOrderToRecord(completeOrder || order)
+  return mapDbOrderToRecord(completeOrder || typedOrder)
 }
 
 export async function updateInquiryStatus(id: string, status: InquiryStatus): Promise<InquiryRecord> {
@@ -183,13 +184,13 @@ export async function updateInquiryStatus(id: string, status: InquiryStatus): Pr
 
   const { data, error } = await supabase
     .from('inquiries')
-    .update({ status })
+    .update({ status } as never)
     .eq('id', id)
     .select()
     .single()
 
   if (error) throw new Error(error.message)
-  return mapDbInquiryToRecord(data)
+  return mapDbInquiryToRecord(data as any)
 }
 
 export async function updateOrderStatus(id: string, status: OrderStatus): Promise<OrderRecord> {
@@ -202,11 +203,11 @@ export async function updateOrderStatus(id: string, status: OrderStatus): Promis
 
   const { data, error } = await supabase
     .from('orders')
-    .update({ status: dbStatus })
+    .update({ status: dbStatus } as never)
     .eq('id', id)
     .select('*, items:order_items(*)')
     .single()
 
   if (error) throw new Error(error.message)
-  return mapDbOrderToRecord(data)
+  return mapDbOrderToRecord(data as any)
 }
