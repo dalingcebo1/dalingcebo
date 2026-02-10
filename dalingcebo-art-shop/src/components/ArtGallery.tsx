@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import Image from 'next/image'
 import { supabase } from '@/lib/supabase'
 import { Artwork } from '@/types/database'
 import LoadingSpinner from './LoadingSpinner'
@@ -10,18 +11,13 @@ interface ArtGalleryProps {
   sizeFilter?: 'small' | 'large' | 'all'
 }
 
-export default function ArtGallery({ zoomLevel, sizeFilter = 'all' }: ArtGalleryProps) {
+export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [artworks, setArtworks] = useState<Artwork[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  useEffect(() => {
-    setIsVisible(true)
-    fetchArtworks()
-  }, [sizeFilter])
-
-  const fetchArtworks = async () => {
+  const fetchArtworks = useCallback(async () => {
     try {
       setLoading(true)
       setError(null)
@@ -54,7 +50,15 @@ export default function ArtGallery({ zoomLevel, sizeFilter = 'all' }: ArtGallery
     } finally {
       setLoading(false)
     }
-  }
+  }, [sizeFilter])
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
+
+  useEffect(() => {
+    fetchArtworks()
+  }, [fetchArtworks])
 
   const handleArtworkClick = (artworkId: string) => {
     // For now, just log the click - you can expand this later
@@ -106,10 +110,12 @@ export default function ArtGallery({ zoomLevel, sizeFilter = 'all' }: ArtGallery
               {/* Placeholder for artwork image */}
               <div className="yeezy-image bg-gray-100 flex items-center justify-center">
                 {artwork.image_url ? (
-                  <img 
+                  <Image 
                     src={artwork.image_url} 
                     alt={artwork.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                 ) : (
                   <div className="text-center text-gray-400">

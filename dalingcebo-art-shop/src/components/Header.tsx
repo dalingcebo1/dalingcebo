@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 
 interface HeaderProps {
@@ -10,19 +10,10 @@ interface HeaderProps {
 
 export default function Header({ zoomLevel, setZoomLevel }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [isScrolled, setIsScrolled] = useState(false)
 
   const handleZoomToggle = () => {
     setZoomLevel(prev => (prev + 1) % 3)
   }
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   return (
     <>
