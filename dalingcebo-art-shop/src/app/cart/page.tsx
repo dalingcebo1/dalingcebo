@@ -1,20 +1,25 @@
 'use client';
 
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Toast from '@/components/Toast';
 import CheckoutModal from '@/components/CheckoutModal';
+import Breadcrumb from '@/components/Breadcrumb';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, total } = useCart();
-  const [zoomLevel, setZoomLevel] = useState(0);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   const handleCheckout = () => {
     setIsCheckoutOpen(true);
@@ -33,40 +38,78 @@ export default function CartPage() {
   };
 
   const emptyState = (
-    <section className="yeezy-section">
-      <div className="yeezy-container max-w-2xl">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-          <svg className="w-12 h-12 mx-auto text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-          </svg>
-          <h1 className="text-3xl font-light tracking-tight mb-3">Your cart is empty</h1>
-          <p className="text-gray-600 mb-8">Add some artwork to begin your collection.</p>
-          <Link
-            href="/"
-            className="btn-yeezy"
-          >
-            Browse Artwork
-          </Link>
+    <>
+      <section className="border-b border-gray-200 bg-white">
+        <div className="yeezy-container py-4">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cart' }]} />
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section className="yeezy-hero bg-black text-white">
+        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <h1 className="yeezy-main-logo text-white mb-8">
+            CART
+          </h1>
+          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
+            Your shopping cart is currently empty.
+          </p>
+        </div>
+      </section>
+
+      <section className="yeezy-section">
+        <div className="yeezy-container max-w-2xl">
+          <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            <svg className="w-12 h-12 mx-auto text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">YOUR CART IS EMPTY</h2>
+            <p className="yeezy-body text-base text-gray-700 mb-8">Add some artwork to begin your collection.</p>
+            <Link
+              href="/"
+              className="btn-yeezy"
+            >
+              Browse Artwork
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
   );
 
   const cartContent = (
-    <section className="yeezy-section">
-      <div className="yeezy-container max-w-6xl">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-10">
-          <div>
-            <h1 className="text-4xl font-light tracking-tight mb-2">Shopping Cart</h1>
-            <p className="text-gray-600">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
-          </div>
-          <button
-            onClick={handleClearCart}
-            className="text-xs uppercase tracking-[0.1em] text-red-600 hover:text-red-800 transition-colors"
-          >
-            Clear Cart
-          </button>
+    <>
+      <section className="border-b border-gray-200 bg-white">
+        <div className="yeezy-container py-4">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cart' }]} />
         </div>
+      </section>
+
+      <section className="yeezy-hero bg-black text-white">
+        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <h1 className="yeezy-main-logo text-white mb-8">
+            CART
+          </h1>
+          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
+            {items.length} {items.length === 1 ? 'item' : 'items'} ready for checkout.
+          </p>
+        </div>
+      </section>
+
+      <section className="yeezy-section">
+        <div className="yeezy-container max-w-6xl">
+          <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-10">
+              <div>
+                <h2 className="yeezy-subheading text-sm mb-2 tracking-[0.3em] text-gray-600">SHOPPING CART</h2>
+                <p className="yeezy-body text-base text-gray-700">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
+              </div>
+              <button
+                onClick={handleClearCart}
+                className="text-xs uppercase tracking-[0.1em] text-red-600 hover:text-red-800 transition-colors"
+              >
+                Clear Cart
+              </button>
+            </div>
 
         <div className="grid lg:grid-cols-[1fr_400px] gap-8">
           <div className="space-y-4">
@@ -197,15 +240,17 @@ export default function CartPage() {
               </div>
             </div>
           </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 
   return (
     <>
       <main className="min-h-screen">
-        <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+        <Header showBackButton={true} />
         {items.length === 0 ? emptyState : cartContent}
         <Footer />
       </main>
