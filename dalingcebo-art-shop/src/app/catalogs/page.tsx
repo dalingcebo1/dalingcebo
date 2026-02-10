@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import Breadcrumb from '@/components/Breadcrumb'
 import { Catalog } from '@/types/catalog'
 import { getArtworkPlaceholder } from '@/lib/media'
 
@@ -22,7 +23,6 @@ function getDownloadUrl(url: string): string {
 }
 
 export default function CatalogsPage() {
-  const [zoomLevel, setZoomLevel] = useState(0)
   const [catalogs, setCatalogs] = useState<Catalog[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -65,7 +65,13 @@ export default function CatalogsPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+      <Header showBackButton={true} />
+
+      <section className="border-b border-gray-200 bg-white">
+        <div className="yeezy-container py-4">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Catalogs' }]} />
+        </div>
+      </section>
 
       <section className="yeezy-hero bg-black text-white">
         <div className="yeezy-hero-content fade-in-slow space-y-6">

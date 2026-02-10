@@ -5,9 +5,15 @@
 -- with per-artwork customization and price adjustments
 
 -- Add processing time fields to artworks table
-ALTER TABLE artworks 
-ADD COLUMN base_processing_days INTEGER DEFAULT 7,
-ADD COLUMN processing_notes TEXT;
+DO $$ 
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='artworks' AND column_name='base_processing_days') THEN
+    ALTER TABLE artworks ADD COLUMN base_processing_days INTEGER DEFAULT 7;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='artworks' AND column_name='processing_notes') THEN
+    ALTER TABLE artworks ADD COLUMN processing_notes TEXT;
+  END IF;
+END $$;
 
 -- Create artwork_variants table
 CREATE TABLE IF NOT EXISTS artwork_variants (
@@ -25,10 +31,18 @@ CREATE TABLE IF NOT EXISTS artwork_variants (
 );
 
 -- Add variant fields to order_items table
-ALTER TABLE order_items 
-ADD COLUMN variant_selections JSONB, -- {frame_variant_id: "uuid", canvas_variant_id: "uuid"}
-ADD COLUMN variant_price_adjustment DECIMAL(10,2) DEFAULT 0,
-ADD COLUMN processing_days INTEGER;
+DO $$ 
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='order_items' AND column_name='variant_selections') THEN
+    ALTER TABLE order_items ADD COLUMN variant_selections JSONB;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='order_items' AND column_name='variant_price_adjustment') THEN
+    ALTER TABLE order_items ADD COLUMN variant_price_adjustment DECIMAL(10,2) DEFAULT 0;
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='order_items' AND column_name='processing_days') THEN
+    ALTER TABLE order_items ADD COLUMN processing_days INTEGER;
+  END IF;
+END $$;
 
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_artwork_variants_artwork_id ON artwork_variants(artwork_id);
@@ -36,6 +50,7 @@ CREATE INDEX IF NOT EXISTS idx_artwork_variants_type ON artwork_variants(variant
 CREATE INDEX IF NOT EXISTS idx_order_items_variant_selections ON order_items USING GIN (variant_selections);
 
 -- Add updated_at trigger for artwork_variants
+DROP TRIGGER IF EXISTS update_artwork_variants_updated_at ON artwork_variants;
 CREATE TRIGGER update_artwork_variants_updated_at BEFORE UPDATE ON artwork_variants
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 

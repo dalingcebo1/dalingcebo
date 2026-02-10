@@ -39,6 +39,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Trigger to set order number before insert
+DROP TRIGGER IF EXISTS set_order_number_trigger ON orders;
 CREATE TRIGGER set_order_number_trigger
   BEFORE INSERT ON orders
   FOR EACH ROW

@@ -1,7 +1,6 @@
 import Link from 'next/link'
 
 const footerLinks = [
-  { label: 'Contact', href: '/contact' },
   { label: 'Press', href: '/press' },
   { label: 'SUPPORT', href: '/contact' },
   { label: 'Shipping', href: '/shipping' },
@@ -16,13 +15,13 @@ export default function Footer() {
       <div className="yeezy-container py-12 md:py-16">
         {/* Centered horizontal footer links */}
         <div className="max-w-5xl mx-auto">
-          {/* Footer Links - horizontally distributed */}
-          <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-3 text-xs mb-8">
+          {/* Footer Links - 1x6 grid layout */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-xs mb-8">
             {footerLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-gray-700 hover:text-black yeezy-body transition-colors uppercase tracking-wider"
+                className="text-gray-700 hover:text-black yeezy-body transition-colors uppercase tracking-wider text-center"
               >
                 {link.label}
               </Link>

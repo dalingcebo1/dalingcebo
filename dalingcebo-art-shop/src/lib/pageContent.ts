@@ -78,7 +78,7 @@ export async function getContentItem(
       return null
     }
 
-    return data.content_text
+    return (data as { content_text: string }).content_text
   } catch (err) {
     console.error('Error in getContentItem:', err)
     return null

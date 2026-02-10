@@ -1,7 +1,10 @@
 "use client"
 
+import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { useState } from 'react'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import Breadcrumb from '@/components/Breadcrumb'
 import { Order } from '@/types/order'
 import OrderTimeline from '@/components/OrderTimeline'
 import LoadingSpinner from '@/components/LoadingSpinner'
@@ -12,6 +15,11 @@ export default function TrackOrderPage() {
   const [order, setOrder] = useState<Order | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    setIsVisible(true)
+  }, [])
 
   const handleTrack = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,19 +63,32 @@ export default function TrackOrderPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-16 max-w-4xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold uppercase tracking-wider mb-4">
-          TRACK YOUR ORDER
-        </h1>
-        <p className="text-gray-600">
-          Enter your email and order number to view your order status
-        </p>
-      </div>
+    <main className="min-h-screen">
+      <Header showBackButton={true} />
+      
+      <section className="border-b border-gray-200 bg-white">
+        <div className="yeezy-container py-4">
+          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Track Order' }]} />
+        </div>
+      </section>
 
-      {/* Track Form */}
-      {!order && (
-        <div className="max-w-md mx-auto">
+      <section className="yeezy-hero bg-black text-white">
+        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <h1 className="yeezy-main-logo text-white mb-8">
+            TRACK ORDER
+          </h1>
+          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
+            Enter your email and order number to view your order status
+          </p>
+        </div>
+      </section>
+
+      <section className="yeezy-section">
+        <div className="yeezy-container max-w-4xl">
+          <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            {/* Track Form */}
+            {!order && (
+              <div className="max-w-md mx-auto">
           <form onSubmit={handleTrack} className="space-y-4">
             <div>
               <label htmlFor="email" className="block text-sm font-medium uppercase tracking-wide mb-2">
@@ -113,12 +134,12 @@ export default function TrackOrderPage() {
               {loading ? <LoadingSpinner /> : 'TRACK ORDER'}
             </button>
           </form>
-        </div>
-      )}
+              </div>
+            )}
 
-      {/* Order Details */}
-      {order && (
-        <div className="space-y-8">
+            {/* Order Details */}
+            {order && (
+              <div className="space-y-8">
           {/* Order Header */}
           <div className="border-b border-gray-200 pb-6">
             <div className="flex justify-between items-start mb-4">
@@ -244,8 +265,13 @@ export default function TrackOrderPage() {
               )}
             </div>
           </div>
+              </div>
+            )}
+          </div>
         </div>
-      )}
-    </div>
+      </section>
+
+      <Footer />
+    </main>
   )
 }
