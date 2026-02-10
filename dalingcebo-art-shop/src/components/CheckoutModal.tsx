@@ -80,18 +80,18 @@ export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-md flex items-center justify-center p-4" onClick={() => !isSubmitting && onClose()}>
-      <div className="w-full max-w-4xl bg-white rounded-lg shadow-2xl grid md:grid-cols-[1.2fr_1fr] max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
-        <div className="p-8 overflow-y-auto">
-          <div className="flex items-start justify-between mb-8">
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 md:p-6" onClick={() => !isSubmitting && onClose()}>
+      <div className="w-full max-w-4xl bg-white rounded-lg shadow-2xl flex flex-col md:grid md:grid-cols-[1.2fr_1fr] max-h-[90vh] overflow-hidden" onClick={(e) => e.stopPropagation()}>
+        <div className="p-6 md:p-8 overflow-y-auto order-2 md:order-1">
+          <div className="flex items-start justify-between mb-6 md:mb-8">
             <div className="flex-1">
-              <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] uppercase tracking-[0.2em] rounded-full inline-block mb-3">
+              <span className="px-3 py-1 bg-green-100 text-green-700 text-[10px] uppercase tracking-[0.2em] rounded-full inline-block mb-2 md:mb-3">
                 Secure Checkout
               </span>
-              <h2 className="text-2xl font-light tracking-tight">Collector Details</h2>
+              <h2 className="text-xl md:text-2xl font-light tracking-tight">Collector Details</h2>
             </div>
             <button 
-              className="text-gray-400 hover:text-gray-600 transition-colors p-2 -mr-2 -mt-2" 
+              className="text-gray-400 hover:text-gray-600 transition-colors p-2 -mr-2 -mt-2 md:block hidden" 
               onClick={onClose} 
               disabled={isSubmitting}
               aria-label="Close modal"
@@ -102,7 +102,7 @@ export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess
             </button>
           </div>
 
-          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
+          <form className="space-y-4 md:space-y-5" onSubmit={handleSubmit(onSubmit)} noValidate>
             <FormInput
               label="Full Name"
               registration={register('name')}
@@ -110,7 +110,7 @@ export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess
               placeholder="Your full name"
             />
 
-            <div className="grid sm:grid-cols-2 gap-5">
+            <div className="grid sm:grid-cols-2 gap-4 md:gap-5">
               <FormInput
                 label="Email"
                 type="email"
@@ -163,7 +163,7 @@ export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess
 
             <button 
               type="submit" 
-              className="w-full px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full px-6 py-3.5 md:py-4 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 touch-manipulation"
               disabled={isSubmitting}
             >
               {isSubmitting ? (
@@ -186,7 +186,7 @@ export default function CheckoutModal({ isOpen, onClose, items, total, onSuccess
           </form>
         </div>
 
-        <div className="bg-gray-50 p-8 overflow-y-auto border-l border-gray-200">
+        <div className="bg-gray-50 p-6 md:p-8 overflow-y-auto border-t md:border-t-0 md:border-l border-gray-200 order-1 md:order-2 max-h-48 md:max-h-none">
           <h3 className="text-[10px] font-medium text-gray-500 uppercase tracking-[0.2em] mb-6">Order Summary</h3>
           <div className="space-y-3 mb-6">
             {items.map((item) => (
