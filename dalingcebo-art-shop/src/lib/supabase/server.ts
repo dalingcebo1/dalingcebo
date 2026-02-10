@@ -1,6 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import { Database } from '@/lib/db/schema'
+import { validateSupabaseConfig } from './validation'
 
 export async function createClient() {
   const cookieStore = await cookies()
@@ -8,13 +9,13 @@ export async function createClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Missing Supabase environment variables. Please set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in your .env file.')
-  }
+  // Validate environment variables with helpful error messages
+  // After validation, we can safely assert these are strings
+  validateSupabaseConfig(supabaseUrl, supabaseAnonKey)
 
   return createServerClient<Database>(
-    supabaseUrl,
-    supabaseAnonKey,
+    supabaseUrl!,
+    supabaseAnonKey!,
     {
       cookies: {
         getAll() {
