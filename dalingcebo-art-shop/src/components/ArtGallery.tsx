@@ -59,6 +59,7 @@ export default function ArtGallery({ sizeFilter = 'all' }: ArtGalleryProps) {
     fetchArtworks()
   }, [fetchArtworks])
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleArtworkClick = (artworkId: string) => {
     // TODO: Implement artwork detail page navigation
     // Future: router.push(`/artwork/${artworkId}`)
