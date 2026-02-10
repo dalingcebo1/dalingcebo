@@ -39,6 +39,12 @@ CREATE POLICY "Anyone can view published content"
   ON page_content FOR SELECT
   USING (is_published = true);
 
+-- Admin users can manage all content (requires admin role or service_role)
+-- Note: Admins should use the service_role key or add custom admin role checks
+CREATE POLICY "Service role can manage all content"
+  ON page_content FOR ALL
+  USING (auth.role() = 'service_role');
+
 -- Insert initial content for the About page
 INSERT INTO page_content (page_key, section_key, content_key, content_text, sort_order) VALUES
 -- Artist Portrait Section

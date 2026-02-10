@@ -167,11 +167,11 @@ export default function Home() {
               // Negative IDs indicate placeholder artworks
               const isPlaceholder = artwork.id < 0
               
-              // Render placeholder artworks as non-clickable divs
+              // Render placeholder artworks as non-interactive cards
               if (isPlaceholder) {
                 return (
-                  <div key={artwork.id} className="group cursor-default" aria-disabled="true">
-                    <article className="bg-white border border-gray-200 overflow-hidden flex flex-col">
+                  <div key={artwork.id} className="group">
+                    <article className="bg-white border border-gray-200 overflow-hidden flex flex-col" role="img" aria-label={`Placeholder artwork: ${artwork.title}`}>
                       <div
                         className="relative w-full bg-gray-50 rounded-xl overflow-hidden"
                         style={{ aspectRatio: getArtworkAspectRatio(artwork.size) }}
