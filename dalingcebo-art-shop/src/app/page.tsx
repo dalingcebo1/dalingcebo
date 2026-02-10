@@ -56,60 +56,72 @@ export default function Home() {
       // Return placeholder artworks when database is empty
       return [
         {
-          id: 'placeholder-1',
+          id: -1,
           title: 'Cultural Echo',
           artist: 'Dalingcebo',
           price: 1200,
           category: 'mixed-media',
-          scale: 'large',
+          scale: 'large' as const,
           size: '30×40',
           year: 2024,
           medium: 'Mixed Media on Canvas',
           description: 'Bridging traditional African motifs with contemporary abstraction.',
+          details: '',
           inStock: true,
+          edition: 'Original',
           image: 'https://placehold.co/800x1000/e5e5e5/666666?text=Cultural+Echo',
+          images: [],
         },
         {
-          id: 'placeholder-2',
+          id: -2,
           title: 'Urban Silence',
           artist: 'Dalingcebo',
           price: 850,
           category: 'painting',
-          scale: 'large',
+          scale: 'large' as const,
           size: '24×36',
           year: 2024,
           medium: 'Acrylic on Canvas',
           description: 'A meditation on quiet moments within urban chaos.',
+          details: '',
           inStock: true,
+          edition: 'Original',
           image: 'https://placehold.co/800x1000/e5e5e5/666666?text=Urban+Silence',
+          images: [],
         },
         {
-          id: 'placeholder-3',
+          id: -3,
           title: 'Heritage Lines',
           artist: 'Dalingcebo',
           price: 950,
           category: 'painting',
-          scale: 'small',
+          scale: 'small' as const,
           size: '18×24',
           year: 2024,
           medium: 'Acrylic on Canvas',
           description: 'Geometric patterns inspired by traditional African textiles.',
+          details: '',
           inStock: true,
+          edition: 'Original',
           image: 'https://placehold.co/800x1000/e5e5e5/666666?text=Heritage+Lines',
+          images: [],
         },
         {
-          id: 'placeholder-4',
+          id: -4,
           title: 'Reflection',
           artist: 'Dalingcebo',
           price: 750,
           category: 'painting',
-          scale: 'small',
+          scale: 'small' as const,
           size: '16×20',
           year: 2024,
           medium: 'Mixed Media',
           description: 'A contemplative piece exploring identity and self.',
+          details: '',
           inStock: true,
+          edition: 'Original',
           image: 'https://placehold.co/800x1000/e5e5e5/666666?text=Reflection',
+          images: [],
         },
       ]
     }
@@ -148,15 +160,51 @@ export default function Home() {
             )}
 
             {!isLoading && featured.map((artwork) => {
-              const isPlaceholder = typeof artwork.id === 'string' && artwork.id.startsWith('placeholder-')
-              const artworkUrl = isPlaceholder ? '#' : `/artwork/${artwork.id}`
+              // Negative IDs indicate placeholder artworks
+              const isPlaceholder = artwork.id < 0
               
+              // Render placeholder artworks as non-clickable divs
+              if (isPlaceholder) {
+                return (
+                  <div key={artwork.id} className="group cursor-default" aria-disabled="true">
+                    <article className="bg-white border border-gray-200 overflow-hidden flex flex-col">
+                      <div
+                        className="relative w-full bg-gray-50 rounded-xl overflow-hidden"
+                        style={{ aspectRatio: getArtworkAspectRatio(artwork.size) }}
+                      >
+                        <Image
+                          src={getArtworkPrimaryImage(artwork)}
+                          alt={artwork.title}
+                          fill
+                          className="object-contain"
+                          sizes="(min-width: 768px) 50vw, 100vw"
+                        />
+                      </div>
+                      <div className="p-4 md:p-6 flex-1 flex flex-col justify-between">
+                        <div>
+                          <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">
+                            {artwork.category} • {artwork.size}
+                          </p>
+                          <h2 className="yeezy-heading text-xl mb-1">{artwork.title}</h2>
+                          <p className="text-xs text-gray-600 mb-3">
+                            {artwork.medium} • {artwork.year}
+                          </p>
+                        </div>
+                        <p className="yeezy-price text-lg mt-2">
+                          R{artwork.price.toLocaleString()}
+                        </p>
+                      </div>
+                    </article>
+                  </div>
+                )
+              }
+              
+              // Render real artworks as clickable links
               return (
                 <Link
                   key={artwork.id}
-                  href={artworkUrl}
+                  href={`/artwork/${artwork.id}`}
                   className="group"
-                  onClick={isPlaceholder ? (e) => e.preventDefault() : undefined}
                 >
                   <article className="bg-white border border-gray-200 overflow-hidden flex flex-col transition-transform hover:scale-[1.02]">
                     <div
