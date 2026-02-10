@@ -11,8 +11,8 @@ interface CartItem {
 interface CartContextType {
   items: CartItem[]
   addToCart: (artwork: Artwork) => void
-  removeFromCart: (artworkId: string) => void
-  updateQuantity: (artworkId: string, quantity: number) => void
+  removeFromCart: (artworkId: number) => void
+  updateQuantity: (artworkId: number, quantity: number) => void
   clearCart: () => void
   totalItems: number
   totalPrice: number
@@ -54,11 +54,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     })
   }
 
-  const removeFromCart = (artworkId: string) => {
+  const removeFromCart = (artworkId: number) => {
     setItems((prevItems) => prevItems.filter((item) => item.artwork.id !== artworkId))
   }
 
-  const updateQuantity = (artworkId: string, quantity: number) => {
+  const updateQuantity = (artworkId: number, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(artworkId)
       return

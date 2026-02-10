@@ -11,7 +11,7 @@ export default function Cart() {
   const [zoomLevel, setZoomLevel] = useState(0)
   const { items, removeFromCart, updateQuantity, totalPrice } = useCart()
 
-  const handleQuantityChange = (artworkId: string, newQuantity: number) => {
+  const handleQuantityChange = (artworkId: number, newQuantity: number) => {
     if (newQuantity >= 1) {
       updateQuantity(artworkId, newQuantity)
     }
@@ -53,9 +53,9 @@ export default function Cart() {
                   >
                     {/* Artwork Image */}
                     <div className="w-full md:w-48 h-48 relative bg-gray-100">
-                      {artwork.image_url && (
+                      {artwork.image && (
                         <Image
-                          src={artwork.image_url}
+                          src={artwork.image}
                           alt={artwork.title}
                           fill
                           className="object-cover"

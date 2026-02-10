@@ -19,13 +19,13 @@ export async function POST(request: NextRequest) {
     const { items, shippingInfo } = await request.json()
 
     // Create line items for Stripe
-    const lineItems = items.map((item: { artwork: { title: string; description?: string; image_url?: string; price?: number }; quantity: number }) => ({
+    const lineItems = items.map((item: { artwork: { title: string; description: string; image: string; images: string[]; price: number }; quantity: number }) => ({
       price_data: {
         currency: 'zar',
         product_data: {
           name: item.artwork.title,
           description: item.artwork.description || '',
-          images: item.artwork.image_url ? [item.artwork.image_url] : [],
+          images: item.artwork.image ? [item.artwork.image] : item.artwork.images?.slice(0, 1) || [],
         },
         unit_amount: Math.round((item.artwork.price || 0) * 100), // Convert to cents
       },
