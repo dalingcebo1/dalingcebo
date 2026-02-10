@@ -41,7 +41,12 @@ cd dalingcebo/dalingcebo-art-shop
 npm install
 ```
 
-3. Set up environment variables:
+3. Verify your setup (recommended):
+```bash
+npm run setup
+```
+
+4. Set up environment variables:
 ```bash
 cp .env.example .env.local
 # Edit .env.local with your Supabase credentials and other keys
