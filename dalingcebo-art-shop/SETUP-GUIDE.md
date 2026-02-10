@@ -24,7 +24,17 @@ cd dalingcebo/dalingcebo-art-shop
 npm install
 ```
 
-### 3. Set Up Environment Variables
+### 3. Verify Setup (Recommended)
+
+Run the setup checker to ensure everything is configured correctly:
+
+```bash
+npm run setup
+```
+
+This will check if your .env.local file exists and has valid values.
+
+### 4. Set Up Environment Variables
 
 This is the most critical step. The application **requires** environment variables to be configured before it can run.
 
@@ -142,23 +152,23 @@ The application should now be running at [http://localhost:3000](http://localhos
 ⚠ Warning: Next.js inferred your workspace root, but it may not be correct.
 ```
 
-**Cause:** The repository has a nested structure with multiple `package-lock.json` files.
+**Cause:** The repository has a nested structure, or there are multiple `package-lock.json` files in parent directories.
 
 **Solution:**
-Add to your `next.config.ts`:
+This has been fixed in `next.config.ts` by adding the turbopack root configuration:
 
 ```typescript
 const nextConfig: NextConfig = {
-  // ... other config
   experimental: {
     turbopack: {
       root: process.cwd(),
     },
   },
+  // ... other config
 };
 ```
 
-Or add a `turbopack.root` configuration.
+The warning should no longer appear in the latest version.
 
 ### Issue 3: Environment Variables Not Loading
 

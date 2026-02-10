@@ -9,38 +9,58 @@ export function validateSupabaseConfig(url: string | undefined, anonKey: string 
   // Check for missing or empty environment variables
   if (!url || !anonKey || url.trim() === '' || anonKey.trim() === '') {
     throw new Error(
-      'Missing or invalid Supabase environment variables.\n' +
-      'Please ensure you have created a .env.local file with valid values:\n' +
-      '1. Copy .env.example to .env.local: cp .env.example .env.local\n' +
-      '2. Add your Supabase URL and anon key from https://supabase.com/dashboard/project/_/settings/api\n' +
-      '3. Restart the development server: npm run dev\n' +
-      `Currently: NEXT_PUBLIC_SUPABASE_URL=${url ? 'is set but may be invalid' : 'is not set'}`
+      '❌ Missing Supabase Environment Variables\n\n' +
+      'The application cannot start without valid Supabase credentials.\n\n' +
+      '📋 Quick Setup Steps:\n' +
+      '1. Create .env.local file:\n' +
+      '   → Run: cp .env.example .env.local\n\n' +
+      '2. Get your Supabase credentials:\n' +
+      '   → Visit: https://supabase.com/dashboard\n' +
+      '   → Select your project (or create one)\n' +
+      '   → Go to Settings > API\n' +
+      '   → Copy "Project URL" and "anon public" key\n\n' +
+      '3. Update .env.local with your credentials:\n' +
+      '   NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co\n' +
+      '   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...\n\n' +
+      '4. Restart the development server:\n' +
+      '   → Stop the server (Ctrl+C)\n' +
+      '   → Run: npm run dev\n\n' +
+      '📖 For detailed instructions, see: SETUP-GUIDE.md\n\n' +
+      `Current status: NEXT_PUBLIC_SUPABASE_URL=${url ? 'set but empty/invalid' : 'NOT SET'}, ` +
+      `NEXT_PUBLIC_SUPABASE_ANON_KEY=${anonKey ? 'set but empty/invalid' : 'NOT SET'}`
     )
   }
 
   // Check if URL is valid and not a placeholder
   if (!url.startsWith('http://') && !url.startsWith('https://')) {
     throw new Error(
-      'Invalid Supabase URL format. The NEXT_PUBLIC_SUPABASE_URL must start with http:// or https://\n' +
+      '❌ Invalid Supabase URL Format\n\n' +
+      'The NEXT_PUBLIC_SUPABASE_URL must be a valid HTTP or HTTPS URL.\n\n' +
       `Current value: "${url}"\n\n` +
-      'Please:\n' +
-      '1. Go to https://supabase.com/dashboard/project/_/settings/api\n' +
-      '2. Copy your Project URL (should look like: https://xxxxxxxxxxxxx.supabase.co)\n' +
-      '3. Update NEXT_PUBLIC_SUPABASE_URL in your .env.local file\n' +
-      '4. Restart the development server: npm run dev'
+      '📋 Fix this issue:\n' +
+      '1. Visit: https://supabase.com/dashboard\n' +
+      '2. Select your project > Settings > API\n' +
+      '3. Copy your "Project URL" (format: https://xxxxx.supabase.co)\n' +
+      '4. Update NEXT_PUBLIC_SUPABASE_URL in .env.local\n' +
+      '5. Restart the server: npm run dev\n\n' +
+      '📖 See SETUP-GUIDE.md for detailed instructions'
     )
   }
 
   // Check if it's still using placeholder values
   if (url.includes('your_supabase') || anonKey.includes('your_supabase')) {
     throw new Error(
-      'Placeholder values detected in environment variables.\n' +
-      'You are using the example placeholders instead of real Supabase credentials.\n\n' +
-      'Please:\n' +
-      '1. Go to https://supabase.com/dashboard/project/_/settings/api\n' +
-      '2. Copy your Project URL and anon key\n' +
-      '3. Replace the placeholder values in your .env.local file\n' +
-      '4. Restart the development server: npm run dev'
+      '❌ Placeholder Values Detected\n\n' +
+      'You are using example placeholder values instead of real Supabase credentials.\n\n' +
+      '📋 Replace placeholders with real values:\n' +
+      '1. Visit: https://supabase.com/dashboard\n' +
+      '2. Select your project > Settings > API\n' +
+      '3. Copy your "Project URL" and "anon public" key\n' +
+      '4. Update these in your .env.local file:\n' +
+      '   NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co\n' +
+      '   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...\n' +
+      '5. Restart the server: npm run dev\n\n' +
+      '📖 See SETUP-GUIDE.md for detailed instructions'
     )
   }
 }
