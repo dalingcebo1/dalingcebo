@@ -7,7 +7,6 @@ import Toast from '@/components/Toast'
 import Breadcrumb from '@/components/Breadcrumb'
 
 export default function Contact() {
-  const [zoomLevel, setZoomLevel] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [showToast, setShowToast] = useState(false)
   const [formData, setFormData] = useState({
@@ -33,7 +32,7 @@ export default function Contact() {
 
   return (
     <main className="min-h-screen">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+      <Header showBackButton={false} />
       
       <section className="border-b border-gray-200 bg-white">
         <div className="yeezy-container py-4">
