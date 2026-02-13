@@ -87,10 +87,9 @@ function CheckoutForm({ clientSecret }: { clientSecret: string }) {
 }
 
 export default function CheckoutPage() {
-  const { items, total, clearCart } = useCart();
+  const { items, total } = useCart();
   const router = useRouter();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [orderId, setOrderId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -139,7 +138,6 @@ export default function CheckoutPage() {
       }
 
       const orderData = await orderResponse.json();
-      setOrderId(orderData.id);
 
       // Step 2: Create payment intent
       const paymentResponse = await fetch('/api/payments/stripe/create-intent', {
@@ -198,7 +196,7 @@ export default function CheckoutPage() {
         </section>
 
         <section className="yeezy-hero bg-black text-white">
-          <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <div className="yeezy-hero-content fade-in-slow">
             <h1 className="yeezy-main-logo text-white mb-8">
               CHECKOUT
             </h1>
@@ -210,7 +208,7 @@ export default function CheckoutPage() {
 
         <section className="yeezy-section">
           <div className="yeezy-container max-w-6xl">
-            <div className={`grid lg:grid-cols-[1fr_400px] gap-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            <div className="grid lg:grid-cols-[1fr_400px] gap-8 fade-in-slow" style={{ animationDelay: '0.3s' }}>
               {/* Checkout Form */}
               <div className="space-y-8">
                 {!clientSecret ? (

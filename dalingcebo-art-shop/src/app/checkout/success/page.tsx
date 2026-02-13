@@ -28,7 +28,7 @@ export default function CheckoutSuccessPage() {
         </section>
 
         <section className="yeezy-hero bg-black text-white">
-          <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
+          <div className="yeezy-hero-content fade-in-slow">
             <div className="inline-block mb-8">
               <svg className="w-20 h-20 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -45,7 +45,7 @@ export default function CheckoutSuccessPage() {
 
         <section className="yeezy-section">
           <div className="yeezy-container max-w-2xl">
-            <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center fade-in-slow" style={{ animationDelay: '0.3s' }}>
               <div className="space-y-6">
                 <div>
                   <h2 className="text-2xl font-light tracking-tight mb-3 text-gray-900">Payment Successful</h2>
