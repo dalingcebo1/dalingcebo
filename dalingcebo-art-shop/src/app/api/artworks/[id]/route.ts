@@ -9,7 +9,7 @@ export const revalidate = 0;
 
 function parseId(param: string | string[]): number {
   const id = Number(Array.isArray(param) ? param[0] : param);
-  if (Number.isNaN(id) || id <= 0) {
+  if (Number.isNaN(id) || id < 1) {
     throw new ApiErrorResponse(
       ErrorCodes.INVALID_ID,
       'Invalid artwork ID provided',

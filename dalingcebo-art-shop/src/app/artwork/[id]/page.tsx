@@ -16,7 +16,7 @@ async function fetchArtwork(id: string) {
   try {
     // First try to get from database directly (server-side)
     const numericId = Number(id);
-    if (Number.isNaN(numericId) || numericId <= 0) {
+    if (Number.isNaN(numericId) || numericId < 1) {
       return { error: { code: 'invalid_id', message: 'Invalid artwork ID' } as ApiError['error'] };
     }
 
@@ -51,6 +51,14 @@ export default async function ArtworkPage({ params }: PageProps) {
     return <ErrorPage error={result.error} />;
   }
 
+  // Ensure artwork is present before rendering
+  if (!result.artwork) {
+    return <ErrorPage error={{ 
+      code: 'internal_error', 
+      message: 'Failed to load artwork data' 
+    }} />;
+  }
+
   // Render the client component with the fetched artwork
-  return <ArtworkPageClient artwork={result.artwork!} />;
+  return <ArtworkPageClient artwork={result.artwork} />;
 }
