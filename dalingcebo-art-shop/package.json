@@ -7,6 +7,9 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
     "catalogs:sync": "node scripts/import-catalogs.mjs",
     "verify:production": "node scripts/verify-production.js",
     "postbuild": "next-sitemap",
@@ -38,10 +41,13 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/uuid": "^10.0.0",
+    "@vitest/ui": "^4.0.18",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
+    "happy-dom": "^20.6.1",
     "next-sitemap": "^4.2.3",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   }
 }
