@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { deleteArtwork, getArtworkById, upsertArtwork } from '@/lib/artworkStore';
 import { sanitizeArtworkPayload, ensureAdminRequest } from '../helpers';
+import { logger } from '@/lib/logger';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -31,12 +32,25 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
 }
 
 export async function PUT(request: Request, context: { params: Promise<{ id: string }> }) {
+  const startTime = Date.now();
+  let artworkId: number | undefined;
+  
   try {
     ensureAdminRequest(request);
     const { id: param } = await context.params;
     const id = parseId(param);
+    artworkId = id;
     const payload = sanitizeArtworkPayload(await request.json());
     const updated = await upsertArtwork(payload, id);
+    
+    logger.info('Artwork updated', {
+      method: 'PUT',
+      route: `/api/artworks/${id}`,
+      artworkId: id,
+      status: 200,
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json(updated);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unable to update artwork';
@@ -48,16 +62,39 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
         : lower.includes('not found')
           ? 404
           : 500;
+    
+    logger.error('Failed to update artwork', {
+      method: 'PUT',
+      route: `/api/artworks/${artworkId || 'unknown'}`,
+      artworkId,
+      status,
+      error: message,
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json({ message }, { status });
   }
 }
 
 export async function DELETE(_request: Request, context: { params: Promise<{ id: string }> }) {
+  const startTime = Date.now();
+  let artworkId: number | undefined;
+  
   try {
     ensureAdminRequest(_request);
     const { id: param } = await context.params;
     const id = parseId(param);
+    artworkId = id;
     const removed = await deleteArtwork(id);
+    
+    logger.info('Artwork deleted', {
+      method: 'DELETE',
+      route: `/api/artworks/${id}`,
+      artworkId: id,
+      status: 200,
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json(removed);
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unable to delete artwork';
@@ -69,6 +106,16 @@ export async function DELETE(_request: Request, context: { params: Promise<{ id:
         : lower.includes('not found')
           ? 404
           : 500;
+    
+    logger.error('Failed to delete artwork', {
+      method: 'DELETE',
+      route: `/api/artworks/${artworkId || 'unknown'}`,
+      artworkId,
+      status,
+      error: message,
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json({ message }, { status });
   }
 }

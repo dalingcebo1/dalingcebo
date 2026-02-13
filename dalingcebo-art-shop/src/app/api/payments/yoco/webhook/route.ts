@@ -2,15 +2,25 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyYocoWebhook } from '@/lib/payments/yoco'
 import { createServiceRoleClient } from '@/lib/db/supabase'
 import { sendEmail, orderConfirmationEmail } from '@/lib/email'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
     const signature = request.headers.get('x-yoco-signature')
     const body = await request.text()
 
     // Verify webhook signature
     if (!signature || !verifyYocoWebhook(signature, body)) {
-      console.error('Invalid Yoco webhook signature')
+      logger.warn('Invalid Yoco webhook signature', {
+        method: 'POST',
+        route: '/api/payments/yoco/webhook',
+        status: 401,
+        error: 'Invalid signature',
+        duration: Date.now() - startTime,
+      });
+      
       return NextResponse.json(
         { error: 'Invalid signature' },
         { status: 401 }
@@ -18,7 +28,13 @@ export async function POST(request: NextRequest) {
     }
 
     const event = JSON.parse(body)
-    console.log('Yoco webhook event:', event.type)
+    
+    logger.info('Yoco webhook received', {
+      method: 'POST',
+      route: '/api/payments/yoco/webhook',
+      eventType: event.type,
+      status: 200,
+    });
 
     // Handle different webhook events
     switch (event.type) {
@@ -35,12 +51,31 @@ export async function POST(request: NextRequest) {
         break
       
       default:
-        console.log(`Unhandled Yoco webhook event: ${event.type}`)
+        logger.info('Unhandled Yoco webhook event', {
+          method: 'POST',
+          route: '/api/payments/yoco/webhook',
+          eventType: event.type,
+        });
     }
+
+    logger.info('Yoco webhook processed', {
+      method: 'POST',
+      route: '/api/payments/yoco/webhook',
+      eventType: event.type,
+      status: 200,
+      duration: Date.now() - startTime,
+    });
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error('Yoco webhook error:', error)
+    logger.error('Yoco webhook error', {
+      method: 'POST',
+      route: '/api/payments/yoco/webhook',
+      status: 500,
+      error: error instanceof Error ? error.message : 'Webhook processing failed',
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json(
       { error: 'Webhook processing failed' },
       { status: 500 }
@@ -55,7 +90,10 @@ async function handlePaymentSucceeded(charge: any) {
   const paymentType = charge.metadata?.paymentType || 'full'
   
   if (!orderId) {
-    console.error('No orderId in Yoco charge metadata')
+    logger.error('No orderId in Yoco charge metadata', {
+      route: '/api/payments/yoco/webhook',
+      chargeId: charge.id,
+    });
     return
   }
 
@@ -74,7 +112,11 @@ async function handlePaymentSucceeded(charge: any) {
     })
 
   if (txError) {
-    console.error('Error recording Yoco transaction:', txError)
+    logger.error('Error recording Yoco transaction', {
+      route: '/api/payments/yoco/webhook',
+      orderId,
+      error: txError.message,
+    });
     throw txError
   }
 
@@ -107,11 +149,20 @@ async function handlePaymentSucceeded(charge: any) {
     .eq('id', orderId)
 
   if (orderError) {
-    console.error('Error updating order after Yoco payment:', orderError)
+    logger.error('Error updating order after Yoco payment', {
+      route: '/api/payments/yoco/webhook',
+      orderId,
+      error: orderError.message,
+    });
     throw orderError
   }
 
-  console.log(`Yoco payment succeeded for order ${orderId}`)
+  logger.info('Yoco payment succeeded', {
+    route: '/api/payments/yoco/webhook',
+    orderId,
+    paymentType,
+    amount: charge.amountInCents / 100,
+  });
   
   // Send confirmation email
   try {
@@ -134,11 +185,18 @@ async function handlePaymentSucceeded(charge: any) {
           subject: emailContent.subject,
           html: emailContent.html
         })
-        console.log(`Confirmation email sent for order ${orderId}`)
+        logger.info('Confirmation email sent', {
+          route: '/api/payments/yoco/webhook',
+          orderId,
+        });
       }
     }
   } catch (emailError) {
-    console.error('Error sending confirmation email:', emailError)
+    logger.error('Error sending confirmation email', {
+      route: '/api/payments/yoco/webhook',
+      orderId,
+      error: emailError instanceof Error ? emailError.message : 'Unknown error',
+    });
     // Don't throw - email failure shouldn't fail the webhook
   }
 }
@@ -149,7 +207,10 @@ async function handlePaymentFailed(charge: any) {
   const orderId = charge.metadata?.orderId
   
   if (!orderId) {
-    console.error('No orderId in Yoco charge metadata')
+    logger.error('No orderId in Yoco charge metadata', {
+      route: '/api/payments/yoco/webhook',
+      chargeId: charge.id,
+    });
     return
   }
 
@@ -168,7 +229,11 @@ async function handlePaymentFailed(charge: any) {
     })
 
   if (txError) {
-    console.error('Error recording failed Yoco transaction:', txError)
+    logger.error('Error recording failed Yoco transaction', {
+      route: '/api/payments/yoco/webhook',
+      orderId,
+      error: txError.message,
+    });
   }
 
   // Update order status
@@ -181,10 +246,18 @@ async function handlePaymentFailed(charge: any) {
     .eq('id', orderId)
 
   if (orderError) {
-    console.error('Error updating order after failed Yoco payment:', orderError)
+    logger.error('Error updating order after failed Yoco payment', {
+      route: '/api/payments/yoco/webhook',
+      orderId,
+      error: orderError.message,
+    });
   }
 
-  console.log(`Yoco payment failed for order ${orderId}`)
+  logger.warn('Yoco payment failed', {
+    route: '/api/payments/yoco/webhook',
+    orderId,
+    amount: charge.amountInCents / 100,
+  });
 }
 
 async function handleRefundSucceeded(refund: any) {
@@ -200,7 +273,10 @@ async function handleRefundSucceeded(refund: any) {
     .single() as { data: { order_id: string } | null }
 
   if (!transaction) {
-    console.error('No transaction found for Yoco refund')
+    logger.error('No transaction found for Yoco refund', {
+      route: '/api/payments/yoco/webhook',
+      chargeId,
+    });
     return
   }
 
@@ -223,7 +299,10 @@ async function handleRefundSucceeded(refund: any) {
     })
     .eq('id', transaction.order_id)
 
-  console.log(`Yoco refund succeeded for order ${transaction.order_id}`)
+  logger.info('Yoco refund succeeded', {
+    route: '/api/payments/yoco/webhook',
+    orderId: transaction.order_id,
+  });
   
   // Restore inventory for refunded items
   try {
@@ -239,10 +318,17 @@ async function handleRefundSucceeded(refund: any) {
           .update({ in_stock: true } as never)
           .eq('id', (item as { artwork_id: string }).artwork_id)
       }
-      console.log(`Inventory restored for refunded order ${transaction.order_id}`)
+      logger.info('Inventory restored for refunded order', {
+        route: '/api/payments/yoco/webhook',
+        orderId: transaction.order_id,
+      });
     }
   } catch (inventoryError) {
-    console.error('Error restoring inventory:', inventoryError)
+    logger.error('Error restoring inventory', {
+      route: '/api/payments/yoco/webhook',
+      orderId: transaction.order_id,
+      error: inventoryError instanceof Error ? inventoryError.message : 'Unknown error',
+    });
   }
 
   // Send refund notification email
@@ -270,9 +356,16 @@ async function handleRefundSucceeded(refund: any) {
           </div>
         `
       })
-      console.log(`Refund notification email sent for order ${transaction.order_id}`)
+      logger.info('Refund notification email sent', {
+        route: '/api/payments/yoco/webhook',
+        orderId: transaction.order_id,
+      });
     }
   } catch (emailError) {
-    console.error('Error sending refund notification:', emailError)
+    logger.error('Error sending refund notification', {
+      route: '/api/payments/yoco/webhook',
+      orderId: transaction.order_id,
+      error: emailError instanceof Error ? emailError.message : 'Unknown error',
+    });
   }
 }

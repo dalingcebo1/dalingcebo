@@ -3,11 +3,22 @@ import { verifyStripeWebhook } from '@/lib/payments/stripe'
 import { createServiceRoleClient } from '@/lib/db/supabase'
 import { sendEmail, orderConfirmationEmail } from '@/lib/email'
 import Stripe from 'stripe'
+import { logger } from '@/lib/logger'
 
 export async function POST(request: NextRequest) {
+  const startTime = Date.now();
+  
   try {
     const signature = request.headers.get('stripe-signature')
     if (!signature) {
+      logger.warn('Stripe webhook missing signature', {
+        method: 'POST',
+        route: '/api/payments/stripe/webhook',
+        status: 400,
+        error: 'Missing stripe-signature header',
+        duration: Date.now() - startTime,
+      });
+      
       return NextResponse.json(
         { error: 'Missing stripe-signature header' },
         { status: 400 }
@@ -21,14 +32,26 @@ export async function POST(request: NextRequest) {
     try {
       event = verifyStripeWebhook(body, signature)
     } catch (error) {
-      console.error('Stripe webhook verification failed:', error)
+      logger.error('Stripe webhook verification failed', {
+        method: 'POST',
+        route: '/api/payments/stripe/webhook',
+        status: 401,
+        error: error instanceof Error ? error.message : 'Invalid signature',
+        duration: Date.now() - startTime,
+      });
+      
       return NextResponse.json(
         { error: 'Invalid signature' },
         { status: 401 }
       )
     }
 
-    console.log(`Stripe webhook event: ${event.type}`)
+    logger.info('Stripe webhook received', {
+      method: 'POST',
+      route: '/api/payments/stripe/webhook',
+      eventType: event.type,
+      status: 200,
+    });
 
     // Handle different webhook events
     switch (event.type) {
@@ -45,12 +68,31 @@ export async function POST(request: NextRequest) {
         break
       
       default:
-        console.log(`Unhandled Stripe webhook event: ${event.type}`)
+        logger.info('Unhandled Stripe webhook event', {
+          method: 'POST',
+          route: '/api/payments/stripe/webhook',
+          eventType: event.type,
+        });
     }
+
+    logger.info('Stripe webhook processed', {
+      method: 'POST',
+      route: '/api/payments/stripe/webhook',
+      eventType: event.type,
+      status: 200,
+      duration: Date.now() - startTime,
+    });
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error('Stripe webhook error:', error)
+    logger.error('Stripe webhook error', {
+      method: 'POST',
+      route: '/api/payments/stripe/webhook',
+      status: 500,
+      error: error instanceof Error ? error.message : 'Webhook processing failed',
+      duration: Date.now() - startTime,
+    });
+    
     return NextResponse.json(
       { error: 'Webhook processing failed' },
       { status: 500 }
@@ -65,7 +107,10 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
   const paymentType = paymentIntent.metadata.paymentType || 'full'
   
   if (!orderId) {
-    console.error('No orderId in Stripe payment intent metadata')
+    logger.error('No orderId in Stripe payment intent metadata', {
+      route: '/api/payments/stripe/webhook',
+      paymentIntentId: paymentIntent.id,
+    });
     return
   }
 
@@ -84,7 +129,11 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
     })
 
   if (txError) {
-    console.error('Error recording Stripe transaction:', txError)
+    logger.error('Error recording Stripe transaction', {
+      route: '/api/payments/stripe/webhook',
+      orderId,
+      error: txError.message,
+    });
     throw txError
   }
 
@@ -117,11 +166,20 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
     .eq('id', orderId)
 
   if (orderError) {
-    console.error('Error updating order after Stripe payment:', orderError)
+    logger.error('Error updating order after Stripe payment', {
+      route: '/api/payments/stripe/webhook',
+      orderId,
+      error: orderError.message,
+    });
     throw orderError
   }
 
-  console.log(`Stripe payment succeeded for order ${orderId}`)
+  logger.info('Stripe payment succeeded', {
+    route: '/api/payments/stripe/webhook',
+    orderId,
+    paymentType,
+    amount: paymentIntent.amount / 100,
+  });
   
   // Send confirmation email
   try {
@@ -144,11 +202,18 @@ async function handlePaymentIntentSucceeded(paymentIntent: Stripe.PaymentIntent)
           subject: emailContent.subject,
           html: emailContent.html
         })
-        console.log(`Confirmation email sent for order ${orderId}`)
+        logger.info('Confirmation email sent', {
+          route: '/api/payments/stripe/webhook',
+          orderId,
+        });
       }
     }
   } catch (emailError) {
-    console.error('Error sending confirmation email:', emailError)
+    logger.error('Error sending confirmation email', {
+      route: '/api/payments/stripe/webhook',
+      orderId,
+      error: emailError instanceof Error ? emailError.message : 'Unknown error',
+    });
     // Don't throw - email failure shouldn't fail the webhook
   }
 }
@@ -159,7 +224,10 @@ async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
   const orderId = paymentIntent.metadata.orderId
   
   if (!orderId) {
-    console.error('No orderId in Stripe payment intent metadata')
+    logger.error('No orderId in Stripe payment intent metadata', {
+      route: '/api/payments/stripe/webhook',
+      paymentIntentId: paymentIntent.id,
+    });
     return
   }
 
@@ -178,7 +246,11 @@ async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
     })
 
   if (txError) {
-    console.error('Error recording failed Stripe transaction:', txError)
+    logger.error('Error recording failed Stripe transaction', {
+      route: '/api/payments/stripe/webhook',
+      orderId,
+      error: txError.message,
+    });
   }
 
   // Update order status
@@ -191,10 +263,18 @@ async function handlePaymentIntentFailed(paymentIntent: Stripe.PaymentIntent) {
     .eq('id', orderId)
 
   if (orderError) {
-    console.error('Error updating order after failed Stripe payment:', orderError)
+    logger.error('Error updating order after failed Stripe payment', {
+      route: '/api/payments/stripe/webhook',
+      orderId,
+      error: orderError.message,
+    });
   }
 
-  console.log(`Stripe payment failed for order ${orderId}`)
+  logger.warn('Stripe payment failed', {
+    route: '/api/payments/stripe/webhook',
+    orderId,
+    amount: paymentIntent.amount / 100,
+  });
 }
 
 async function handleChargeRefunded(charge: Stripe.Charge) {
@@ -203,7 +283,10 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
   const paymentIntentId = charge.payment_intent as string
   
   if (!paymentIntentId) {
-    console.error('No payment intent ID in Stripe charge')
+    logger.error('No payment intent ID in Stripe charge', {
+      route: '/api/payments/stripe/webhook',
+      chargeId: charge.id,
+    });
     return
   }
 
@@ -215,7 +298,10 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     .single() as { data: { order_id: string } | null }
 
   if (!transaction) {
-    console.error('No transaction found for Stripe refund')
+    logger.error('No transaction found for Stripe refund', {
+      route: '/api/payments/stripe/webhook',
+      paymentIntentId,
+    });
     return
   }
 
@@ -238,7 +324,10 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     })
     .eq('id', transaction.order_id)
 
-  console.log(`Stripe refund succeeded for order ${transaction.order_id}`)
+  logger.info('Stripe refund succeeded', {
+    route: '/api/payments/stripe/webhook',
+    orderId: transaction.order_id,
+  });
   
   // Restore inventory for refunded items
   try {
@@ -254,10 +343,17 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
           .update({ in_stock: true } as never)
           .eq('id', (item as { artwork_id: string }).artwork_id)
       }
-      console.log(`Inventory restored for refunded order ${transaction.order_id}`)
+      logger.info('Inventory restored for refunded order', {
+        route: '/api/payments/stripe/webhook',
+        orderId: transaction.order_id,
+      });
     }
   } catch (inventoryError) {
-    console.error('Error restoring inventory:', inventoryError)
+    logger.error('Error restoring inventory', {
+      route: '/api/payments/stripe/webhook',
+      orderId: transaction.order_id,
+      error: inventoryError instanceof Error ? inventoryError.message : 'Unknown error',
+    });
   }
 
   // Send refund notification email
@@ -285,9 +381,16 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
           </div>
         `
       })
-      console.log(`Refund notification email sent for order ${transaction.order_id}`)
+      logger.info('Refund notification email sent', {
+        route: '/api/payments/stripe/webhook',
+        orderId: transaction.order_id,
+      });
     }
   } catch (emailError) {
-    console.error('Error sending refund notification:', emailError)
+    logger.error('Error sending refund notification', {
+      route: '/api/payments/stripe/webhook',
+      orderId: transaction.order_id,
+      error: emailError instanceof Error ? emailError.message : 'Unknown error',
+    });
   }
 }

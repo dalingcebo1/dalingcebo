@@ -14,6 +14,7 @@ import { useCart } from '@/contexts/CartContext'
 import { Artwork } from '@/types/artwork'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage, getArtworkPlaceholder } from '@/lib/media'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 
 interface SelectedVariant {
   frameVariantId?: string
@@ -173,7 +174,7 @@ export default function ArtworkDetail() {
   const heroAspectRatio = getArtworkAspectRatio(artwork.size)
 
   return (
-    <>
+    <ErrorBoundary>
       <main className="min-h-screen">
         <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} showBackButton />
         
@@ -514,6 +515,6 @@ export default function ArtworkDetail() {
           )}
         </div>
       )}
-    </>
+    </ErrorBoundary>
   )
 }
