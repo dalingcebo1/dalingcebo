@@ -15,8 +15,8 @@ export default function Footer() {
       <div className="yeezy-container py-12 md:py-16">
         {/* Centered horizontal footer links */}
         <div className="max-w-5xl mx-auto">
-          {/* Footer Links - 1x6 grid layout */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 text-xs mb-8">
+          {/* Footer Links - 6-column by 1-row grid layout */}
+          <div className="grid grid-cols-6 gap-4 md:gap-6 text-xs mb-8">
             {footerLinks.map((link) => (
               <Link
                 key={link.label}

@@ -33,9 +33,9 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
       case 0:
         return 'grid-cols-2 md:grid-cols-4'
       case 1:
-        return 'grid-cols-1 md:grid-cols-3'
-      case 2:
         return 'grid-cols-1 md:grid-cols-2'
+      case 2:
+        return 'grid-cols-1'
       default:
         return 'grid-cols-2 md:grid-cols-4'
     }
