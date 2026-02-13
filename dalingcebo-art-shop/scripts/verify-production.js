@@ -26,7 +26,7 @@ const OPTIONAL_VARS = [
   'YOCO_WEBHOOK_SECRET',
   'NEXT_PUBLIC_GOOGLE_CLIENT_ID',
   'EMAIL_FROM',
-  'NEXT_PUBLIC_ADMIN_KEY',
+  'ADMIN_KEY',
 ];
 
 console.log('🔍 Checking Production Readiness...\n');
