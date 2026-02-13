@@ -1,0 +1,52 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./dalingcebo-art-shop
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: dalingcebo-art-shop/package-lock.json
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Install Playwright Browsers
+        run: npx playwright install chromium --with-deps
+      
+      - name: Build application
+        run: npm run build
+        env:
+          # Add any required environment variables for build
+          NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      
+      - name: Run Playwright tests
+        run: npm run test:e2e
+        env:
+          CI: true
+          # Add any required environment variables for tests
+          NEXT_PUBLIC_BASE_URL: http://localhost:3000
+      
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: dalingcebo-art-shop/playwright-report/
+          retention-days: 30
