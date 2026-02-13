@@ -255,22 +255,46 @@ function AdminDashboard() {
     setTimeout(() => setToastMessage(null), 3000)
   }
 
-  const handleUnlock = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUnlock = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const code = accessCode.trim()
     if (!code) {
       setAuthError('Please enter an access code')
       return
     }
-    // Store the code and mark as authorized
-    // Server will validate on API requests
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('dalingcebo_admin_key', code)
+    
+    // Validate the key by attempting a test API call
+    // We'll try to create an artwork with invalid data, which should fail with 401 if key is wrong
+    // or with 400 if key is valid but data is invalid
+    try {
+      const testResponse = await fetch('/api/artworks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-key': code
+        },
+        body: JSON.stringify({}) // Invalid data to trigger validation
+      })
+      
+      // If we get a 401, the key is invalid
+      if (testResponse.status === 401) {
+        setAuthError('Invalid access code')
+        return
+      }
+      
+      // Any other response means the key is valid (even if the request fails for other reasons)
+      // Store the code and mark as authorized
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('dalingcebo_admin_key', code)
+      }
+      setAuthToken(code)
+      setIsAuthorized(true)
+      setAuthError(null)
+      setAccessCode('')
+    } catch (error) {
+      // Network error or other issue
+      setAuthError('Unable to verify access code. Please try again.')
     }
-    setAuthToken(code)
-    setIsAuthorized(true)
-    setAuthError(null)
-    setAccessCode('')
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
