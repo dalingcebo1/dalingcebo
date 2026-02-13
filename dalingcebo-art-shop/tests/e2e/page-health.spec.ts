@@ -8,11 +8,9 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('Page Health Checks', () => {
-  let consoleErrors: string[] = [];
-
   test.beforeEach(async ({ page }) => {
-    // Capture console errors
-    consoleErrors = [];
+    // Capture console errors for this test
+    const consoleErrors: string[] = [];
     page.on('console', (msg) => {
       if (msg.type() === 'error') {
         const text = msg.text();
@@ -28,6 +26,9 @@ test.describe('Page Health Checks', () => {
         }
       }
     });
+    
+    // Make consoleErrors available to tests
+    (page as any).consoleErrors = consoleErrors;
   });
 
   test('homepage loads without errors', async ({ page }) => {
@@ -41,7 +42,8 @@ test.describe('Page Health Checks', () => {
     await expect(mainContent).toBeVisible();
     
     // Verify no critical console errors (our fixes)
-    const criticalErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const criticalErrors = consoleErrors.filter((err: string) => 
       err.includes('useCart must be used within a CartProvider') ||
       err.includes('Maximum update depth exceeded')
     );
@@ -59,7 +61,8 @@ test.describe('Page Health Checks', () => {
     await expect(mainContent).toBeVisible();
     
     // Verify no console errors related to our fixes
-    const criticalErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const criticalErrors = consoleErrors.filter((err: string) => 
       err.includes('useCart must be used within a CartProvider') ||
       err.includes('Maximum update depth exceeded')
     );
@@ -86,7 +89,8 @@ test.describe('Page Health Checks', () => {
     }
     
     // Verify no console errors related to CartProvider
-    const cartErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const cartErrors = consoleErrors.filter((err: string) => 
       err.includes('useCart must be used within a CartProvider')
     );
     expect(cartErrors.length).toBe(0);
@@ -111,7 +115,8 @@ test.describe('Page Health Checks', () => {
       await expect(mainContent).toBeVisible();
       
       // Verify no infinite loop errors
-      const loopErrors = consoleErrors.filter(err => 
+      const consoleErrors = (page as any).consoleErrors || [];
+      const loopErrors = consoleErrors.filter((err: string) => 
         err.includes('Maximum update depth exceeded')
       );
       expect(loopErrors.length).toBe(0);
@@ -132,7 +137,8 @@ test.describe('Page Health Checks', () => {
     await expect(notFoundText).toBeVisible();
     
     // Verify no critical console errors (404 status is expected)
-    const criticalErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const criticalErrors = consoleErrors.filter((err: string) => 
       err.includes('useCart must be used within a CartProvider') ||
       err.includes('Maximum update depth exceeded')
     );
@@ -152,7 +158,8 @@ test.describe('Page Health Checks', () => {
     await expect(cartLink.first()).toBeVisible();
     
     // Verify no console errors related to CartProvider in header
-    const headerErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const headerErrors = consoleErrors.filter((err: string) => 
       err.includes('useCart must be used within a CartProvider')
     );
     expect(headerErrors.length).toBe(0);
@@ -162,8 +169,8 @@ test.describe('Page Health Checks', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    // Clear any initial errors
-    consoleErrors = [];
+    // Reset console errors for this specific test
+    (page as any).consoleErrors = [];
     
     // Scroll down
     await page.evaluate(() => window.scrollTo(0, 500));
@@ -174,7 +181,8 @@ test.describe('Page Health Checks', () => {
     await page.waitForTimeout(500);
     
     // Verify no infinite loop errors from scroll handler
-    const scrollErrors = consoleErrors.filter(err => 
+    const consoleErrors = (page as any).consoleErrors || [];
+    const scrollErrors = consoleErrors.filter((err: string) => 
       err.includes('Maximum update depth exceeded')
     );
     expect(scrollErrors.length).toBe(0);
