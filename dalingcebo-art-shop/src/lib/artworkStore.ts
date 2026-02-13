@@ -70,13 +70,6 @@ export async function readArtworks(): Promise<Artwork[]> {
   return data.map(mapRowToArtwork)
 }
 
-export async function writeArtworks(_artworks: Artwork[]): Promise<void> {
-  // This function was used for JSON file overwrites. 
-  // With DB, we don't overwrite all. 
-  // We'll leave it as a no-op or throw to prevent misuse during migration.
-  console.warn('writeArtworks is deprecated with Supabase backend')
-}
-
 export async function getArtworkById(id: number): Promise<Artwork | undefined> {
   const supabase = createServiceRoleClient()
   
