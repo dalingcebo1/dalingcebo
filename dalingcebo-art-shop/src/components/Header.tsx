@@ -16,47 +16,75 @@ const navIconLinks = [
   {
     href: '/large-paintings',
     title: 'Large Paintings',
-    renderIcon: (className = 'w-6 h-6') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="4" width="20" height="16" rx="1" />
-        <path d="M2 8h20M7 4v16" />
-        <circle cx="14" cy="14" r="2" />
+    renderIcon: (className = 'icon-nav') => (
+      <svg
+        className={className}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#000000"
+        strokeWidth="1.5"
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+      >
+        <rect x="2" y="6" width="20" height="12" />
       </svg>
     ),
   },
   {
     href: '/small-paintings',
     title: 'Small Paintings',
-    renderIcon: (className = 'w-6 h-6') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="5" y="7" width="14" height="10" rx="1" />
-        <path d="M5 11h14M9 7v10" />
-        <circle cx="14.5" cy="14" r="1.5" />
+    renderIcon: (className = 'icon-nav') => (
+      <svg
+        className={className}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#000000"
+        strokeWidth="1.5"
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+      >
+        <rect x="3" y="3" width="8" height="8" />
+        <rect x="13" y="3" width="8" height="8" />
+        <rect x="3" y="13" width="8" height="8" />
+        <rect x="13" y="13" width="8" height="8" />
       </svg>
     ),
   },
   {
     href: '/about',
     title: 'About',
-    renderIcon: (className = 'w-6 h-6') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 3c-1.5 0-2.7 1.2-2.7 2.7 0 1.5 1.2 2.7 2.7 2.7s2.7-1.2 2.7-2.7c0-1.5-1.2-2.7-2.7-2.7zM12 10.5c-3.3 0-6 2.7-6 6v4.5h12v-4.5c0-3.3-2.7-6-6-6z" />
-      </svg>
-    ),
-  },
-  {
-    href: '/cart',
-    title: 'Cart',
-    renderIcon: (className = 'w-6 h-6') => (
-      <svg className={className} viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M7 4h14l-1.5 9H8L6 4H2" />
-        <circle cx="9" cy="20" r="1.5" />
-        <circle cx="18" cy="20" r="1.5" />
-        <path d="M6 4L8 13h11.5" />
+    renderIcon: (className = 'icon-nav') => (
+      <svg
+        className={className}
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="#000000"
+        strokeWidth="1.5"
+        strokeLinecap="square"
+        strokeLinejoin="miter"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v8M12 8h.01" />
       </svg>
     ),
   },
 ]
+
+const CartIcon = ({ className = 'icon-nav' }: { className?: string }) => (
+  <svg
+    className={className}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="#000000"
+    strokeWidth="1.5"
+    strokeLinecap="square"
+    strokeLinejoin="miter"
+  >
+    <path d="M6 6h15l-1.5 9H7.5z" />
+    <circle cx="9" cy="20" r="1" fill="#000000" />
+    <circle cx="17" cy="20" r="1" fill="#000000" />
+  </svg>
+)
 
 const mobileNavLinks = [
   { label: 'Home', href: '/' },
@@ -109,8 +137,8 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             title="Go Back"
             aria-label="Go back to previous page"
           >
-            <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+              <path d="M19 12H5M12 5l-7 7 7 7"/>
             </svg>
           </button>
         ) : (
@@ -122,49 +150,49 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
           >
             {zoomLevel >= 2 ? (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="4" y="4" width="6" height="6" />
-                <rect x="14" y="4" width="6" height="6" />
-                <rect x="4" y="14" width="6" height="6" />
-                <rect x="14" y="14" width="6" height="6" />
+              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                <path d="M5 12h14" />
               </svg>
             ) : (
-              <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
+              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                <path d="M12 5v14M5 12h14" />
               </svg>
             )}
           </button>
         )}
 
         <div className="yeezy-nav-links">
-          {navIconLinks.map(link => {
-            const isCart = link.href === '/cart'
-            return (
-              <Link 
-                key={link.href} 
-                href={link.href} 
-                className={`yeezy-nav-link ${isCart ? 'relative' : ''}`}
-                title={link.title} 
-                aria-label={isCart && itemCount > 0 ? `Cart with ${itemCount} items` : link.title}
-              >
-                {link.renderIcon()}
-                {isCart && itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                    {itemCount}
-                  </span>
-                )}
-              </Link>
-            )
-          })}
+          {navIconLinks.map(link => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="yeezy-nav-link"
+              title={link.title}
+              aria-label={link.title}
+            >
+              {link.renderIcon()}
+            </Link>
+          ))}
         </div>
 
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
             <AccountButton />
           </div>
+
+          <Link
+            href="/cart"
+            className="yeezy-nav-link relative"
+            title="Cart"
+            aria-label={itemCount > 0 ? `Cart with ${itemCount} items` : 'Cart'}
+          >
+            <CartIcon />
+            {itemCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
+                {itemCount}
+              </span>
+            )}
+          </Link>
 
           <button
             type="button"
@@ -192,8 +220,8 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
                 title="Go Back"
                 aria-label="Go back to previous page"
               >
-                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 12H5M12 19l-7-7 7-7"/>
+                <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                  <path d="M19 12H5M12 5l-7 7 7 7"/>
                 </svg>
               </button>
             ) : (
@@ -205,44 +233,30 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
                 aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
               >
                 {zoomLevel >= 2 ? (
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="4" y="4" width="6" height="6" />
-                    <rect x="14" y="4" width="6" height="6" />
-                    <rect x="4" y="14" width="6" height="6" />
-                    <rect x="14" y="14" width="6" height="6" />
+                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                    <path d="M5 12h14" />
                   </svg>
                 ) : (
-                  <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="3" width="7" height="7" />
-                    <rect x="3" y="14" width="7" height="7" />
-                    <rect x="14" y="3" width="7" height="7" />
-                    <rect x="14" y="14" width="7" height="7" />
+                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
+                    <path d="M12 5v14M5 12h14" />
                   </svg>
                 )}
               </button>
             )}
 
             <div className="flex space-x-6">
-              {navIconLinks.map(link => {
-                const isCart = link.href === '/cart'
-                return (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className={`yeezy-nav-link ${isCart ? 'relative' : ''}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    title={link.title}
-                    aria-label={isCart && itemCount > 0 ? `Cart with ${itemCount} items` : link.title}
-                  >
-                    {link.renderIcon('w-6 h-6')}
-                    {isCart && itemCount > 0 && (
-                      <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                        {itemCount}
-                      </span>
-                    )}
-                  </Link>
-                )
-              })}
+              {navIconLinks.map(link => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="yeezy-nav-link"
+                  onClick={() => setIsMenuOpen(false)}
+                  title={link.title}
+                  aria-label={link.title}
+                >
+                  {link.renderIcon('icon-nav')}
+                </Link>
+              ))}
             </div>
           </div>
 

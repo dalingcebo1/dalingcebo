@@ -10,6 +10,14 @@ import Breadcrumb from '@/components/Breadcrumb'
 
 export default function Shop() {
   const [zoomLevel, setZoomLevel] = useState(0)
+  const mobileNavLinks = [
+    { label: 'Home', href: '/' },
+    { label: 'Shop', href: '/shop' },
+    { label: 'Catalogs', href: '/catalogs' },
+    { label: 'Cart', href: '/cart' },
+    { label: 'Account', href: '/account' },
+    { label: 'Contact', href: '/contact' },
+  ]
 
   return (
     <main className="min-h-screen">

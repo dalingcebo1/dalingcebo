@@ -31,11 +31,14 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
   const getGridColumns = () => {
     switch (zoomLevel) {
       case 0:
+        // Default view: dense 4-column grid on desktop
         return 'grid-cols-2 md:grid-cols-4'
       case 1:
-        return 'grid-cols-1 md:grid-cols-2'
+        // Mid zoom: more breathing room with 2 columns on desktop
+        return 'grid-cols-2 md:grid-cols-2'
       case 2:
-        return 'grid-cols-1'
+        // Max zoom: single column for full-width artworks
+        return 'grid-cols-1 md:grid-cols-1'
       default:
         return 'grid-cols-2 md:grid-cols-4'
     }
