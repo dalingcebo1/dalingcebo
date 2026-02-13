@@ -134,13 +134,16 @@ export default function VariantSelector({
                 onClick={() => setSelectedFrameId(variant.id)}
                 disabled={!variant.inStock}
                 className={`
-                  w-full p-3 text-left border rounded-lg transition-all duration-200
+                  w-full p-3 text-left border rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
                   ${selectedFrameId === variant.id 
                     ? 'border-black bg-black text-white ring-1 ring-black ring-offset-1' 
                     : 'border-gray-200 hover:border-black bg-white text-gray-900'
                   }
                   ${!variant.inStock ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}
                 `}
+                aria-label={`${variant.name} frame option, ${variant.priceAdjustment > 0 ? 'adds' : variant.priceAdjustment < 0 ? 'reduces' : 'no change to'} price${variant.processingDays > 0 ? `, adds ${variant.processingDays} days processing time` : ''}`}
+                aria-pressed={selectedFrameId === variant.id}
+                aria-disabled={!variant.inStock}
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -155,7 +158,7 @@ export default function VariantSelector({
                   </div>
                   <div className="text-right">
                     {variant.priceAdjustment !== 0 && (
-                      <div className="text-xs font-medium">
+                      <div className={`text-xs font-medium ${selectedFrameId === variant.id ? 'text-white' : 'text-gray-900'}`}>
                         {variant.priceAdjustment > 0 ? '+' : ''}
                         R{variant.priceAdjustment.toFixed(2)}
                       </div>
@@ -168,7 +171,7 @@ export default function VariantSelector({
                   </div>
                 </div>
                 {!variant.inStock && (
-                  <div className="text-[10px] mt-1 uppercase tracking-wide text-red-500">
+                  <div className="text-[10px] mt-1 uppercase tracking-wide text-red-500 font-medium">
                     Out of Stock
                   </div>
                 )}
@@ -191,13 +194,16 @@ export default function VariantSelector({
                 onClick={() => setSelectedCanvasId(variant.id)}
                 disabled={!variant.inStock}
                 className={`
-                  w-full p-3 text-left border rounded-lg transition-all duration-200
+                  w-full p-3 text-left border rounded-lg transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2
                   ${selectedCanvasId === variant.id 
                     ? 'border-black bg-black text-white ring-1 ring-black ring-offset-1' 
                     : 'border-gray-200 hover:border-black bg-white text-gray-900'
                   }
                   ${!variant.inStock ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}
                 `}
+                aria-label={`${variant.name} canvas option, ${variant.priceAdjustment > 0 ? 'adds' : variant.priceAdjustment < 0 ? 'reduces' : 'no change to'} price${variant.processingDays > 0 ? `, adds ${variant.processingDays} days processing time` : ''}`}
+                aria-pressed={selectedCanvasId === variant.id}
+                aria-disabled={!variant.inStock}
               >
                 <div className="flex justify-between items-start">
                   <div>
@@ -212,7 +218,7 @@ export default function VariantSelector({
                   </div>
                   <div className="text-right">
                     {variant.priceAdjustment !== 0 && (
-                      <div className="text-xs font-medium">
+                      <div className={`text-xs font-medium ${selectedCanvasId === variant.id ? 'text-white' : 'text-gray-900'}`}>
                         {variant.priceAdjustment > 0 ? '+' : ''}
                         R{variant.priceAdjustment.toFixed(2)}
                       </div>
@@ -225,7 +231,7 @@ export default function VariantSelector({
                   </div>
                 </div>
                 {!variant.inStock && (
-                  <div className="text-[10px] mt-1 uppercase tracking-wide text-red-500">
+                  <div className="text-[10px] mt-1 uppercase tracking-wide text-red-500 font-medium">
                     Out of Stock
                   </div>
                 )}
@@ -237,40 +243,48 @@ export default function VariantSelector({
 
       {/* Price Summary */}
       {priceAdjustment !== 0 && (
-        <div className="pt-4 border-t border-gray-200">
-          <div className="flex justify-between text-sm">
-            <span className="uppercase tracking-wide">Base Price</span>
-            <span>R{basePrice.toFixed(2)}</span>
+        <div className="pt-4 border-t border-gray-200 bg-blue-50 border border-blue-100 rounded-lg p-4">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="uppercase tracking-wide text-gray-700">Base Price</span>
+            <span className="font-medium">R{basePrice.toFixed(2)}</span>
           </div>
           {selectedFrame && selectedFrame.priceAdjustment !== 0 && (
-            <div className="flex justify-between text-sm mt-2 opacity-75">
+            <div className="flex justify-between text-sm mt-2 text-blue-900">
               <span>{selectedFrame.name}</span>
-              <span>
+              <span className="font-medium">
                 {selectedFrame.priceAdjustment > 0 ? '+' : ''}
                 R{selectedFrame.priceAdjustment.toFixed(2)}
               </span>
             </div>
           )}
           {selectedCanvas && selectedCanvas.priceAdjustment !== 0 && (
-            <div className="flex justify-between text-sm mt-2 opacity-75">
+            <div className="flex justify-between text-sm mt-2 text-blue-900">
               <span>{selectedCanvas.name}</span>
-              <span>
+              <span className="font-medium">
                 {selectedCanvas.priceAdjustment > 0 ? '+' : ''}
                 R{selectedCanvas.priceAdjustment.toFixed(2)}
               </span>
             </div>
           )}
-          <div className="flex justify-between font-bold mt-3 pt-3 border-t border-gray-200">
+          <div className="flex justify-between font-bold mt-3 pt-3 border-t border-blue-200 text-base">
             <span className="uppercase tracking-wide">Total Price</span>
-            <span>R{(basePrice + priceAdjustment).toFixed(2)}</span>
+            <span className="text-lg">R{(basePrice + priceAdjustment).toFixed(2)}</span>
           </div>
         </div>
       )}
 
       {/* Processing Time Notice */}
       {totalProcessingDays > 0 && (
-        <div className="text-sm text-gray-600 bg-gray-50 p-3">
-          <strong>Processing Time:</strong> Additional {totalProcessingDays} business day{totalProcessingDays !== 1 ? 's' : ''} for selected options.
+        <div className="text-sm text-blue-900 bg-blue-50 border border-blue-100 p-4 rounded-lg">
+          <div className="flex items-start gap-2">
+            <svg className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+              <p className="font-medium uppercase tracking-wide text-xs mb-1">Additional Processing Time</p>
+              <p className="text-blue-800">Selected options add {totalProcessingDays} business day{totalProcessingDays !== 1 ? 's' : ''} to fulfillment.</p>
+            </div>
+          </div>
         </div>
       )}
     </div>
