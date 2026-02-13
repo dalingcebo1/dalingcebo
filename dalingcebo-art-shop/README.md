@@ -136,6 +136,9 @@ See `.env.example` for all required variables:
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
+- `npm run test:e2e` - Run end-to-end tests with Playwright
+- `npm run test:e2e:ui` - Run E2E tests with Playwright UI
+- `npm run test:e2e:headed` - Run E2E tests in headed mode
 - `npm run catalogs:sync` - Sync catalog data
 
 ## Security
