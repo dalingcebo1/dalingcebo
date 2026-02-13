@@ -44,8 +44,7 @@ export default function ArtworkDetail() {
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant | null>(null)
 
   // Early validation: check if ID is valid
-  const artworkId = params.id
-  const isValidId = /^\d+$/.test(artworkId) && parseInt(artworkId, 10) > 0
+  const isValidId = /^\d+$/.test(params.id) && parseInt(params.id, 10) > 0
 
   useEffect(() => {
     setIsVisible(true)
@@ -146,7 +145,7 @@ export default function ArtworkDetail() {
     setIsInquiryOpen(true)
   }
 
-  const renderFallback = (message: string, action?: () => void, actionLabel?: string, secondaryAction?: () => void, secondaryLabel?: string) => (
+  const renderFallback = (message: string, description: string, action?: () => void, actionLabel?: string, secondaryAction?: () => void, secondaryLabel?: string) => (
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
       <div className="flex items-center justify-center min-h-[60vh] px-4 text-center">
@@ -156,7 +155,7 @@ export default function ArtworkDetail() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <h1 className="text-2xl font-light tracking-tight mb-2">{message}</h1>
-            <p className="text-gray-600 text-sm">We couldn't find the artwork you're looking for.</p>
+            <p className="text-gray-600 text-sm">{description}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {action && actionLabel && (
@@ -202,14 +201,15 @@ export default function ArtworkDetail() {
 
   if (error) {
     if (error === 'not-found') {
-      return renderFallback('Artwork Not Found')
+      return renderFallback('Artwork Not Found', "We couldn't find the artwork you're looking for.")
     }
     if (error === 'invalid-link') {
-      return renderFallback('Invalid Artwork Link')
+      return renderFallback('Invalid Artwork Link', 'The artwork link appears to be invalid or malformed.')
     }
     if (error === 'server-error') {
       return renderFallback(
         'Server Error',
+        'We encountered an issue loading this artwork. Please try again.',
         () => router.refresh(),
         'Try Again',
         () => router.push('/shop'),
@@ -218,6 +218,7 @@ export default function ArtworkDetail() {
     }
     return renderFallback(
       'Unable to Load Artwork',
+      'Something went wrong while loading this artwork.',
       () => router.refresh(),
       'Try Again',
       () => router.push('/shop'),
@@ -226,7 +227,7 @@ export default function ArtworkDetail() {
   }
 
   if (!artwork) {
-    return renderFallback('Artwork Not Available')
+    return renderFallback('Artwork Not Available', "This artwork is currently unavailable.")
   }
 
   const currentPrice = selectedVariant ? selectedVariant.finalPrice : artwork.price
