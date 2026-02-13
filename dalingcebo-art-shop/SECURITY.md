@@ -74,7 +74,7 @@ We take all security reports seriously and will respond within 48 hours.
    - Never share `.env` files
    - Rotate API keys every 90 days
    - Use strong, unique admin passwords
-   - Keep `NEXT_PUBLIC_ADMIN_KEY` secret
+   - Keep `ADMIN_KEY` secret (server-only, never exposed to client)
 
 2. **Database**
    - Review RLS policies regularly

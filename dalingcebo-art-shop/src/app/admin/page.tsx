@@ -72,10 +72,9 @@ function AdminDashboard() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [zoomLevel, setZoomLevel] = useState(0)
-  const adminKey = process.env.NEXT_PUBLIC_ADMIN_KEY ?? ''
-  const isProtected = adminKey.length > 0
-  const [authToken, setAuthToken] = useState(isProtected ? '' : adminKey)
-  const [isAuthorized, setIsAuthorized] = useState(!isProtected)
+  // Admin key is server-only, so we just track if user has entered one
+  const [authToken, setAuthToken] = useState('')
+  const [isAuthorized, setIsAuthorized] = useState(false)
   const [accessCode, setAccessCode] = useState('')
   const [authError, setAuthError] = useState<string | null>(null)
   const { artworks, isLoading, error, reload, stats, categories } = useArtworks()
@@ -107,14 +106,13 @@ function AdminDashboard() {
   const titleInputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    if (!isProtected) return
     if (typeof window === 'undefined') return
     const stored = sessionStorage.getItem('dalingcebo_admin_key')
-    if (stored && stored === adminKey) {
+    if (stored) {
       setAuthToken(stored)
       setIsAuthorized(true)
     }
-  }, [isProtected, adminKey])
+  }, [])
 
   useEffect(() => {
     const nextFilters = normalizeInventoryFilters()
@@ -259,22 +257,20 @@ function AdminDashboard() {
 
   const handleUnlock = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!isProtected) {
-      setIsAuthorized(true)
+    const code = accessCode.trim()
+    if (!code) {
+      setAuthError('Please enter an access code')
       return
     }
-    const code = accessCode.trim()
-    if (code && code === adminKey) {
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('dalingcebo_admin_key', code)
-      }
-      setAuthToken(code)
-      setIsAuthorized(true)
-      setAuthError(null)
-      setAccessCode('')
-    } else {
-      setAuthError('Invalid access code')
+    // Store the code and mark as authorized
+    // Server will validate on API requests
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('dalingcebo_admin_key', code)
     }
+    setAuthToken(code)
+    setIsAuthorized(true)
+    setAuthError(null)
+    setAccessCode('')
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -548,11 +544,6 @@ function AdminDashboard() {
                 <button type="submit" className="btn-yeezy-primary w-full">
                   Unlock Dashboard
                 </button>
-                {!isProtected && (
-                  <p className="text-xs text-gray-500">
-                    Set NEXT_PUBLIC_ADMIN_KEY to require a code.
-                  </p>
-                )}
               </form>
             </div>
           </div>

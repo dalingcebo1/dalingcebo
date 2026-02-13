@@ -214,7 +214,7 @@ All variables documented in `.env.example`:
 - `YOCO_WEBHOOK_SECRET`
 - `NEXT_PUBLIC_GOOGLE_CLIENT_ID`
 - `EMAIL_FROM`
-- `NEXT_PUBLIC_ADMIN_KEY`
+- `ADMIN_KEY`
 
 ## Next Steps for Deployment
 
