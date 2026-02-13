@@ -5,4 +5,4 @@ Disallow: /admin
 Disallow: /api
 
 # Host
-Host: https://dalingcebo.art
+Host: http://localhost:3000

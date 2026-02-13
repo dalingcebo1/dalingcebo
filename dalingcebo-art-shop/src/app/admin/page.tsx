@@ -263,34 +263,30 @@ function AdminDashboard() {
       return
     }
     
-    // Validate the key by attempting a test API call
-    // We'll try to create an artwork with invalid data, which should fail with 401 if key is wrong
-    // or with 400 if key is valid but data is invalid
+    // Validate the key using the dedicated validation endpoint
     try {
-      const testResponse = await fetch('/api/artworks', {
+      const response = await fetch('/api/auth/verify-admin', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'x-admin-key': code
-        },
-        body: JSON.stringify({}) // Invalid data to trigger validation
+        }
       })
       
-      // If we get a 401, the key is invalid
-      if (testResponse.status === 401) {
-        setAuthError('Invalid access code')
-        return
+      // Only 200 status indicates valid key
+      if (response.status === 200) {
+        // Store the code and mark as authorized
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('dalingcebo_admin_key', code)
+        }
+        setAuthToken(code)
+        setIsAuthorized(true)
+        setAuthError(null)
+        setAccessCode('')
+      } else {
+        // Any other status means invalid key or server error
+        const data = await response.json().catch(() => ({ message: 'Invalid access code' }))
+        setAuthError(data.message || 'Invalid access code')
       }
-      
-      // Any other response means the key is valid (even if the request fails for other reasons)
-      // Store the code and mark as authorized
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('dalingcebo_admin_key', code)
-      }
-      setAuthToken(code)
-      setIsAuthorized(true)
-      setAuthError(null)
-      setAccessCode('')
     } catch (error) {
       // Network error or other issue
       setAuthError('Unable to verify access code. Please try again.')
