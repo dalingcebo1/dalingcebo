@@ -14,8 +14,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ valid: true }, { status: 200 });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unauthorized';
-    const lower = message.toLowerCase();
-    const status = lower.includes('unauthorized') ? 401 : 500;
+    const errorName = error instanceof Error ? error.name : '';
+    // Use error.name to determine the status code
+    const status = errorName === 'UNAUTHORIZED' ? 401 : 500;
     return NextResponse.json({ valid: false, message }, { status });
   }
 }

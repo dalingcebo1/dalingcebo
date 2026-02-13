@@ -83,7 +83,7 @@ export function ensureAdminRequest(request: Request) {
     // In production, require the admin key to be set
     if (process.env.NODE_ENV === 'production') {
       const error = new Error('Admin key not configured - server misconfiguration');
-      error.name = 'UNAUTHORIZED';
+      error.name = 'ConfigurationError';
       throw error;
     }
     // In development, allow requests without admin key if not configured
