@@ -92,9 +92,9 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
           case 'price-desc':
             return b.price - a.price
           case 'year-desc':
-            return parseInt(b.year) - parseInt(a.year)
+            return b.year - a.year
           case 'year-asc':
-            return parseInt(a.year) - parseInt(b.year)
+            return a.year - b.year
           default:
             return 0
         }

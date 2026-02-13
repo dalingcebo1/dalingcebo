@@ -46,24 +46,6 @@ export default function ArtworkDetail() {
     setIsVisible(true)
   }, [])
 
-  // Keyboard navigation for lightbox
-  useEffect(() => {
-    if (!isLightboxOpen) return
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsLightboxOpen(false)
-      } else if (e.key === 'ArrowLeft' && selectedImage > 0) {
-        setSelectedImage(prev => prev - 1)
-      } else if (e.key === 'ArrowRight' && selectedImage < imageList.length - 1) {
-        setSelectedImage(prev => prev + 1)
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isLightboxOpen, selectedImage, imageList.length])
-
   useEffect(() => {
     const controller = new AbortController()
     async function fetchArtwork() {
@@ -108,6 +90,24 @@ export default function ArtworkDetail() {
     }
     return [getArtworkPrimaryImage(artwork)]
   }, [artwork])
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!isLightboxOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false)
+      } else if (e.key === 'ArrowLeft' && selectedImage > 0) {
+        setSelectedImage(prev => prev - 1)
+      } else if (e.key === 'ArrowRight' && selectedImage < imageList.length - 1) {
+        setSelectedImage(prev => prev + 1)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isLightboxOpen, selectedImage, imageList.length])
 
   const handleVariantChange = (variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
