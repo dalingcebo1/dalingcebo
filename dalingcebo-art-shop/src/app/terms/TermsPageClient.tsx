@@ -5,7 +5,6 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 
 export default function Terms() {
-  const [zoomLevel, setZoomLevel] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -14,7 +13,7 @@ export default function Terms() {
 
   return (
     <main className="min-h-screen">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
+      <Header showBackButton={false} />
       
       <section className="yeezy-section">
         <div className="yeezy-container max-w-4xl">

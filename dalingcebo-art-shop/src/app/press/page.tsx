@@ -10,7 +10,7 @@ export const metadata = {
 export default function PressPage() {
   return (
     <main className="min-h-screen flex flex-col">
-      <Header zoomLevel={0} setZoomLevel={() => {}} />
+      <Header showBackButton={false} />
       
       <section className="border-b border-gray-200 bg-white">
         <div className="yeezy-container py-4">
