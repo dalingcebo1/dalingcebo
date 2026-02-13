@@ -50,6 +50,26 @@ export default function ArtworkDetail() {
     setIsVisible(true)
   }, [])
 
+  // Handle ESC key to close lightbox
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isLightboxOpen) {
+        setIsLightboxOpen(false)
+      }
+    }
+    
+    if (isLightboxOpen) {
+      document.addEventListener('keydown', handleEscape)
+      // Prevent body scroll when lightbox is open
+      document.body.style.overflow = 'hidden'
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isLightboxOpen])
+
   useEffect(() => {
     // Skip fetch if ID is invalid
     if (!isValidId) {
@@ -150,30 +170,48 @@ export default function ArtworkDetail() {
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
       <div className="flex items-center justify-center min-h-[60vh] px-4 text-center">
         <div className="max-w-md">
-          <div className="mb-6">
-            <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <h1 className="text-2xl font-light tracking-tight mb-2">{message}</h1>
-            <p className="text-gray-600 text-sm">{description}</p>
+          <div className="mb-8">
+            <div className="w-20 h-20 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+              <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h1 className="text-3xl font-light tracking-tight mb-3 text-gray-900">{message}</h1>
+            <p className="text-gray-600 text-base leading-relaxed">{description}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {action && actionLabel && (
-              <button onClick={action} className="px-6 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors">
+              <button 
+                onClick={action} 
+                className="px-8 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                aria-label={actionLabel}
+              >
                 {actionLabel}
               </button>
             )}
             {secondaryAction && secondaryLabel && (
-              <button onClick={secondaryAction} className="px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors">
+              <button 
+                onClick={secondaryAction} 
+                className="px-8 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                aria-label={secondaryLabel}
+              >
                 {secondaryLabel}
               </button>
             )}
             {!action && !secondaryAction && (
               <>
-                <button onClick={() => router.push('/shop')} className="px-6 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors">
+                <button 
+                  onClick={() => router.push('/shop')} 
+                  className="px-8 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                  aria-label="Return to shop"
+                >
                   Back to Shop
                 </button>
-                <button onClick={() => router.push('/')} className="px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors">
+                <button 
+                  onClick={() => router.push('/')} 
+                  className="px-8 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                  aria-label="Return to home page"
+                >
                   Go Home
                 </button>
               </>
@@ -287,12 +325,13 @@ export default function ArtworkDetail() {
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square overflow-hidden rounded-lg transition-all bg-gray-50 ${
+                      className={`relative aspect-square overflow-hidden rounded-lg transition-all bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
                         selectedImage === index 
-                          ? 'ring-2 ring-black shadow-md' 
+                          ? 'ring-2 ring-black shadow-lg scale-105' 
                           : 'opacity-60 hover:opacity-100 hover:shadow-md'
                       }`}
                       aria-label={`View image ${index + 1}`}
+                      aria-pressed={selectedImage === index}
                     >
                       <Image
                         src={image}
@@ -300,6 +339,9 @@ export default function ArtworkDetail() {
                         fill
                         className="object-contain"
                       />
+                      {selectedImage === index && (
+                        <div className="absolute inset-0 ring-2 ring-inset ring-black/20"></div>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -390,26 +432,29 @@ export default function ArtworkDetail() {
               <div className="space-y-4">
                 {artwork.inStock ? (
                   <>
-                    <div className="flex gap-3">
+                    <div className="flex flex-col sm:flex-row gap-3">
                       <button 
                         onClick={handleAddToCart} 
-                        className="flex-[2] px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all shadow-sm hover:shadow-md"
+                        className="flex-[2] px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all shadow-sm hover:shadow-md"
+                        aria-label="Add artwork to shopping cart"
                       >
-                        <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
                         Add to Cart
                       </button>
                       <button 
                         onClick={handleReserve}
-                        className="flex-1 px-4 py-3.5 bg-white border border-gray-300 text-black rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all"
+                        className="flex-1 px-4 py-3.5 bg-white border border-gray-300 text-black rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                        aria-label="Reserve this artwork"
                       >
                         Reserve
                       </button>
                     </div>
                     <button 
                       onClick={handleInquire} 
-                      className="w-full px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] text-gray-600 hover:text-black hover:border-black focus:outline-none focus:ring-1 focus:ring-black transition-all"
+                      className="w-full px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] text-gray-600 hover:text-black hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                      aria-label="Inquire about this artwork"
                     >
                       Inquire About This Piece
                     </button>
@@ -417,9 +462,10 @@ export default function ArtworkDetail() {
                 ) : (
                   <button 
                     onClick={handleInquire} 
-                    className="w-full px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-black focus:ring-offset-2 transition-all"
+                    className="w-full px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                    aria-label="Get notified when artwork becomes available"
                   >
-                    <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                     </svg>
                     Notify When Available
@@ -545,40 +591,73 @@ export default function ArtworkDetail() {
         <div 
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setIsLightboxOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image lightbox"
         >
           <button 
-            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10"
+            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
             onClick={() => setIsLightboxOpen(false)}
+            aria-label="Close lightbox (Press Escape)"
           >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
               src={imageList[selectedImage] ?? getArtworkPlaceholder()}
-              alt={artwork.title}
+              alt={`${artwork.title} - Full view`}
               fill
               className="object-contain"
               sizes="90vw"
             />
           </div>
           {imageList.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-              {imageList.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    setSelectedImage(index)
-                  }}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    selectedImage === index ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'
-                  }`}
-                  aria-label={`View image ${index + 1}`}
-                />
-              ))}
-            </div>
+            <>
+              {/* Navigation buttons */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))
+                }}
+                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                aria-label="Previous image"
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))
+                }}
+                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                aria-label="Next image"
+              >
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              {/* Thumbnail indicators */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full">
+                {imageList.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      setSelectedImage(index)
+                    }}
+                    className={`w-2 h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                      selectedImage === index ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'
+                    }`}
+                    aria-label={`View image ${index + 1} of ${imageList.length}`}
+                    aria-current={selectedImage === index}
+                  />
+                ))}
+              </div>
+            </>
           )}
         </div>
       )}
