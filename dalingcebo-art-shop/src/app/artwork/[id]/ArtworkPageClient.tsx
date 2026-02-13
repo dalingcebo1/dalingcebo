@@ -509,7 +509,9 @@ export default function ArtworkDetail() {
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/50 disabled:opacity-30 disabled:cursor-not-allowed"
                 onClick={(e) => {
                   e.stopPropagation()
-                  setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))
+                  if (selectedImage > 0) {
+                    setSelectedImage(prev => prev - 1)
+                  }
                 }}
                 disabled={selectedImage === 0}
                 aria-label="Previous image"
@@ -522,7 +524,9 @@ export default function ArtworkDetail() {
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/50 disabled:opacity-30 disabled:cursor-not-allowed"
                 onClick={(e) => {
                   e.stopPropagation()
-                  setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))
+                  if (selectedImage < imageList.length - 1) {
+                    setSelectedImage(prev => prev + 1)
+                  }
                 }}
                 disabled={selectedImage === imageList.length - 1}
                 aria-label="Next image"

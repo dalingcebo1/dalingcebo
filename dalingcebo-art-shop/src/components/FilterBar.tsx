@@ -23,7 +23,7 @@ export default function FilterBar({
   showCategoryFilter = true 
 }: FilterBarProps) {
   const [filters, setFilters] = useState<FilterState>({
-    availability: 'available',
+    availability: 'all',
     priceRange: priceRange,
     sortBy: 'title',
     category: 'all'
