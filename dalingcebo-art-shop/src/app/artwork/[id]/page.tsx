@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
@@ -43,11 +43,22 @@ export default function ArtworkDetail() {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant | null>(null)
 
+  // Early validation: check if ID is valid
+  const artworkId = params.id
+  const isValidId = /^\d+$/.test(artworkId) && parseInt(artworkId, 10) > 0
+
   useEffect(() => {
     setIsVisible(true)
   }, [])
 
   useEffect(() => {
+    // Skip fetch if ID is invalid
+    if (!isValidId) {
+      setIsLoading(false)
+      setError('not-found')
+      return
+    }
+
     const controller = new AbortController()
     async function fetchArtwork() {
       try {
@@ -56,6 +67,12 @@ export default function ArtworkDetail() {
         if (!response.ok) {
           if (response.status === 404) {
             throw new Error('not-found')
+          }
+          if (response.status === 400) {
+            throw new Error('invalid-link')
+          }
+          if (response.status >= 500) {
+            throw new Error('server-error')
           }
           throw new Error('Unable to load artwork details.')
         }
@@ -74,7 +91,7 @@ export default function ArtworkDetail() {
     }
     fetchArtwork()
     return () => controller.abort()
-  }, [params.id])
+  }, [params.id, isValidId])
 
   const relatedArtworks = useMemo(() => {
     if (!artwork) return []
@@ -92,9 +109,9 @@ export default function ArtworkDetail() {
     return [getArtworkPrimaryImage(artwork)]
   }, [artwork])
 
-  const handleVariantChange = (variantData: SelectedVariant) => {
+  const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
-  }
+  }, [])
 
   const handleAddToCart = () => {
     if (!artwork) return
@@ -129,21 +146,40 @@ export default function ArtworkDetail() {
     setIsInquiryOpen(true)
   }
 
-  const renderFallback = (message: string, action?: () => void, actionLabel?: string) => (
+  const renderFallback = (message: string, action?: () => void, actionLabel?: string, secondaryAction?: () => void, secondaryLabel?: string) => (
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
       <div className="flex items-center justify-center min-h-[60vh] px-4 text-center">
-        <div>
-          <h1 className="yeezy-subheading text-2xl mb-4">{message}</h1>
-          {action && actionLabel ? (
-            <button onClick={action} className="btn-yeezy">
-              {actionLabel}
-            </button>
-          ) : (
-            <button onClick={() => router.push('/')} className="btn-yeezy">
-              Return Home
-            </button>
-          )}
+        <div className="max-w-md">
+          <div className="mb-6">
+            <svg className="w-16 h-16 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <h1 className="text-2xl font-light tracking-tight mb-2">{message}</h1>
+            <p className="text-gray-600 text-sm">We couldn't find the artwork you're looking for.</p>
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {action && actionLabel && (
+              <button onClick={action} className="px-6 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors">
+                {actionLabel}
+              </button>
+            )}
+            {secondaryAction && secondaryLabel && (
+              <button onClick={secondaryAction} className="px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors">
+                {secondaryLabel}
+              </button>
+            )}
+            {!action && !secondaryAction && (
+              <>
+                <button onClick={() => router.push('/shop')} className="px-6 py-3 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 transition-colors">
+                  Back to Shop
+                </button>
+                <button onClick={() => router.push('/')} className="px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:border-black transition-colors">
+                  Go Home
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </div>
       <Footer />
@@ -166,13 +202,31 @@ export default function ArtworkDetail() {
 
   if (error) {
     if (error === 'not-found') {
-      return renderFallback('Artwork not found')
+      return renderFallback('Artwork Not Found')
     }
-    return renderFallback(error, () => router.refresh(), 'Try Again')
+    if (error === 'invalid-link') {
+      return renderFallback('Invalid Artwork Link')
+    }
+    if (error === 'server-error') {
+      return renderFallback(
+        'Server Error',
+        () => router.refresh(),
+        'Try Again',
+        () => router.push('/shop'),
+        'Back to Shop'
+      )
+    }
+    return renderFallback(
+      'Unable to Load Artwork',
+      () => router.refresh(),
+      'Try Again',
+      () => router.push('/shop'),
+      'Back to Shop'
+    )
   }
 
   if (!artwork) {
-    return renderFallback('Artwork not available')
+    return renderFallback('Artwork Not Available')
   }
 
   const currentPrice = selectedVariant ? selectedVariant.finalPrice : artwork.price
