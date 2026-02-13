@@ -144,7 +144,9 @@ export default function FilterBar({
             {/* Price Range */}
             <div>
               <label className="block text-xs font-medium text-gray-600 uppercase tracking-wider mb-2">
-                Price Range: ${filters.priceRange[0].toLocaleString()} - ${filters.priceRange[1].toLocaleString()}
+                <span aria-live="polite">
+                  Price Range: ${filters.priceRange[0].toLocaleString()} - ${filters.priceRange[1].toLocaleString()}
+                </span>
               </label>
               <div className="flex items-center gap-2">
                 <input
@@ -159,6 +161,8 @@ export default function FilterBar({
                     }
                   }}
                   className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
+                  aria-label="Minimum price"
+                  aria-valuetext={`$${filters.priceRange[0].toLocaleString()}`}
                 />
                 <input
                   type="range"
@@ -172,6 +176,8 @@ export default function FilterBar({
                     }
                   }}
                   className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-black"
+                  aria-label="Maximum price"
+                  aria-valuetext={`$${filters.priceRange[1].toLocaleString()}`}
                 />
               </div>
             </div>

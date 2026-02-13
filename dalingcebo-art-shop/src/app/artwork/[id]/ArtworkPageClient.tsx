@@ -491,7 +491,14 @@ export default function ArtworkDetail() {
         <div 
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setIsLightboxOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image gallery lightbox"
+          aria-describedby="lightbox-instructions"
         >
+          <span id="lightbox-instructions" className="sr-only">
+            Use arrow keys to navigate between images and Escape key to close
+          </span>
           <button 
             className="absolute top-4 right-4 md:top-6 md:right-6 text-white/80 hover:text-white transition-colors z-10 p-2 rounded-full bg-black/30 hover:bg-black/50"
             onClick={() => setIsLightboxOpen(false)}
