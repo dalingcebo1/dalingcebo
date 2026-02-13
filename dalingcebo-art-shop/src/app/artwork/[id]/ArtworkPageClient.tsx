@@ -91,6 +91,24 @@ export default function ArtworkDetail() {
     return [getArtworkPrimaryImage(artwork)]
   }, [artwork])
 
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!isLightboxOpen) return
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsLightboxOpen(false)
+      } else if (e.key === 'ArrowLeft' && selectedImage > 0) {
+        setSelectedImage(prev => prev - 1)
+      } else if (e.key === 'ArrowRight' && selectedImage < imageList.length - 1) {
+        setSelectedImage(prev => prev + 1)
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isLightboxOpen, selectedImage, imageList.length])
+
   const handleVariantChange = (variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
   }
@@ -473,27 +491,71 @@ export default function ArtworkDetail() {
         <div 
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setIsLightboxOpen(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Image gallery lightbox"
+          aria-describedby="lightbox-instructions"
         >
+          <span id="lightbox-instructions" className="sr-only">
+            Use arrow keys to navigate between images and Escape key to close
+          </span>
           <button 
-            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10"
+            className="absolute top-4 right-4 md:top-6 md:right-6 text-white/80 hover:text-white transition-colors z-10 p-2 rounded-full bg-black/30 hover:bg-black/50"
             onClick={() => setIsLightboxOpen(false)}
             aria-label="Close lightbox"
           >
-            <svg className="w-6 h-6" fill="none" stroke="#ffffff" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
-          <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
+          
+          {/* Navigation Arrows */}
+          {imageList.length > 1 && (
+            <>
+              <button 
+                className="absolute left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/50 disabled:opacity-30 disabled:cursor-not-allowed"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (selectedImage > 0) {
+                    setSelectedImage(prev => prev - 1)
+                  }
+                }}
+                disabled={selectedImage === 0}
+                aria-label="Previous image"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <button 
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors z-10 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/50 disabled:opacity-30 disabled:cursor-not-allowed"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (selectedImage < imageList.length - 1) {
+                    setSelectedImage(prev => prev + 1)
+                  }
+                }}
+                disabled={selectedImage === imageList.length - 1}
+                aria-label="Next image"
+              >
+                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </>
+          )}
+          
+          <div className="relative max-w-5xl max-h-[85vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
               src={imageList[selectedImage] ?? getArtworkPlaceholder()}
               alt={artwork.title}
               fill
               className="object-contain"
-              sizes="90vw"
+              sizes="(max-width: 768px) 95vw, 85vw"
             />
           </div>
           {imageList.length > 1 && (
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+            <div className="absolute bottom-4 md:bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 px-4 py-2 rounded-full backdrop-blur-sm">
               {imageList.map((_, index) => (
                 <button
                   key={index}
@@ -502,7 +564,7 @@ export default function ArtworkDetail() {
                     setSelectedImage(index)
                   }}
                   className={`w-2 h-2 rounded-full transition-all ${
-                    selectedImage === index ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'
+                    selectedImage === index ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/75'
                   }`}
                   aria-label={`View image ${index + 1}`}
                 />
