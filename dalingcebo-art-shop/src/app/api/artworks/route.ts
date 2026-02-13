@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readArtworks, upsertArtwork } from '@/lib/artworkStore';
 import { sanitizeArtworkPayload, ensureAdminRequest } from './helpers';
+import { createErrorResponse, handleUnknownError, ErrorCodes } from './errors';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -11,11 +12,7 @@ export async function GET() {
     const artworks = await readArtworks();
     return NextResponse.json(artworks);
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Failed to load artworks';
-    return NextResponse.json(
-      { message },
-      { status: 500 }
-    );
+    return handleUnknownError(error);
   }
 }
 
@@ -26,13 +23,23 @@ export async function POST(request: Request) {
     const created = await upsertArtwork(payload);
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unable to create artwork';
-    const lower = message.toLowerCase();
-    const status = lower.includes('unauthorized')
-      ? 401
-      : lower.includes('missing') || lower.includes('must')
-        ? 400
-        : 500;
-    return NextResponse.json({ message }, { status });
+    if (error instanceof Error) {
+      const lower = error.message.toLowerCase();
+      if (error.name === 'UNAUTHORIZED' || lower.includes('unauthorized')) {
+        return createErrorResponse(
+          ErrorCodes.UNAUTHORIZED,
+          error.message,
+          401
+        );
+      }
+      if (lower.includes('missing') || lower.includes('must')) {
+        return createErrorResponse(
+          ErrorCodes.BAD_REQUEST,
+          error.message,
+          400
+        );
+      }
+    }
+    return handleUnknownError(error);
   }
 }

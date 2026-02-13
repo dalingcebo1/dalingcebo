@@ -2,11 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Toast from '@/components/Toast'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import InquiryModal from '@/components/InquiryModal'
 import VariantSelector from '@/components/VariantSelector'
 import { VideoGallery } from '@/components/VideoPlayer'
@@ -24,8 +23,11 @@ interface SelectedVariant {
   processingDays: number
 }
 
-export default function ArtworkDetail() {
-  const params = useParams<{ id: string }>()
+interface ArtworkPageClientProps {
+  artwork: Artwork;
+}
+
+export default function ArtworkPageClient({ artwork }: ArtworkPageClientProps) {
   const router = useRouter()
   const { addToCart } = useCart()
   const { artworks: catalogue } = useArtworks()
@@ -34,9 +36,6 @@ export default function ArtworkDetail() {
   const [selectedImage, setSelectedImage] = useState(0)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
-  const [artwork, setArtwork] = useState<Artwork | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [isInquiryOpen, setIsInquiryOpen] = useState(false)
   const [inquiryMode, setInquiryMode] = useState<'inquiry' | 'reserve'>('inquiry')
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
@@ -45,35 +44,6 @@ export default function ArtworkDetail() {
   useEffect(() => {
     setIsVisible(true)
   }, [])
-
-  useEffect(() => {
-    const controller = new AbortController()
-    async function fetchArtwork() {
-      try {
-        setIsLoading(true)
-        const response = await fetch(`/api/artworks/${params.id}`, { signal: controller.signal })
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('not-found')
-          }
-          throw new Error('Unable to load artwork details.')
-        }
-        const data: Artwork = await response.json()
-        setArtwork(data)
-        setSelectedImage(0)
-        setError(null)
-      } catch (err) {
-        if ((err as Error).name === 'AbortError') return
-        const message = (err as Error).message
-        setError(message)
-        setArtwork(null)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchArtwork()
-    return () => controller.abort()
-  }, [params.id])
 
   const relatedArtworks = useMemo(() => {
     if (!artwork) return []
@@ -144,52 +114,6 @@ export default function ArtworkDetail() {
   const handleInquire = () => {
     setInquiryMode('inquiry')
     setIsInquiryOpen(true)
-  }
-
-  const renderFallback = (message: string, action?: () => void, actionLabel?: string) => (
-    <main className="min-h-screen">
-      <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-      <div className="flex items-center justify-center min-h-[60vh] px-4 text-center">
-        <div>
-          <h1 className="yeezy-subheading text-2xl mb-4">{message}</h1>
-          {action && actionLabel ? (
-            <button onClick={action} className="btn-yeezy">
-              {actionLabel}
-            </button>
-          ) : (
-            <button onClick={() => router.push('/')} className="btn-yeezy">
-              Return Home
-            </button>
-          )}
-        </div>
-      </div>
-      <Footer />
-    </main>
-  )
-
-  if (isLoading) {
-    return (
-      <>
-        <main className="min-h-screen">
-          <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-          <div className="min-h-[60vh] flex items-center justify-center">
-            <LoadingSpinner size="lg" />
-          </div>
-          <Footer />
-        </main>
-      </>
-    )
-  }
-
-  if (error) {
-    if (error === 'not-found') {
-      return renderFallback('Artwork not found')
-    }
-    return renderFallback(error, () => router.refresh(), 'Try Again')
-  }
-
-  if (!artwork) {
-    return renderFallback('Artwork not available')
   }
 
   const currentPrice = selectedVariant ? selectedVariant.finalPrice : artwork.price
