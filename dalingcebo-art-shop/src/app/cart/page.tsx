@@ -258,13 +258,13 @@ export default function CartPage() {
                 </div>
               )}
               
-              <button
-                onClick={handleCheckout}
-                className="w-full btn-yeezy-primary mb-3"
+              <Link
+                href="/checkout"
+                className="w-full btn-yeezy-primary mb-3 block text-center"
                 aria-label="Proceed to checkout"
               >
                 Proceed to Checkout
-              </button>
+              </Link>
               <Link
                 href="/shop"
                 className="block text-center text-xs uppercase tracking-[0.1em] text-gray-600 hover:text-black transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
