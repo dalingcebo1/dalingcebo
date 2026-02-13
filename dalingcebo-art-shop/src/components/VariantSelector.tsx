@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ArtworkVariant } from '@/types/artwork'
 
 interface VariantSelectorProps {
@@ -25,6 +25,13 @@ export default function VariantSelector({
   const [selectedFrameId, setSelectedFrameId] = useState<string | null>(null)
   const [selectedCanvasId, setSelectedCanvasId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
+  
+  // Store callback in ref to avoid including it in effect dependencies
+  const onVariantChangeRef = useRef(onVariantChange)
+  
+  useEffect(() => {
+    onVariantChangeRef.current = onVariantChange
+  }, [onVariantChange])
 
   useEffect(() => {
     let isCancelled = false
@@ -74,7 +81,7 @@ export default function VariantSelector({
       processingDays += canvasVariant.processingDays
     }
 
-    onVariantChange?.({
+    onVariantChangeRef.current?.({
       frameVariantId: selectedFrameId || undefined,
       canvasVariantId: selectedCanvasId || undefined,
       frameVariantName: frameVariant?.name,
@@ -88,7 +95,6 @@ export default function VariantSelector({
     selectedCanvasId,
     variants,
     loading,
-    onVariantChange,
   ])
 
   const frameVariants = variants.filter(v => v.variantType === 'frame')

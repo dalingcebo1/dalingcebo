@@ -71,7 +71,10 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
   const router = useRouter()
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 24)
+    const handleScroll = () => {
+      const scrolled = window.scrollY > 24
+      setIsScrolled(prev => prev === scrolled ? prev : scrolled)
+    }
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])

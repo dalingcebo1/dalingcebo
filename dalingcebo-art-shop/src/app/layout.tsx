@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { CartProvider } from "@/contexts/CartContext";
-import { ArtworksProvider } from "@/hooks/useArtworks";
+import Providers from "./providers";
 import SupabaseProvider from "@/components/SupabaseProvider";
 import StructuredData from "@/components/StructuredData";
 import Analytics from "@/components/Analytics";
@@ -82,11 +81,9 @@ export default async function RootLayout({
         <Analytics />
         <StructuredData />
         <SupabaseProvider initialSession={session}>
-          <CartProvider>
-            <ArtworksProvider>
-              {children}
-            </ArtworksProvider>
-          </CartProvider>
+          <Providers>
+            {children}
+          </Providers>
         </SupabaseProvider>
       </body>
     </html>

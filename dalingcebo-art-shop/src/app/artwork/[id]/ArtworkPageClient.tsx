@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
@@ -91,9 +91,9 @@ export default function ArtworkDetail() {
     return [getArtworkPrimaryImage(artwork)]
   }, [artwork])
 
-  const handleVariantChange = (variantData: SelectedVariant) => {
+  const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
-  }
+  }, [])
 
   const handleAddToCart = () => {
     if (!artwork) return
