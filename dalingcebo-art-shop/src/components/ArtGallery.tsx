@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import LoadingSpinner from '@/components/LoadingSpinner'
+import FilterBar, { FilterState } from '@/components/FilterBar'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage } from '@/lib/media'
 
@@ -15,7 +16,7 @@ interface ArtGalleryProps {
 
 export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGalleryProps) {
   const { artworks, isLoading, error, reload, stats } = useArtworks()
-  const [showAvailableOnly, setShowAvailableOnly] = useState(true)
+  const [filters, setFilters] = useState<FilterState | null>(null)
   const router = useRouter()
 
   const getGridColumns = () => {
@@ -31,63 +32,113 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
     }
   }
 
+  // Get unique categories
+  const categories = useMemo(() => {
+    const uniqueCategories = new Set(artworks.map(a => a.category).filter(Boolean))
+    return Array.from(uniqueCategories).sort()
+  }, [artworks])
+
+  // Get price range
+  const priceRange = useMemo((): [number, number] => {
+    if (artworks.length === 0) return [0, 10000]
+    const prices = artworks.map(a => a.price)
+    return [Math.min(...prices), Math.max(...prices)]
+  }, [artworks])
+
+  const handleFilterChange = useCallback((newFilters: FilterState) => {
+    setFilters(newFilters)
+  }, [])
+
   const filteredArtworks = useMemo(() => {
-    return artworks.filter((artwork) => {
+    let result = artworks.filter((artwork) => {
       // Apply size filter from page-specific prop
       if (sizeFilter !== 'all' && artwork.scale !== sizeFilter) {
         return false
       }
-      // Apply availability filter
-      if (showAvailableOnly && !artwork.inStock) {
-        return false
-      }
       return true
     })
-  }, [artworks, sizeFilter, showAvailableOnly])
+
+    // Apply filters if they exist
+    if (filters) {
+      result = result.filter((artwork) => {
+        // Availability filter
+        if (filters.availability === 'available' && !artwork.inStock) {
+          return false
+        }
+        if (filters.availability === 'sold' && artwork.inStock) {
+          return false
+        }
+
+        // Category filter
+        if (filters.category !== 'all' && artwork.category !== filters.category) {
+          return false
+        }
+
+        // Price range filter
+        if (artwork.price < filters.priceRange[0] || artwork.price > filters.priceRange[1]) {
+          return false
+        }
+
+        return true
+      })
+
+      // Apply sorting
+      result.sort((a, b) => {
+        switch (filters.sortBy) {
+          case 'title':
+            return a.title.localeCompare(b.title)
+          case 'price-asc':
+            return a.price - b.price
+          case 'price-desc':
+            return b.price - a.price
+          case 'year-desc':
+            return (b.year || 0) - (a.year || 0)
+          case 'year-asc':
+            return (a.year || 0) - (b.year || 0)
+          default:
+            return 0
+        }
+      })
+    }
+
+    return result
+  }, [artworks, sizeFilter, filters])
+
+  // Calculate filtered stats
+  const filteredStats = useMemo(() => {
+    const total = filteredArtworks.length
+    const totalValue = filteredArtworks.reduce((sum, art) => sum + art.price, 0)
+    const available = filteredArtworks.filter(a => a.inStock).length
+    return { total, totalValue, available }
+  }, [filteredArtworks])
 
   return (
     <section className="yeezy-section" id="collection">
       <div className="yeezy-container">
-        {/* Modern Header with Availability Toggle */}
-        <div className="bg-white border border-gray-200 p-6 mb-10">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        {/* Stats Header */}
+        <div className="bg-white border border-gray-200 p-6 mb-6 rounded-lg shadow-sm">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
               <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Catalogue Overview</p>
-              <p className="text-2xl font-light">{stats.total} Works • ${stats.totalValue.toLocaleString()} value</p>
-            </div>
-            
-            {/* Modern Availability Toggle */}
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] uppercase tracking-[0.3em] text-gray-500">Show:</span>
-              <button
-                onClick={() => setShowAvailableOnly(!showAvailableOnly)}
-                className={`group flex items-center gap-2 px-4 py-2.5 rounded-md border transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                  showAvailableOnly
-                    ? 'bg-black text-white border-black shadow-sm'
-                    : 'bg-white text-gray-600 border-gray-300 hover:border-black hover:shadow-sm'
-                }`}
-                aria-pressed={showAvailableOnly}
-                title={showAvailableOnly ? 'Showing available works only' : 'Showing all works'}
-              >
-                <svg 
-                  className={`w-4 h-4 transition-transform duration-200 ${showAvailableOnly ? 'scale-110' : ''}`}
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  {showAvailableOnly ? (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  ) : (
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  )}
-                </svg>
-                <span className="text-xs uppercase tracking-[0.25em] font-medium">
-                  {showAvailableOnly ? 'Available Only' : 'All Works'}
-                </span>
-              </button>
+              <p className="text-2xl font-light">
+                {filteredStats.total} Works • ${filteredStats.totalValue.toLocaleString()} value
+                {filteredStats.available !== filteredStats.total && (
+                  <span className="text-sm text-gray-500 ml-2">
+                    ({filteredStats.available} available)
+                  </span>
+                )}
+              </p>
             </div>
           </div>
         </div>
+
+        {/* Filter Bar */}
+        <FilterBar 
+          onFilterChange={handleFilterChange}
+          categories={categories}
+          priceRange={priceRange}
+          showCategoryFilter={sizeFilter === 'all'}
+        />
 
         {/* Gallery Grid */}
         <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow`} style={{ animationDelay: '0.3s' }}>
@@ -112,7 +163,7 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
           {!isLoading && !error && filteredArtworks.length === 0 && (
             <div className="col-span-full text-center py-16">
               <p className="yeezy-body text-gray-500">
-                {showAvailableOnly ? 'No available works found.' : 'No works found.'}
+                No works found matching your filters.
               </p>
             </div>
           )}
@@ -166,11 +217,13 @@ export default function ArtGallery({ zoomLevel = 0, sizeFilter = 'all' }: ArtGal
         </div>
 
         {/* Load More */}
-        <div className="text-center mt-16 fade-in-slow" style={{ animationDelay: '0.9s' }}>
-          <Link href="/shop" className="btn-yeezy">
-            View More ({filteredArtworks.length} of {stats.total})
-          </Link>
-        </div>
+        {!isLoading && !error && filteredArtworks.length > 0 && (
+          <div className="text-center mt-16 fade-in-slow" style={{ animationDelay: '0.9s' }}>
+            <Link href="/shop" className="btn-yeezy">
+              View More ({filteredArtworks.length} of {stats.total})
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )

@@ -36,7 +36,7 @@ cp .env.example .env.local
 
 #### Application
 - `NEXT_PUBLIC_BASE_URL` - Your production URL (e.g., `https://dalingcebo.art`)
-- `NEXT_PUBLIC_ADMIN_KEY` - Secret key for admin access
+- `ADMIN_KEY` - Secret key for admin API access (server-only, never exposed to client)
 
 #### Optional
 - `NEXT_PUBLIC_YOCO_PUBLIC_KEY` - For South African payments

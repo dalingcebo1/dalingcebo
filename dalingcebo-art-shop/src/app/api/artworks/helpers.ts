@@ -76,10 +76,17 @@ export function sanitizeArtworkPayload(data: Record<string, unknown>): Omit<Artw
   };
 }
 
-const ADMIN_KEY = process.env.NEXT_PUBLIC_ADMIN_KEY;
+const ADMIN_KEY = process.env.ADMIN_KEY;
 
 export function ensureAdminRequest(request: Request) {
   if (!ADMIN_KEY) {
+    // In production, require the admin key to be set
+    if (process.env.NODE_ENV === 'production') {
+      const error = new Error('Admin key not configured - server misconfiguration');
+      error.name = 'ConfigurationError';
+      throw error;
+    }
+    // In development, allow requests without admin key if not configured
     return;
   }
   const provided = request.headers.get('x-admin-key');

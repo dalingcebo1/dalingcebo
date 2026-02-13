@@ -72,10 +72,9 @@ function AdminDashboard() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const [zoomLevel, setZoomLevel] = useState(0)
-  const adminKey = process.env.NEXT_PUBLIC_ADMIN_KEY ?? ''
-  const isProtected = adminKey.length > 0
-  const [authToken, setAuthToken] = useState(isProtected ? '' : adminKey)
-  const [isAuthorized, setIsAuthorized] = useState(!isProtected)
+  // Admin key is server-only, so we just track if user has entered one
+  const [authToken, setAuthToken] = useState('')
+  const [isAuthorized, setIsAuthorized] = useState(false)
   const [accessCode, setAccessCode] = useState('')
   const [authError, setAuthError] = useState<string | null>(null)
   const { artworks, isLoading, error, reload, stats, categories } = useArtworks()
@@ -107,14 +106,13 @@ function AdminDashboard() {
   const titleInputRef = useRef<HTMLInputElement | null>(null)
 
   useEffect(() => {
-    if (!isProtected) return
     if (typeof window === 'undefined') return
     const stored = sessionStorage.getItem('dalingcebo_admin_key')
-    if (stored && stored === adminKey) {
+    if (stored) {
       setAuthToken(stored)
       setIsAuthorized(true)
     }
-  }, [isProtected, adminKey])
+  }, [])
 
   useEffect(() => {
     const nextFilters = normalizeInventoryFilters()
@@ -257,23 +255,41 @@ function AdminDashboard() {
     setTimeout(() => setToastMessage(null), 3000)
   }
 
-  const handleUnlock = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUnlock = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    if (!isProtected) {
-      setIsAuthorized(true)
+    const code = accessCode.trim()
+    if (!code) {
+      setAuthError('Please enter an access code')
       return
     }
-    const code = accessCode.trim()
-    if (code && code === adminKey) {
-      if (typeof window !== 'undefined') {
-        sessionStorage.setItem('dalingcebo_admin_key', code)
+    
+    // Validate the key using the dedicated validation endpoint
+    try {
+      const response = await fetch('/api/auth/verify-admin', {
+        method: 'POST',
+        headers: {
+          'x-admin-key': code
+        }
+      })
+      
+      // Only 200 status indicates valid key
+      if (response.status === 200) {
+        // Store the code and mark as authorized
+        if (typeof window !== 'undefined') {
+          sessionStorage.setItem('dalingcebo_admin_key', code)
+        }
+        setAuthToken(code)
+        setIsAuthorized(true)
+        setAuthError(null)
+        setAccessCode('')
+      } else {
+        // Any other status means invalid key or server error
+        const data = await response.json().catch(() => ({ message: 'Invalid access code' }))
+        setAuthError(data.message || 'Invalid access code')
       }
-      setAuthToken(code)
-      setIsAuthorized(true)
-      setAuthError(null)
-      setAccessCode('')
-    } else {
-      setAuthError('Invalid access code')
+    } catch (error) {
+      // Network error or other issue
+      setAuthError('Unable to verify access code. Please try again.')
     }
   }
 
@@ -548,11 +564,6 @@ function AdminDashboard() {
                 <button type="submit" className="btn-yeezy-primary w-full">
                   Unlock Dashboard
                 </button>
-                {!isProtected && (
-                  <p className="text-xs text-gray-500">
-                    Set NEXT_PUBLIC_ADMIN_KEY to require a code.
-                  </p>
-                )}
               </form>
             </div>
           </div>
