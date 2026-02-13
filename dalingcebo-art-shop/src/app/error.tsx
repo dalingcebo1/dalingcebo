@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
-import Link from 'next/link'
+import FallbackMessage from '@/components/FallbackMessage'
 
 export default function Error({
   error,
@@ -18,36 +18,22 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white px-4">
-      <div className="max-w-md w-full text-center">
-        <h1 className="yeezy-heading text-4xl md:text-5xl mb-4">ERROR</h1>
-        <p className="yeezy-body text-lg text-gray-600 mb-8">
-          Something went wrong. We're working to fix this.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={reset}
-            className="btn-yeezy-primary"
-          >
-            Try Again
-          </button>
-          <Link
-            href="/"
-            className="btn-yeezy inline-block"
-          >
-            Return Home
-          </Link>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+      <FallbackMessage
+        title="ERROR"
+        description="Something went wrong. We're working to fix this."
+        icon="error"
+        primaryAction={{ label: 'Try Again', onClick: reset }}
+        secondaryAction={{ label: 'Return Home', href: '/' }}
+      />
+      
+      {process.env.NODE_ENV === 'development' && error.message && (
+        <div className="mt-8 p-4 bg-red-50 border border-red-200 text-left max-w-md mx-4">
+          <p className="text-xs font-mono text-red-800 break-words">
+            {error.message}
+          </p>
         </div>
-
-        {process.env.NODE_ENV === 'development' && error.message && (
-          <div className="mt-8 p-4 bg-red-50 border border-red-200 text-left">
-            <p className="text-xs font-mono text-red-800 break-words">
-              {error.message}
-            </p>
-          </div>
-        )}
-      </div>
+      )}
     </div>
   )
 }

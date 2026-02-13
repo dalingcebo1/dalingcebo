@@ -33,21 +33,6 @@ export async function readCatalogs(): Promise<Catalog[]> {
   return (data || []).map(mapRowToCatalog)
 }
 
-export async function getCatalogBySlug(slug: string): Promise<Catalog | null> {
-  const supabase = createServiceRoleClient()
-  const { data, error } = await supabase
-    .from('catalogs')
-    .select('*')
-    .eq('slug', slug)
-    .single()
-
-  if (error || !data) {
-    return null
-  }
-
-  return mapRowToCatalog(data)
-}
-
 export async function upsertCatalog(payload: Omit<Catalog, 'id' | 'createdAt' | 'updatedAt'>, id?: string): Promise<Catalog> {
   const supabase = createServiceRoleClient()
   const dbPayload = {
@@ -71,16 +56,4 @@ export async function upsertCatalog(payload: Omit<Catalog, 'id' | 'createdAt' | 
   }
 
   return mapRowToCatalog((response as any).data)
-}
-
-export async function deleteCatalog(id: string): Promise<void> {
-  const supabase = createServiceRoleClient()
-  const { error } = await supabase
-    .from('catalogs')
-    .delete()
-    .eq('id', id)
-
-  if (error) {
-    throw new Error(error.message)
-  }
 }
