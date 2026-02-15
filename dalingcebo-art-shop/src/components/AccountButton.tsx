@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useSupabase } from '@/components/SupabaseProvider'
 import type { Database } from '@/lib/db/schema'
 import AuthModal from './AuthModal'
+import { User } from 'lucide-react'
 
 export default function AccountButton() {
   const router = useRouter()
@@ -36,19 +37,7 @@ export default function AccountButton() {
           className="flex items-center gap-2 yeezy-nav-link hover:text-black transition-colors whitespace-nowrap"
           aria-label="Account menu"
         >
-          <svg
-            className="w-5 h-5 flex-shrink-0"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={1.5}
-              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-            />
-          </svg>
+          <User className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
           {displayName}
         </button>
 
@@ -98,19 +87,7 @@ export default function AccountButton() {
         className="yeezy-nav-link hover:text-black transition-colors flex items-center gap-2 flex-shrink-0"
         aria-label="Sign in"
       >
-        <svg
-          className="w-5 h-5 flex-shrink-0"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={1.5}
-            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-          />
-        </svg>
+        <User className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
         Sign In
       </button>
 
