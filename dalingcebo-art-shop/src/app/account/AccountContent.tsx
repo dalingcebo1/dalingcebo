@@ -8,7 +8,7 @@ import type { User } from '@supabase/supabase-js'
 import type { Database } from '@/lib/db/schema'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Breadcrumb from '@/components/Breadcrumb'
+import PageShell from '@/components/layout/PageShell'
 import { OrderRecord } from '@/types/inquiry'
 
 export default function AccountContent({ user }: { user: User }) {
@@ -46,25 +46,12 @@ export default function AccountContent({ user }: { user: User }) {
     <main className="min-h-screen bg-white">
       <Header showBackButton={true} />
       
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Account' }]} />
-        </div>
-      </section>
-
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            ACCOUNT
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Welcome back, {user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Collector'}
-          </p>
-        </div>
-      </section>
-      
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-6xl">
+      <PageShell
+        title="ACCOUNT"
+        subtitle={`Welcome back, ${user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Collector'}`}
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Account' }]}
+        maxWidth="wide"
+      >
           <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-32">
               <section className="space-y-8">
@@ -157,8 +144,7 @@ export default function AccountContent({ user }: { user: User }) {
             </section>
           </div>
         </div>
-      </div>
-    </section>
+      </PageShell>
 
     <Footer />
   </main>

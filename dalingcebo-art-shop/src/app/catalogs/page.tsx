@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import Breadcrumb from '@/components/Breadcrumb'
+import PageShell from '@/components/layout/PageShell'
 import { Catalog } from '@/types/catalog'
 import { getArtworkPlaceholder } from '@/lib/media'
 
@@ -67,27 +67,21 @@ export default function CatalogsPage() {
     <main className="min-h-screen bg-white">
       <Header showBackButton={true} />
 
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Catalogs' }]} />
-        </div>
-      </section>
-
-      <section className="yeezy-hero bg-black text-white">
-        <div className="yeezy-hero-content fade-in-slow space-y-6">
+      <PageShell
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Catalogs' }]}
+      >
+        <div className="space-y-6 mb-12">
           <p className="text-[10px] uppercase tracking-[0.35em] text-gray-400">PDF Catalog Library</p>
-          <h1 className="yeezy-main-logo">Catalogs & Lookbooks</h1>
-          <p className="yeezy-body text-gray-300 max-w-2xl mx-auto">
+          <h1 className="yeezy-main-logo text-5xl md:text-7xl">Catalogs & Lookbooks</h1>
+          <p className="yeezy-body text-gray-600 max-w-2xl leading-relaxed">
             Curated drops, process essays, and seasonal lookbooks packaged for collectors. Download, archive, and share with your design teams.
           </p>
           <p className="text-xs uppercase tracking-[0.3em] text-gray-400">
             {catalogs.length} catalog{catalogs.length === 1 ? '' : 's'} available
           </p>
         </div>
-      </section>
 
-      <section className="yeezy-section">
-        <div className="yeezy-container space-y-16">
+        <div className="space-y-16">
           {isLoading && (
             <div className="flex justify-center py-20">
               <LoadingSpinner size="lg" />
@@ -234,7 +228,7 @@ export default function CatalogsPage() {
             </div>
           )}
         </div>
-      </section>
+      </PageShell>
 
       <Footer />
     </main>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Toast from '@/components/Toast'
-import Breadcrumb from '@/components/Breadcrumb'
+import PageShell from '@/components/layout/PageShell'
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false)
@@ -34,27 +34,13 @@ export default function Contact() {
     <main className="min-h-screen">
       <Header showBackButton={false} />
       
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Contact' }]} />
-        </div>
-      </section>
-
-      {/* Hero Section */}
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            CONTACT
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Get in touch for inquiries, commissions, or just to say hello.
-          </p>
-        </div>
-      </section>
-      
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-4xl">
-          <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+      <PageShell
+        title="CONTACT"
+        subtitle="Get in touch for inquiries, commissions, or just to say hello."
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Contact' }]}
+        maxWidth="narrow"
+      >
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             
             <div className="grid md:grid-cols-2 gap-12 mb-16">
               <div>
@@ -147,8 +133,7 @@ export default function Contact() {
               </form>
             </div>
           </div>
-        </div>
-      </section>
+      </PageShell>
 
       {showToast && (
         <Toast 

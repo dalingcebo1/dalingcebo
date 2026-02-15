@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import Breadcrumb from '@/components/Breadcrumb'
+import PageShell from '@/components/layout/PageShell'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage } from '@/lib/media'
 
@@ -44,27 +44,12 @@ export default function SmallPaintings() {
   return (
     <main className="min-h-screen">
       <Header zoomLevel={zoomLevel} setZoomLevel={setZoomLevel} />
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Shop', href: '/shop' }, { label: 'Small Paintings' }]} />
-        </div>
-      </section>
       
-      {/* Hero Section */}
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            SMALL PAINTINGS
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Intimate works perfect for personal spaces and collections.
-          </p>
-        </div>
-      </section>
-
-      {/* Gallery */}
-      <section className="yeezy-section">
-        <div className="yeezy-container">
+      <PageShell
+        title="SMALL PAINTINGS"
+        subtitle="Intimate works perfect for personal spaces and collections."
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Shop', href: '/shop' }, { label: 'Small Paintings' }]}
+      >
           <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             {isLoading && (
               <div className="col-span-full flex justify-center py-16">
@@ -134,8 +119,7 @@ export default function SmallPaintings() {
               </div>
             )})}
           </div>
-        </div>
-      </section>
+        </PageShell>
 
       <Footer />
     </main>

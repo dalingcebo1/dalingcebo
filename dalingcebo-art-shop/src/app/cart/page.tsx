@@ -8,7 +8,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Toast from '@/components/Toast';
 import CheckoutModal from '@/components/CheckoutModal';
-import Breadcrumb from '@/components/Breadcrumb';
+import PageShell from '@/components/layout/PageShell';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, total, maxProcessingDays } = useCart();
@@ -38,27 +38,13 @@ export default function CartPage() {
   };
 
   const emptyState = (
-    <>
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cart' }]} />
-        </div>
-      </section>
-
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            CART
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Your shopping cart is currently empty.
-          </p>
-        </div>
-      </section>
-
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-2xl">
-          <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+    <PageShell
+      title="CART"
+      subtitle="Your shopping cart is currently empty."
+      breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Cart' }]}
+      maxWidth="narrow"
+    >
+      <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             <svg className="icon-xl mx-auto text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -82,32 +68,16 @@ export default function CartPage() {
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-    </>
+        </PageShell>
   );
 
   const cartContent = (
-    <>
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Cart' }]} />
-        </div>
-      </section>
-
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            CART
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            {items.length} {items.length === 1 ? 'item' : 'items'} ready for checkout.
-          </p>
-        </div>
-      </section>
-
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-6xl">
+    <PageShell
+      title="CART"
+      subtitle={`${items.length} ${items.length === 1 ? 'item' : 'items'} ready for checkout.`}
+      breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Cart' }]}
+      maxWidth="wide"
+    >
           <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-10">
               <div>
@@ -293,11 +263,9 @@ export default function CartPage() {
               </div>
             </div>
           </div>
-            </div>
-          </div>
         </div>
-      </section>
-    </>
+      </div>
+      </PageShell>
   );
 
   return (

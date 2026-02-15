@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import PageShell from '@/components/layout/PageShell'
 
 export default function About() {
   const [isVisible, setIsVisible] = useState(false)
@@ -16,21 +17,11 @@ export default function About() {
     <main className="min-h-screen">
       <Header showBackButton={false} />
       
-      {/* Hero Section */}
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            ABOUT
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Contemporary art that bridges cultures and speaks to the modern soul.
-          </p>
-        </div>
-      </section>
-
-      {/* Artist Statement */}
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-6xl">
+      <PageShell
+        title="ABOUT"
+        subtitle="Contemporary art that bridges cultures and speaks to the modern soul."
+        maxWidth="wide"
+      >
           <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">THE ARTIST</h2>
             <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start mb-24">
@@ -161,8 +152,7 @@ export default function About() {
               Get in Touch
             </Link>
           </div>
-        </div>
-      </section>
+      </PageShell>
 
       <Footer />
     </main>
