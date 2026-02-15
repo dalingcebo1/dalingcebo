@@ -20,14 +20,16 @@ const navIconLinks = [
       <svg
         className={className}
         viewBox="0 0 24 24"
+        width="20"
+        height="20"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <rect x="3" y="7" width="18" height="10" rx="1" />
-        <path d="M3 7L12 2l9 5" opacity="0.5" />
+        <rect x="2" y="6" width="20" height="12" rx="1" />
+        <path d="M2 6l10-4 10 4" opacity="0.5" />
       </svg>
     ),
   },
@@ -38,16 +40,18 @@ const navIconLinks = [
       <svg
         className={className}
         viewBox="0 0 24 24"
+        width="20"
+        height="20"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.2"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <rect x="3" y="3" width="7" height="7" rx="0.5" />
-        <rect x="14" y="3" width="7" height="7" rx="0.5" />
-        <rect x="3" y="14" width="7" height="7" rx="0.5" />
-        <rect x="14" y="14" width="7" height="7" rx="0.5" />
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
       </svg>
     ),
   },
@@ -58,6 +62,8 @@ const navIconLinks = [
       <svg
         className={className}
         viewBox="0 0 24 24"
+        width="20"
+        height="20"
         fill="none"
         stroke="currentColor"
         strokeWidth="1.2"
@@ -75,15 +81,17 @@ const CartIcon = ({ className = 'icon-nav' }: { className?: string }) => (
   <svg
     className={className}
     viewBox="0 0 24 24"
+    width="20"
+    height="20"
     fill="none"
     stroke="currentColor"
     strokeWidth="1.2"
     strokeLinecap="round"
     strokeLinejoin="round"
   >
-    <path d="M9 2L7.2 5M22 5H7H2l2.5 14H19l2.5-14H22ZM10 9h4" />
-    <circle cx="10" cy="21" r="1" fill="currentColor" />
-    <circle cx="18" cy="21" r="1" fill="currentColor" />
+    <circle cx="9" cy="21" r="1" fill="currentColor" />
+    <circle cx="20" cy="21" r="1" fill="currentColor" />
+    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
   </svg>
 )
 
@@ -142,7 +150,7 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             title="Go Back"
             aria-label="Go back to previous page"
           >
-            <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="icon-nav" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
           </button>
@@ -155,12 +163,12 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
           >
             {zoomLevel >= 2 ? (
-              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="icon-nav" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35M8 11h6" />
               </svg>
             ) : (
-              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg className="icon-nav" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" />
                 <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
               </svg>
