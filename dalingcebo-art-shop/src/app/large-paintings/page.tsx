@@ -59,7 +59,7 @@ export default function LargePaintings() {
 
             {error && !isLoading && (
               <div className="col-span-full text-center py-12">
-                <p className="yeezy-body text-gray-600">{error}</p>
+                <p className="body text-gray-600">{error}</p>
                 <button className="btn-yeezy mt-6" onClick={reload}>
                   Try Again
                 </button>
@@ -68,7 +68,7 @@ export default function LargePaintings() {
 
             {!isLoading && !error && largeArtworks.length === 0 && (
               <div className="col-span-full text-center py-12">
-                <p className="yeezy-body text-gray-600">
+                <p className="body text-gray-600">
                   No large-scale works available at this time. Please check back soon.
                 </p>
               </div>

@@ -44,26 +44,26 @@ export default function Contact() {
             
             <div className="grid md:grid-cols-2 gap-12 mb-16">
               <div>
-                <h2 className="yeezy-subheading text-sm mb-6 tracking-[0.3em] text-gray-600">GET IN TOUCH</h2>
+                <h2 className="meta mb-6 uppercase text-gray-600">GET IN TOUCH</h2>
                 
                 <div className="space-y-6">
                   <div>
-                    <h3 className="yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Email</h3>
-                    <p className="yeezy-body text-base text-gray-700">hello@dalingcebo.art</p>
+                    <h3 className="meta mb-2 uppercase text-gray-600">Email</h3>
+                    <p className="body text-gray-700">hello@dalingcebo.art</p>
                   </div>
                   <div>
-                    <h3 className="yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Studio</h3>
-                    <p className="yeezy-body text-base text-gray-700">
+                    <h3 className="meta mb-2 uppercase text-gray-600">Studio</h3>
+                    <p className="body text-gray-700">
                       Johannesburg, South Africa<br />
                       By appointment only
                     </p>
                   </div>
                   <div>
-                    <h3 className="yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Social</h3>
+                    <h3 className="meta mb-2 uppercase text-gray-600">Social</h3>
                     <div className="flex gap-4">
-                      <a href="#" className="yeezy-body text-base text-gray-700 hover:text-black transition-colors">Instagram</a>
-                      <a href="#" className="yeezy-body text-base text-gray-700 hover:text-black transition-colors">Twitter</a>
-                      <a href="#" className="yeezy-body text-base text-gray-700 hover:text-black transition-colors">LinkedIn</a>
+                      <a href="#" className="body text-gray-700 hover:text-black transition-colors">Instagram</a>
+                      <a href="#" className="body text-gray-700 hover:text-black transition-colors">Twitter</a>
+                      <a href="#" className="body text-gray-700 hover:text-black transition-colors">LinkedIn</a>
                     </div>
                   </div>
                 </div>
@@ -71,7 +71,7 @@ export default function Contact() {
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Name</label>
+                  <label htmlFor="name" className="block meta mb-2 uppercase text-gray-600">Name</label>
                   <input
                     type="text"
                     id="name"
@@ -79,12 +79,12 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 px-4 py-3 yeezy-body text-sm focus:outline-none focus:border-black transition-colors"
+                    className="w-full border border-gray-300 px-4 py-3 body focus:outline-none focus:border-black transition-colors"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="email" className="block yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Email</label>
+                  <label htmlFor="email" className="block meta mb-2 uppercase text-gray-600">Email</label>
                   <input
                     type="email"
                     id="email"
@@ -92,19 +92,19 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 px-4 py-3 yeezy-body text-sm focus:outline-none focus:border-black transition-colors"
+                    className="w-full border border-gray-300 px-4 py-3 body focus:outline-none focus:border-black transition-colors"
                   />
                 </div>
                 
                 <div>
-                  <label htmlFor="subject" className="block yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Subject</label>
+                  <label htmlFor="subject" className="block meta mb-2 uppercase text-gray-600">Subject</label>
                   <select
                     id="subject"
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full border border-gray-300 px-4 py-3 yeezy-body text-sm focus:outline-none focus:border-black transition-colors"
+                    className="w-full border border-gray-300 px-4 py-3 body focus:outline-none focus:border-black transition-colors"
                   >
                     <option value="">Select a subject</option>
                     <option value="purchase">Purchase Inquiry</option>
@@ -115,7 +115,7 @@ export default function Contact() {
                 </div>
                 
                 <div>
-                  <label htmlFor="message" className="block yeezy-body text-xs mb-2 uppercase tracking-wider text-gray-600">Message</label>
+                  <label htmlFor="message" className="block meta mb-2 uppercase text-gray-600">Message</label>
                   <textarea
                     id="message"
                     name="message"
@@ -123,7 +123,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full border border-gray-300 px-4 py-3 yeezy-body text-sm focus:outline-none focus:border-black transition-colors resize-none"
+                    className="w-full border border-gray-300 px-4 py-3 body focus:outline-none focus:border-black transition-colors resize-none"
                   />
                 </div>
                 

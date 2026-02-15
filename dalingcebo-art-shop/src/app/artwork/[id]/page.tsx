@@ -176,8 +176,8 @@ export default function ArtworkDetail() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </div>
-            <h1 className="text-3xl font-light tracking-tight mb-3 text-gray-900">{message}</h1>
-            <p className="text-gray-600 text-base leading-relaxed">{description}</p>
+            <h2 className="h2 font-light mb-3 text-gray-900">{message}</h2>
+            <p className="body text-gray-600">{description}</p>
           </div>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             {action && actionLabel && (
@@ -365,11 +365,11 @@ export default function ArtworkDetail() {
                     </span>
                   )}
                 </div>
-                <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-6">
+                <h1 className="h1 font-light mb-6">
                   {artwork.title}
                 </h1>
                 <div className="flex items-baseline gap-4 mb-2">
-                  <p className="text-4xl font-light">
+                  <p className="h1 font-light">
                     ${currentPrice.toLocaleString()}
                   </p>
                   {artwork.inventory && artwork.inventory < 5 && artwork.inStock && (
