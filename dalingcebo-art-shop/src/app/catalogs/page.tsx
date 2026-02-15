@@ -74,12 +74,12 @@ export default function CatalogsPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Catalogs' }]}
       >
         <div className="space-y-6 mb-12">
-          <p className="meta uppercase text-gray-400">PDF Catalog Library</p>
-          <h1 className="h1 yeezy-main-logo">Catalogs & Lookbooks</h1>
-          <p className="body text-gray-600 max-w-2xl leading-relaxed">
+          <p className="text-[10px] uppercase tracking-[0.35em] text-gray-400">PDF Catalog Library</p>
+          <h1 className="yeezy-main-logo text-5xl md:text-7xl">Catalogs & Lookbooks</h1>
+          <p className="yeezy-body text-gray-600 max-w-2xl leading-relaxed">
             Curated drops, process essays, and seasonal lookbooks packaged for collectors. Download, archive, and share with your design teams.
           </p>
-          <p className="meta uppercase text-gray-400">
+          <p className="text-xs uppercase tracking-[0.3em] text-gray-400">
             {catalogs.length} catalog{catalogs.length === 1 ? '' : 's'} available
           </p>
         </div>
@@ -110,22 +110,22 @@ export default function CatalogsPage() {
                 />
               </div>
               <div className="space-y-6">
-                <p className="meta uppercase text-gray-500">Featured Release</p>
-                <h2 className="h2">{featuredCatalog.title}</h2>
+                <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500">Featured Release</p>
+                <h2 className="yeezy-heading text-4xl">{featuredCatalog.title}</h2>
                 {featuredCatalog.releaseDate && (
-                  <p className="meta uppercase text-gray-500">
+                  <p className="text-xs uppercase tracking-[0.3em] text-gray-500">
                     Released {new Date(featuredCatalog.releaseDate).toLocaleDateString()}
                   </p>
                 )}
                 {featuredCatalog.description && (
-                  <p className="body text-gray-700 leading-relaxed">
+                  <p className="yeezy-body text-gray-700 leading-relaxed">
                     {featuredCatalog.description}
                   </p>
                 )}
                 {featuredCatalog.tags?.length > 0 && (
                   <div className="flex flex-wrap gap-2">
                     {featuredCatalog.tags.map((tag) => (
-                      <span key={tag} className="meta px-3 py-1 uppercase bg-gray-900 text-white">
+                      <span key={tag} className="px-3 py-1 text-[10px] uppercase tracking-[0.3em] bg-gray-900 text-white">
                         {tag}
                       </span>
                     ))}
@@ -166,8 +166,8 @@ export default function CatalogsPage() {
           {!isLoading && !error && (
             <div>
               <div className="flex items-center justify-between mb-8">
-                <h3 className="h2">Archive</h3>
-                <span className="meta uppercase text-gray-500">
+                <h3 className="yeezy-subheading text-2xl">Archive</h3>
+                <span className="text-xs uppercase tracking-[0.3em] text-gray-500">
                   {archive.length} downloadable file{archive.length === 1 ? '' : 's'}
                 </span>
               </div>
@@ -193,12 +193,12 @@ export default function CatalogsPage() {
                     </div>
                     <div className="p-5 flex flex-col gap-3 flex-1">
                       <div>
-                        <p className="meta uppercase text-gray-500 mb-1">
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-1">
                           {catalog.releaseDate ? new Date(catalog.releaseDate).toLocaleDateString() : 'Unreleased'}
                         </p>
-                        <h4 className="meta font-medium mb-1">{catalog.title}</h4>
+                        <h4 className="text-xl font-medium mb-1">{catalog.title}</h4>
                         {catalog.description && (
-                          <p className="body text-gray-600 leading-relaxed">
+                          <p className="text-sm text-gray-600 leading-relaxed">
                             {catalog.description}
                           </p>
                         )}
@@ -206,7 +206,7 @@ export default function CatalogsPage() {
                       {catalog.tags?.length > 0 && (
                         <div className="flex flex-wrap gap-2">
                           {catalog.tags.map((tag) => (
-                            <span key={tag} className="meta px-2 py-0.5 uppercase bg-gray-100 text-gray-700">
+                            <span key={tag} className="px-2 py-0.5 text-[10px] uppercase tracking-[0.2em] bg-gray-100 text-gray-700">
                               {tag}
                             </span>
                           ))}

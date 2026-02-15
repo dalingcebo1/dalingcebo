@@ -23,7 +23,7 @@ export default function About() {
         maxWidth="wide"
       >
           <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
-            <h2 className="h2 mb-16 tracking-[0.15em] uppercase">THE ARTIST</h2>
+            <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">THE ARTIST</h2>
             <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start mb-24">
               <div className="aspect-square bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center rounded-sm border border-gray-200 overflow-hidden max-w-[180px] mx-auto md:mx-0">
                 <svg className="w-16 h-16 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
@@ -31,13 +31,13 @@ export default function About() {
               </div>
               <div className="space-y-8">
                 <div>
-                  <h3 className="h2 font-light mb-4">Dalingcebo (Dali) Ngubane</h3>
-                  <div className="space-y-1 meta tracking-wider uppercase text-gray-500">
+                  <h3 className="text-2xl md:text-3xl font-light letter-spacing-tight mb-4">Dalingcebo (Dali) Ngubane</h3>
+                  <div className="space-y-1 text-sm tracking-wider uppercase text-gray-500 yeezy-body">
                     <p>Born 1997, Kwa-Ngwanase, South Africa</p>
                     <p>Based in Johannesburg, South Africa</p>
                   </div>
                 </div>
-                <div className="space-y-6 body text-gray-700">
+                <div className="space-y-6 text-base leading-relaxed yeezy-body text-gray-700">
                   <p>
                     Dalingcebo Ngubane is a self-taught visual artist whose work interrogates emotion 
                     in relation to contemporary life. His practice draws heavily from the people he meets, 
@@ -59,25 +59,25 @@ export default function About() {
 
           {/* Philosophy */}
           <div className={`border-t border-gray-200 pt-24 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.6s' }}>
-            <h2 className="h2 mb-16 tracking-[0.15em] uppercase">PHILOSOPHY</h2>
+            <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">PHILOSOPHY</h2>
             <div className="grid md:grid-cols-3 gap-8 md:gap-16 mb-24">
               <div className="space-y-4">
-                <h3 className="meta uppercase font-medium">INTENTION</h3>
-                <p className="body text-gray-600">
+                <h3 className="text-xs tracking-[0.2em] uppercase font-medium">INTENTION</h3>
+                <p className="yeezy-body text-sm md:text-base text-gray-600 leading-relaxed">
                   Every brushstroke carries purpose. Each work is created with deep intention, 
                   reflecting a moment of clarity and cultural expression.
                 </p>
               </div>
               <div className="space-y-4">
-                <h3 className="meta uppercase font-medium">HERITAGE</h3>
-                <p className="body text-gray-600">
+                <h3 className="text-xs tracking-[0.2em] uppercase font-medium">HERITAGE</h3>
+                <p className="yeezy-body text-sm md:text-base text-gray-600 leading-relaxed">
                   Rooted in African traditions while embracing contemporary techniques, 
                   creating a unique visual language that transcends borders.
                 </p>
               </div>
               <div className="space-y-4">
-                <h3 className="meta uppercase font-medium">SIMPLICITY</h3>
-                <p className="body text-gray-600">
+                <h3 className="text-xs tracking-[0.2em] uppercase font-medium">SIMPLICITY</h3>
+                <p className="yeezy-body text-sm md:text-base text-gray-600 leading-relaxed">
                   Less is more. Through minimalist compositions, complex emotions and 
                   narratives emerge with powerful clarity.
                 </p>
@@ -87,8 +87,8 @@ export default function About() {
 
           {/* Process */}
           <div className={`border-t border-gray-200 pt-24 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
-            <h2 className="h2 mb-16 tracking-[0.15em] uppercase">PROCESS</h2>
-            <div className="space-y-6 mb-12 body text-gray-700 max-w-4xl">
+            <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">PROCESS</h2>
+            <div className="space-y-6 mb-12 text-base leading-relaxed yeezy-body text-gray-700 max-w-4xl">
               <p>
                 Ngubane's work captures the tension between motion and stillness in life. His figurative 
                 paintings allow for freedom, accident, and chance—reflecting the spontaneity of human 
@@ -116,36 +116,36 @@ export default function About() {
 
           {/* Recognition */}
           <div className={`border-t border-gray-200 pt-24 pb-12 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
-            <h2 className="h2 mb-16 tracking-[0.15em] uppercase">EXHIBITIONS & RECOGNITION</h2>
-            <div className="space-y-6">
+            <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">EXHIBITIONS & RECOGNITION</h2>
+            <div className="space-y-6 yeezy-body">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <h3 className="body font-medium text-black uppercase mb-2">CHAOS, A THEORY</h3>
-                  <p className="body text-gray-500">Solo Exhibition presented by Candice Berman Gallery, Johannesburg</p>
+                  <p className="font-medium text-black text-sm tracking-wider uppercase mb-2">CHAOS, A THEORY</p>
+                  <p className="text-sm text-gray-500">Solo Exhibition presented by Candice Berman Gallery, Johannesburg</p>
                 </div>
-                <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">APRIL 20 – MAY 10, 2024</span>
+                <span className="text-xs text-gray-400 tracking-wider md:whitespace-nowrap">APRIL 20 – MAY 10, 2024</span>
               </div>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <h3 className="body font-medium text-black uppercase mb-2">GALLERY REPRESENTATION</h3>
-                  <p className="body text-gray-500">Candice Berman Gallery, Johannesburg</p>
+                  <p className="font-medium text-black text-sm tracking-wider uppercase mb-2">GALLERY REPRESENTATION</p>
+                  <p className="text-sm text-gray-500">Candice Berman Gallery, Johannesburg</p>
                 </div>
-                <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">CURRENT</span>
+                <span className="text-xs text-gray-400 tracking-wider md:whitespace-nowrap">CURRENT</span>
               </div>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <h3 className="body font-medium text-black uppercase mb-2">ARTIST PROFILE</h3>
-                  <p className="body text-gray-500">Featured on Artsy</p>
+                  <p className="font-medium text-black text-sm tracking-wider uppercase mb-2">ARTIST PROFILE</p>
+                  <p className="text-sm text-gray-500">Featured on Artsy</p>
                 </div>
-                <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">2024</span>
+                <span className="text-xs text-gray-400 tracking-wider md:whitespace-nowrap">2024</span>
               </div>
             </div>
           </div>
 
           {/* Contact CTA */}
           <div className={`text-center mt-24 mb-12 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.5s' }}>
-            <h3 className="h2 mb-8 tracking-[0.15em] uppercase">INTERESTED IN COMMISSIONING?</h3>
-            <p className="body text-gray-600 mb-10 max-w-2xl mx-auto">
+            <h3 className="yeezy-subheading text-2xl md:text-3xl mb-8 tracking-[0.15em]">INTERESTED IN COMMISSIONING?</h3>
+            <p className="yeezy-body text-base text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
               Custom pieces available for collectors and institutions.
             </p>
             <Link href="/contact" className="btn-yeezy-primary inline-block">

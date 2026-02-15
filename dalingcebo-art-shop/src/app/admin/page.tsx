@@ -526,9 +526,9 @@ function AdminDashboard() {
         <section className="yeezy-section pt-32">
           <div className="yeezy-container max-w-lg mx-auto">
             <div className="bg-white border border-gray-200 p-8 text-center">
-              <p className="meta uppercase text-gray-500 mb-4">Restricted</p>
-              <h2 className="h2 mb-4">Admin Access</h2>
-              <p className="body text-gray-600">
+              <p className="text-xs uppercase tracking-[0.4em] text-gray-500 mb-4">Restricted</p>
+              <h1 className="yeezy-subheading text-3xl mb-4">Admin Access</h1>
+              <p className="yeezy-body text-gray-600">
                 Enter the studio access code to manage catalogue updates.
               </p>
               <form className="mt-8 space-y-4" onSubmit={handleUnlock}>
@@ -579,8 +579,8 @@ function AdminDashboard() {
                   </svg>
                   Studio Dashboard
                 </div>
-                <h1 className="h1 font-light mb-2">Dalingcebo Admin</h1>
-                <p className="meta text-gray-600">Manage your catalogue, inquiries, and orders</p>
+                <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-2">Dalingcebo Admin</h1>
+                <p className="text-sm text-gray-600">Manage your catalogue, inquiries, and orders</p>
               </div>
               {editingId && (
                 <button
@@ -632,8 +632,8 @@ function AdminDashboard() {
                 <div className={`absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-${card.color}-500 to-${card.color}-600`}></div>
                 <div className="flex items-start justify-between">
                   <div>
-                    <p className="meta uppercase text-gray-500 mb-2">{card.label}</p>
-                    <p className="h1 font-light text-gray-900">{card.value}</p>
+                    <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-2">{card.label}</p>
+                    <p className="text-3xl font-light text-gray-900">{card.value}</p>
                   </div>
                   <div className="text-gray-400">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -684,10 +684,10 @@ function AdminDashboard() {
                 <div className="bg-gradient-to-r from-gray-50 to-white px-8 py-6 border-b border-gray-200">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h2 className="h2 font-light mb-1">
+                      <h2 className="text-2xl font-light mb-1">
                         {editingId ? 'Edit Artwork' : 'Add New Artwork'}
                       </h2>
-                      <p className="meta text-gray-500">
+                      <p className="text-sm text-gray-500">
                         {editingId ? `Updating ID ${editingId}` : 'Create a new piece for the collection'}
                       </p>
                     </div>
@@ -1227,7 +1227,7 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-gray-50 to-white px-8 py-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="h2 font-light mb-1">Collector Inquiries</h2>
+                    <h2 className="text-2xl font-light mb-1">Collector Inquiries</h2>
                     <p className="text-sm text-gray-500">
                       {inquiries.length === 0 
                         ? 'No inquiries yet' 
@@ -1341,7 +1341,7 @@ function AdminDashboard() {
               <div className="bg-gradient-to-r from-gray-50 to-white px-8 py-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h2 className="h2 font-light mb-1">Checkout Requests</h2>
+                    <h2 className="text-2xl font-light mb-1">Checkout Requests</h2>
                     <p className="text-sm text-gray-500">
                       {orders.length === 0 
                         ? 'No orders yet' 
@@ -1429,7 +1429,7 @@ function AdminDashboard() {
                           </div>
                           <div className="flex flex-col items-end gap-2">
                             <div className="text-right">
-                              <p className="h2 font-light text-gray-900 mb-1">${order.total.toLocaleString()}</p>
+                              <p className="text-2xl font-light text-gray-900 mb-1">${order.total.toLocaleString()}</p>
                               <p className="text-xs text-gray-500">{order.items.length} item{order.items.length !== 1 ? 's' : ''}</p>
                             </div>
                             <button
