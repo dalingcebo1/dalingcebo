@@ -48,8 +48,8 @@ export default function CartPage() {
             <svg className="icon-xl mx-auto text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
-            <h2 className="text-2xl font-light tracking-tight mb-3 text-gray-900">Your Cart is Empty</h2>
-            <p className="yeezy-body text-base text-gray-600 mb-8 max-w-md mx-auto">
+            <h2 className="h2 font-light mb-3 text-gray-900">Your Cart is Empty</h2>
+            <p className="body text-gray-600 mb-8 max-w-md mx-auto">
               Start exploring our collection and add artwork that speaks to you.
             </p>
             <Link
@@ -62,7 +62,7 @@ export default function CartPage() {
             <div className="mt-6">
               <Link
                 href="/"
-                className="text-sm text-gray-500 hover:text-gray-900 transition-colors"
+                className="meta text-gray-500 hover:text-gray-900 transition-colors"
               >
                 Return to Home
               </Link>
@@ -81,12 +81,12 @@ export default function CartPage() {
           <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between mb-10">
               <div>
-                <h2 className="yeezy-subheading text-sm mb-2 tracking-[0.3em] text-gray-600">SHOPPING CART</h2>
-                <p className="yeezy-body text-base text-gray-700">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
+                <h2 className="meta mb-2 uppercase text-gray-600">SHOPPING CART</h2>
+                <p className="body text-gray-700">{items.length} {items.length === 1 ? 'item' : 'items'}</p>
               </div>
               <button
                 onClick={handleClearCart}
-                className="text-xs uppercase tracking-[0.1em] text-red-600 hover:text-red-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+                className="meta uppercase text-red-600 hover:text-red-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
                 aria-label="Clear all items from cart"
               >
                 Clear Cart
@@ -119,13 +119,13 @@ export default function CartPage() {
                       <div className="flex-1 min-w-0">
                         <Link
                           href={`/artwork/${item.id}`}
-                          className="text-lg sm:text-xl font-light tracking-tight hover:underline mb-1 block truncate"
+                          className="body font-light hover:underline mb-1 block truncate"
                         >
                           {item.title}
                         </Link>
-                        <p className="text-sm text-gray-500">{item.artist}</p>
+                        <p className="meta text-gray-500">{item.artist}</p>
                         {item.variantSelections && (
-                          <div className="mt-2 text-xs text-gray-600 space-y-0.5">
+                          <div className="mt-2 meta text-gray-600 space-y-0.5">
                             {item.variantSelections.frameVariantName && (
                               <p>Frame: {item.variantSelections.frameVariantName}</p>
                             )}
@@ -135,20 +135,20 @@ export default function CartPage() {
                           </div>
                         )}
                       </div>
-                      <p className="text-lg sm:text-xl font-light whitespace-nowrap">
+                      <p className="body font-light whitespace-nowrap">
                         ${(item.price * item.quantity).toLocaleString()}
                       </p>
                     </div>
                     
                     {item.quantity > 1 && (
-                      <p className="text-sm text-gray-500 mb-3">
+                      <p className="meta text-gray-500 mb-3">
                         ${item.price.toLocaleString()} each
                       </p>
                     )}
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600">Quantity:</span>
+                        <span className="meta text-gray-600">Quantity:</span>
                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
@@ -183,7 +183,7 @@ export default function CartPage() {
                           setToastMessage('Item removed from cart');
                           setShowToast(true);
                         }}
-                        className="text-xs uppercase tracking-[0.1em] text-red-600 hover:text-red-800 flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+                        className="meta uppercase text-red-600 hover:text-red-800 flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
                         aria-label={`Remove ${item.title} from cart`}
                       >
                         <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -200,17 +200,17 @@ export default function CartPage() {
 
           <div className="lg:sticky lg:top-24 h-fit">
             <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-              <h2 className="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-6 pb-4 border-b border-gray-200">
+              <h2 className="meta uppercase text-gray-500 mb-6 pb-4 border-b border-gray-200">
                 Order Summary
               </h2>
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-sm uppercase tracking-[0.1em] text-gray-600">Subtotal</span>
-                  <span className="text-lg font-light">${total.toLocaleString()}</span>
+                  <span className="meta uppercase text-gray-600">Subtotal</span>
+                  <span className="body font-light">${total.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-baseline pt-4 border-t border-gray-200">
-                  <span className="text-sm uppercase tracking-[0.1em] text-gray-600">Total</span>
-                  <span className="text-2xl font-light">${total.toLocaleString()}</span>
+                  <span className="meta uppercase text-gray-600">Total</span>
+                  <span className="h2 font-light">${total.toLocaleString()}</span>
                 </div>
               </div>
               
@@ -220,8 +220,8 @@ export default function CartPage() {
                     <svg className="icon-sm shrink-0 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <div className="text-xs text-blue-900">
-                      <p className="font-medium uppercase tracking-wide mb-1">Processing Time</p>
+                    <div className="meta text-blue-900">
+                      <p className="font-medium uppercase mb-1">Processing Time</p>
                       <p className="text-blue-800">Estimated {maxProcessingDays} business day{maxProcessingDays !== 1 ? 's' : ''} for fulfillment</p>
                     </div>
                   </div>
@@ -237,11 +237,11 @@ export default function CartPage() {
               </Link>
               <Link
                 href="/shop"
-                className="block text-center text-xs uppercase tracking-[0.1em] text-gray-600 hover:text-black transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                className="block text-center meta uppercase text-gray-600 hover:text-black transition-colors py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
               >
                 Continue Shopping
               </Link>
-              <div className="mt-6 pt-6 border-t border-gray-200 space-y-2.5 text-[10px] uppercase tracking-wider text-gray-500">
+              <div className="mt-6 pt-6 border-t border-gray-200 space-y-2.5 meta uppercase text-gray-500">
                 <p className="flex items-center gap-2">
                   <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
