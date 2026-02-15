@@ -8,6 +8,9 @@ import LoadingSpinner from '@/components/LoadingSpinner'
 import PageShell from '@/components/layout/PageShell'
 import { Catalog } from '@/types/catalog'
 import { getArtworkPlaceholder } from '@/lib/media'
+import { buttonVariants } from '@/components/ui/Button'
+import { Download, Eye } from 'lucide-react'
+import { clsx } from 'clsx'
 
 const CATALOG_PLACEHOLDER = getArtworkPlaceholder('card')
 
@@ -133,18 +136,26 @@ export default function CatalogsPage() {
                     href={featuredDownloadHref}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`btn-yeezy-primary ${featuredHasPdf ? '' : 'opacity-40 pointer-events-none'}`}
+                    className={clsx(
+                      buttonVariants({ variant: 'primary', size: 'default' }),
+                      !featuredHasPdf && 'opacity-40 pointer-events-none'
+                    )}
                     aria-disabled={!featuredHasPdf}
                   >
+                    <Download className="w-4 h-4" aria-hidden="true" />
                     Download PDF
                   </a>
                   <a
                     href={featuredHasPdf ? featuredCatalog.pdfUrl : '#'}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`btn-yeezy ${featuredHasPdf ? '' : 'opacity-40 pointer-events-none'}`}
+                    className={clsx(
+                      buttonVariants({ variant: 'secondary', size: 'default' }),
+                      !featuredHasPdf && 'opacity-40 pointer-events-none'
+                    )}
                     aria-disabled={!featuredHasPdf}
                   >
+                    <Eye className="w-4 h-4" aria-hidden="true" />
                     View in Drive
                   </a>
                 </div>
@@ -206,18 +217,28 @@ export default function CatalogsPage() {
                           href={downloadHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`btn-yeezy-primary flex-1 text-center ${hasPdf ? '' : 'opacity-40 pointer-events-none'}`}
+                          className={clsx(
+                            buttonVariants({ variant: 'primary', size: 'sm' }),
+                            'flex-1',
+                            !hasPdf && 'opacity-40 pointer-events-none'
+                          )}
                           aria-disabled={!hasPdf}
                         >
+                          <Download className="w-4 h-4" aria-hidden="true" />
                           Download
                         </a>
                         <a
                           href={hasPdf ? catalog.pdfUrl : '#'}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className={`btn-yeezy flex-1 text-center ${hasPdf ? '' : 'opacity-40 pointer-events-none'}`}
+                          className={clsx(
+                            buttonVariants({ variant: 'secondary', size: 'sm' }),
+                            'flex-1',
+                            !hasPdf && 'opacity-40 pointer-events-none'
+                          )}
                           aria-disabled={!hasPdf}
                         >
+                          <Eye className="w-4 h-4" aria-hidden="true" />
                           View
                         </a>
                       </div>

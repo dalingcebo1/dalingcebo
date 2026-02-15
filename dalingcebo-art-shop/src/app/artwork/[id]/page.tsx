@@ -15,6 +15,8 @@ import { useCart } from '@/contexts/CartContext'
 import { Artwork } from '@/types/artwork'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage, getArtworkPlaceholder } from '@/lib/media'
+import { Button } from '@/components/ui/Button'
+import { ShoppingCart, Bell, CheckCircle, X, ZoomIn, Facebook, Twitter, Link as LinkIcon, ChevronLeft, ChevronRight } from 'lucide-react'
 
 interface SelectedVariant {
   frameVariantId?: string
@@ -312,9 +314,7 @@ export default function ArtworkDetail() {
                 />
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
-                    </svg>
+                    <ZoomIn className="w-5 h-5" aria-hidden="true" />
                   </div>
                 </div>
               </button>
@@ -433,62 +433,60 @@ export default function ArtworkDetail() {
                 {artwork.inStock ? (
                   <>
                     <div className="flex flex-col sm:flex-row gap-3">
-                      <button 
-                        onClick={handleAddToCart} 
-                        className="flex-[2] px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all shadow-sm hover:shadow-md"
+                      <Button
+                        variant="primary"
+                        size="default"
+                        onClick={handleAddToCart}
+                        className="flex-[2]"
                         aria-label="Add artwork to shopping cart"
                       >
-                        <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                        </svg>
+                        <ShoppingCart className="w-4 h-4" aria-hidden="true" />
                         Add to Cart
-                      </button>
-                      <button 
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        size="default"
                         onClick={handleReserve}
-                        className="flex-1 px-4 py-3.5 bg-white border border-gray-300 text-black rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                        className="flex-1"
                         aria-label="Reserve this artwork"
                       >
                         Reserve
-                      </button>
+                      </Button>
                     </div>
-                    <button 
-                      onClick={handleInquire} 
-                      className="w-full px-6 py-3 border border-gray-300 rounded-lg text-xs font-medium uppercase tracking-[0.1em] text-gray-600 hover:text-black hover:border-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                    <Button
+                      variant="ghost"
+                      size="default"
+                      onClick={handleInquire}
+                      className="w-full border border-gray-300"
                       aria-label="Inquire about this artwork"
                     >
                       Inquire About This Piece
-                    </button>
+                    </Button>
                   </>
                 ) : (
-                  <button 
-                    onClick={handleInquire} 
-                    className="w-full px-6 py-3.5 bg-black text-white rounded-lg text-xs font-medium uppercase tracking-[0.1em] hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 transition-all"
+                  <Button
+                    variant="primary"
+                    size="default"
+                    onClick={handleInquire}
+                    className="w-full"
                     aria-label="Get notified when artwork becomes available"
                   >
-                    <svg className="inline-block w-4 h-4 mr-2 -mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                    </svg>
+                    <Bell className="w-4 h-4" aria-hidden="true" />
                     Notify When Available
-                  </button>
+                  </Button>
                 )}
 
                 <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-[10px] uppercase tracking-wider text-gray-600 space-y-2">
                   <p className="flex items-center gap-2">
-                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                     Certificate of Authenticity
                   </p>
                   <p className="flex items-center gap-2">
-                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                     Secure Packaging & Shipping
                   </p>
                   <p className="flex items-center gap-2">
-                    <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
                     14-day returns
                   </p>
                 </div>
@@ -497,21 +495,30 @@ export default function ArtworkDetail() {
               <div className="flex items-center gap-3 pt-6 border-t border-gray-200">
                 <span className="text-xs uppercase tracking-wider text-gray-500">Share:</span>
                 <div className="flex gap-2">
-                  {[
-                    { name: 'Facebook', icon: 'M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z' },
-                    { name: 'Twitter', icon: 'M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z' },
-                    { name: 'Copy Link', icon: 'M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71' }
-                  ].map(({ name, icon }) => (
-                    <button 
-                      key={name}
-                      className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors"
-                      title={name}
-                    >
-                      <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={icon} />
-                      </svg>
-                    </button>
-                  ))}
+                  <Button
+                    variant="icon"
+                    size="icon"
+                    className="border border-gray-300"
+                    title="Share on Facebook"
+                  >
+                    <Facebook className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                  </Button>
+                  <Button
+                    variant="icon"
+                    size="icon"
+                    className="border border-gray-300"
+                    title="Share on Twitter"
+                  >
+                    <Twitter className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                  </Button>
+                  <Button
+                    variant="icon"
+                    size="icon"
+                    className="border border-gray-300"
+                    title="Copy link"
+                  >
+                    <LinkIcon className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                  </Button>
                 </div>
               </div>
             </div>
@@ -595,15 +602,15 @@ export default function ArtworkDetail() {
           aria-modal="true"
           aria-label="Image lightbox"
         >
-          <button 
-            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+          <Button
+            variant="icon"
+            size="icon"
+            className="absolute top-6 right-6 text-white hover:text-gray-300 z-10"
             onClick={() => setIsLightboxOpen(false)}
             aria-label="Close lightbox (Press Escape)"
           >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+            <X className="w-6 h-6" aria-hidden="true" />
+          </Button>
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
               src={imageList[selectedImage] ?? getArtworkPlaceholder()}
@@ -624,9 +631,7 @@ export default function ArtworkDetail() {
                 className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 aria-label="Previous image"
               >
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                </svg>
+                <ChevronLeft className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
               <button
                 onClick={(e) => {
@@ -636,9 +641,7 @@ export default function ArtworkDetail() {
                 className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 aria-label="Next image"
               >
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
+                <ChevronRight className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
               {/* Thumbnail indicators */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full">

@@ -9,6 +9,8 @@ import Footer from '@/components/Footer';
 import Toast from '@/components/Toast';
 import CheckoutModal from '@/components/CheckoutModal';
 import PageShell from '@/components/layout/PageShell';
+import { Button } from '@/components/ui/Button';
+import { ShoppingCart, Minus, Plus, Trash2, Clock, Shield, Package, RotateCcw } from 'lucide-react';
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, clearCart, total, maxProcessingDays } = useCart();
@@ -45,9 +47,7 @@ export default function CartPage() {
       maxWidth="narrow"
     >
       <div className={`bg-white rounded-xl shadow-sm border border-gray-200 p-8 sm:p-12 text-center fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
-            <svg className="icon-xl mx-auto text-gray-300 mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
+            <ShoppingCart className="w-12 h-12 mx-auto text-gray-300 mb-6" aria-hidden="true" />
             <h2 className="h2 font-light mb-3 text-gray-900">Your Cart is Empty</h2>
             <p className="body text-gray-600 mb-8 max-w-md mx-auto">
               Start exploring our collection and add artwork that speaks to you.
@@ -150,47 +150,42 @@ export default function CartPage() {
                       <div className="flex items-center gap-3">
                         <span className="meta text-gray-600">Quantity:</span>
                         <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
-                          <button
+                          <Button
+                            variant="icon"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                             disabled={item.quantity <= 1}
-                            className={`icon-sm flex items-center justify-center rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
-                              item.quantity <= 1
-                                ? 'opacity-40 cursor-not-allowed'
-                                : 'hover:bg-white'
-                            }`}
+                            className={item.quantity <= 1 ? 'opacity-40 cursor-not-allowed' : ''}
                             aria-label="Decrease quantity"
                             aria-disabled={item.quantity <= 1}
                           >
-                            <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                            </svg>
-                          </button>
+                            <Minus className="w-4 h-4" aria-hidden="true" />
+                          </Button>
                           <span className="w-8 text-center font-medium" aria-label={`Quantity: ${item.quantity}`}>{item.quantity}</span>
-                          <button
+                          <Button
+                            variant="icon"
+                            size="icon"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="icon-sm flex items-center justify-center rounded-md hover:bg-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                             aria-label="Increase quantity"
                           >
-                            <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                            </svg>
-                          </button>
+                            <Plus className="w-4 h-4" aria-hidden="true" />
+                          </Button>
                         </div>
                       </div>
-                      <button
+                      <Button
+                        variant="destructive"
+                        size="sm"
                         onClick={() => {
                           removeFromCart(item.id);
                           setToastMessage('Item removed from cart');
                           setShowToast(true);
                         }}
-                        className="meta uppercase text-red-600 hover:text-red-800 flex items-center gap-1.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-600 focus-visible:ring-offset-2"
+                        className="meta uppercase flex items-center gap-1.5"
                         aria-label={`Remove ${item.title} from cart`}
                       >
-                        <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
+                        <Trash2 className="w-4 h-4 shrink-0" aria-hidden="true" />
                         Remove
-                      </button>
+                      </Button>
                     </div>
                   </div>
                 </div>
@@ -217,9 +212,7 @@ export default function CartPage() {
               {maxProcessingDays > 0 && (
                 <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <svg className="icon-sm shrink-0 text-blue-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
+                    <Clock className="w-4 h-4 shrink-0 text-blue-600 mt-0.5" aria-hidden="true" />
                     <div className="meta text-blue-900">
                       <p className="font-medium uppercase mb-1">Processing Time</p>
                       <p className="text-blue-800">Estimated {maxProcessingDays} business day{maxProcessingDays !== 1 ? 's' : ''} for fulfillment</p>
@@ -243,21 +236,15 @@ export default function CartPage() {
               </Link>
               <div className="mt-6 pt-6 border-t border-gray-200 space-y-2.5 meta uppercase text-gray-500">
                 <p className="flex items-center gap-2">
-                  <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
+                  <Shield className="w-4 h-4 shrink-0" aria-hidden="true" />
                   Secure checkout
                 </p>
                 <p className="flex items-center gap-2">
-                  <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-                  </svg>
+                  <Package className="w-4 h-4 shrink-0" aria-hidden="true" />
                   Free shipping over $5,000
                 </p>
                 <p className="flex items-center gap-2">
-                  <svg className="icon-sm shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
+                  <RotateCcw className="w-4 h-4 shrink-0" aria-hidden="true" />
                   14-day returns
                 </p>
               </div>
