@@ -129,8 +129,8 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
         {/* Modern Compact Filter Controls */}
         <div className="bg-white/50 backdrop-blur-sm border border-gray-200 p-4 md:p-6 mb-8 rounded-lg">
           {/* Header Row - Compact */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 pb-4 border-b border-gray-100">
-            <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 pb-4 border-b border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
               <h2 className="text-lg md:text-xl font-light tracking-tight text-black">
                 {stats.total} Works
               </h2>
@@ -142,7 +142,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="text-[10px] uppercase tracking-wider text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 group"
+                className="text-[10px] uppercase tracking-wider text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 group self-start sm:self-auto"
               >
                 <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -153,11 +153,11 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           </div>
 
           {/* Modern Pill Filters - Responsive */}
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-4">
+          <div className="flex flex-col gap-4">
             {/* Scale Pills */}
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Scale</span>
-              <div className="flex gap-1.5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Scale</span>
+              <div className="flex gap-1.5 flex-wrap">
                 {['all', 'large', 'small'].map(option => (
                   <button
                     key={option}
@@ -175,12 +175,10 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               </div>
             </div>
 
-            <span className="hidden sm:block text-gray-300">|</span>
-
             {/* Availability Pills */}
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Status</span>
-              <div className="flex gap-1.5">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Status</span>
+              <div className="flex gap-1.5 flex-wrap">
                 {[
                   { label: 'All', value: 'all' },
                   { label: 'Available', value: 'available' },
@@ -202,14 +200,12 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               </div>
             </div>
 
-            <span className="hidden sm:block text-gray-300">|</span>
-
             {/* Category Dropdown - Minimal */}
-            <div className="flex items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Category</span>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Category</span>
               <select
                 id="category-filter"
-                className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black border-0 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right min-w-[110px]"
+                className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black border-0 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right w-full sm:w-auto sm:min-w-[140px]"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                   backgroundSize: '12px',
