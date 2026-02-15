@@ -120,21 +120,21 @@ export default function About() {
             <div className="space-y-6">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <p className="body font-medium text-black uppercase mb-2">CHAOS, A THEORY</p>
+                  <h3 className="body font-medium text-black uppercase mb-2">CHAOS, A THEORY</h3>
                   <p className="body text-gray-500">Solo Exhibition presented by Candice Berman Gallery, Johannesburg</p>
                 </div>
                 <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">APRIL 20 – MAY 10, 2024</span>
               </div>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <p className="body font-medium text-black uppercase mb-2">GALLERY REPRESENTATION</p>
+                  <h3 className="body font-medium text-black uppercase mb-2">GALLERY REPRESENTATION</h3>
                   <p className="body text-gray-500">Candice Berman Gallery, Johannesburg</p>
                 </div>
                 <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">CURRENT</span>
               </div>
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">
                 <div className="flex-1">
-                  <p className="body font-medium text-black uppercase mb-2">ARTIST PROFILE</p>
+                  <h3 className="body font-medium text-black uppercase mb-2">ARTIST PROFILE</h3>
                   <p className="body text-gray-500">Featured on Artsy</p>
                 </div>
                 <span className="meta text-gray-400 tracking-wider md:whitespace-nowrap">2024</span>

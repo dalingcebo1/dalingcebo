@@ -185,7 +185,7 @@ export default function CatalogsPage() {
                         <p className="meta uppercase text-gray-500 mb-1">
                           {catalog.releaseDate ? new Date(catalog.releaseDate).toLocaleDateString() : 'Unreleased'}
                         </p>
-                        <h4 className="body font-medium mb-1">{catalog.title}</h4>
+                        <h4 className="meta font-medium mb-1">{catalog.title}</h4>
                         {catalog.description && (
                           <p className="body text-gray-600 leading-relaxed">
                             {catalog.description}
