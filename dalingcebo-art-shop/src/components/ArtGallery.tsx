@@ -71,18 +71,24 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
     const allowedAvailability = ['all', 'available', 'sold']
     const scaleParam = searchParams.get('scale') ?? 'all'
     const availabilityParam = searchParams.get('availability') ?? 'all'
+    const categoryParam = searchParams.get('category') ?? 'all'
+
+    const safeCategory =
+      categoryParam === 'all' || categories.includes(categoryParam)
+        ? categoryParam
+        : 'all'
 
     const urlFilters = {
       scale: allowedScale.includes(scaleParam) ? scaleParam : 'all',
       availability: allowedAvailability.includes(availabilityParam) ? availabilityParam : 'all',
-      category: searchParams.get('category') ?? 'all',
+      category: safeCategory,
     }
 
     setFilters((prev) => {
       const isSame = Object.entries(urlFilters).every(([key, value]) => prev[key as keyof typeof prev] === value)
       return isSame ? prev : urlFilters
     })
-  }, [searchParams])
+  }, [searchParams, categories])
 
   const syncFiltersToQuery = (nextFilters: typeof filters) => {
     setFilters(nextFilters)
@@ -118,35 +124,61 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
   }
 
   return (
-    <section className="yeezy-section" id="collection">
+    <section className="yeezy-section border-t border-gray-200" id="collection">
       <div className="yeezy-container">
-        <div className="bg-white border border-gray-200 p-6 mb-10">
-          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div>
-              <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Catalogue Overview</p>
-              <p className="text-2xl font-light">{stats.total} Works • ${stats.totalValue.toLocaleString()} value</p>
+        {/* Modern Compact Filter Controls */}
+        <div className="bg-white/50 backdrop-blur-sm border border-gray-200 p-4 md:p-6 mb-8 rounded-lg">
+          {/* Header Row - Compact */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-5 pb-4 border-b border-gray-100">
+            <div className="flex items-center gap-4">
+              <h2 className="text-lg md:text-xl font-light tracking-tight text-black">
+                {stats.total} Works
+              </h2>
+              <span className="text-xs text-gray-500">${stats.totalValue.toLocaleString()}</span>
             </div>
-            <div className="flex flex-wrap gap-3">
-              {['all', 'large', 'small'].map(option => (
-                <button
-                  key={option}
-                  onClick={() => handleFilterChange('scale', option)}
-                  className={`px-4 py-2 text-xs tracking-[0.25em] uppercase border transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
-                    filters.scale === option
-                      ? 'bg-black text-white border-black'
-                      : 'border-gray-300 text-gray-600 hover:bg-black hover:text-white'
-                  }`}
-                >
-                  {option === 'all' ? 'All Scales' : option}
-                </button>
-              ))}
-            </div>
+            {hasFilters && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="text-[10px] uppercase tracking-wider text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 group"
+              >
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Clear All
+              </button>
+            )}
           </div>
 
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            <div className="flex items-center gap-3">
-              <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500">Availability</p>
-              <div className="flex gap-2">
+          {/* Modern Pill Filters - Responsive */}
+          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-4">
+            {/* Scale Pills */}
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Scale</span>
+              <div className="flex gap-1.5">
+                {['all', 'large', 'small'].map(option => (
+                  <button
+                    key={option}
+                    onClick={() => handleFilterChange('scale', option)}
+                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
+                      filters.scale === option
+                        ? 'bg-black text-white shadow-sm'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
+                    }`}
+                    aria-pressed={filters.scale === option}
+                  >
+                    {option === 'all' ? 'All' : option}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <span className="hidden sm:block text-gray-300">|</span>
+
+            {/* Availability Pills */}
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Status</span>
+              <div className="flex gap-1.5">
                 {[
                   { label: 'All', value: 'all' },
                   { label: 'Available', value: 'available' },
@@ -155,10 +187,10 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                   <button
                     key={value}
                     onClick={() => handleFilterChange('availability', value)}
-                    className={`px-3 py-1 text-[10px] uppercase tracking-[0.3em] border transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
+                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
                       filters.availability === value
-                        ? 'border-black text-black'
-                        : 'border-gray-300 text-gray-500 hover:bg-black hover:text-white'
+                        ? 'bg-black text-white shadow-sm'
+                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
                     }`}
                     aria-pressed={filters.availability === value}
                   >
@@ -168,10 +200,19 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               </div>
             </div>
 
-            <label className="flex items-center gap-3 text-[10px] uppercase tracking-[0.3em] text-gray-500">
-              Category
+            <span className="hidden sm:block text-gray-300">|</span>
+
+            {/* Category Dropdown - Minimal */}
+            <div className="flex items-center gap-2">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap">Category</span>
               <select
-                className="flex-1 border border-gray-300 px-3 py-2 text-xs uppercase tracking-[0.2em] bg-white focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                id="category-filter"
+                className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black border-0 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right min-w-[110px]"
+                style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundSize: '12px',
+                  backgroundPosition: 'right 10px center'
+                }}
                 value={filters.category}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
               >
@@ -180,20 +221,57 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                   <option key={category} value={category}>{category}</option>
                 ))}
               </select>
-            </label>
-
-            <div className="flex items-center justify-end">
-              {hasFilters && (
-                <button
-                  type="button"
-                  onClick={resetFilters}
-                  className="text-xs uppercase tracking-[0.3em] text-gray-500 hover:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                >
-                  Reset Filters
-                </button>
-              )}
             </div>
           </div>
+
+          {/* Active Filters Summary */}
+          {hasFilters && (
+            <div className="mt-4 pt-3.5 border-t border-gray-100 flex items-center gap-2 flex-wrap">
+              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium">Active:</span>
+              {filters.scale !== 'all' && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-black/5 rounded-full text-[9px] text-gray-700 uppercase tracking-wider">
+                  {filters.scale} scale
+                  <button 
+                    onClick={() => handleFilterChange('scale', 'all')}
+                    className="hover:text-black ml-0.5 -mr-0.5"
+                    aria-label="Remove scale filter"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {filters.availability !== 'all' && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-black/5 rounded-full text-[9px] text-gray-700 uppercase tracking-wider">
+                  {filters.availability}
+                  <button 
+                    onClick={() => handleFilterChange('availability', 'all')}
+                    className="hover:text-black ml-0.5 -mr-0.5"
+                    aria-label="Remove availability filter"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+              {filters.category !== 'all' && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-black/5 rounded-full text-[9px] text-gray-700 uppercase tracking-wider">
+                  {filters.category}
+                  <button 
+                    onClick={() => handleFilterChange('category', 'all')}
+                    className="hover:text-black ml-0.5 -mr-0.5"
+                    aria-label="Remove category filter"
+                  >
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Gallery Grid */}
@@ -205,23 +283,45 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           )}
 
           {error && !isLoading && (
-            <div className="col-span-full text-center py-12">
-              <p className="yeezy-body text-gray-500">{error}</p>
-              <button
-                className="btn-yeezy mt-6"
-                onClick={reload}
-              >
-                Try Again
-              </button>
+            <div className="col-span-full text-center py-20 px-4">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                  <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-light mb-3 tracking-tight">Unable to Load Collection</h3>
+                <p className="text-sm text-gray-600 mb-6 leading-relaxed">{error}</p>
+                <button
+                  className="btn-yeezy-primary"
+                  onClick={reload}
+                >
+                  Try Again
+                </button>
+              </div>
             </div>
           )}
 
           {!isLoading && !error && filteredArtworks.length === 0 && (
-            <div className="col-span-full text-center py-16">
-              <p className="yeezy-body text-gray-500">No works match these filters yet.</p>
-              {hasFilters && (
-                <button className="btn-yeezy mt-6" onClick={resetFilters}>Clear Filters</button>
-              )}
+            <div className="col-span-full text-center py-20 px-4">
+              <div className="max-w-md mx-auto">
+                <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
+                  <svg className="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-light mb-3 tracking-tight">No Works Found</h3>
+                <p className="text-sm text-gray-600 mb-6 leading-relaxed">
+                  {hasFilters 
+                    ? 'No artworks match your current filters. Try adjusting or clearing them.' 
+                    : 'No works are currently available. Please check back soon.'}
+                </p>
+                {hasFilters && (
+                  <button className="btn-yeezy-primary" onClick={resetFilters}>
+                    Clear All Filters
+                  </button>
+                )}
+              </div>
             </div>
           )}
 
@@ -233,8 +333,15 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
             <div
               key={artwork.id}
               onClick={() => router.push(`/artwork/${artwork.id}`)}
-              className="yeezy-grid-item yeezy-transition group cursor-pointer rounded-sm overflow-hidden bg-white"
+              className="yeezy-grid-item yeezy-transition group cursor-pointer rounded-sm overflow-hidden bg-white relative"
             >
+              {/* Sold Out Badge */}
+              {!artwork.inStock && (
+                <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-black text-white text-[9px] uppercase tracking-[0.3em] font-medium">
+                  Sold
+                </div>
+              )}
+
               <div
                 className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden rounded-lg"
                 style={{ aspectRatio }}
@@ -243,29 +350,42 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                   src={primaryImage}
                   alt={artwork.title}
                   fill
-                  className="object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                  className={`object-contain transition-all duration-700 ${
+                    !artwork.inStock ? 'opacity-60' : 'group-hover:scale-[1.02]'
+                  }`}
                   sizes="(max-width: 768px) 100vw, 33vw"
                   priority={false}
                 />
               </div>
 
-              {/* Overlay with artwork details */}
-              <div className="yeezy-overlay">
-                <div className="w-full">
-                  <div className="flex justify-between items-end">
-                    <div>
-                      <h3 className="yeezy-title text-black mb-1">
+              {/* Enhanced overlay with artwork details */}
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-95 transition-opacity duration-300 flex items-end p-5 rounded-sm pointer-events-none">
+                <div className="w-full space-y-3">
+                  <div className="flex justify-between items-start gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-sm font-medium uppercase tracking-[0.15em] text-black mb-1.5 leading-tight">
                         {artwork.title}
                       </h3>
-                      <p className="text-xs text-gray-700 yeezy-body">
-                        {artwork.size} • {artwork.year}
+                      <p className="text-[10px] text-gray-600 uppercase tracking-[0.2em]">
+                        {artwork.category}
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="yeezy-price text-black">
+                      <p className="text-lg font-light text-black">
                         ${artwork.price.toLocaleString()}
                       </p>
                     </div>
+                  </div>
+                  <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+                    <p className="text-[10px] text-gray-500 uppercase tracking-wider">
+                      {artwork.size} • {artwork.year}
+                    </p>
+                    <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.2em] text-black transition-transform group-hover:translate-x-0.5">
+                      View
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </div>
@@ -274,11 +394,13 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
         </div>
 
         {/* Load More */}
-        <div className={`text-center mt-16 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
-          <Link href="/shop" className="btn-yeezy">
-            View More ({filteredArtworks.length} of {stats.total})
-          </Link>
-        </div>
+        {!isLoading && filteredArtworks.length > 0 && (
+          <div className={`text-center mt-16 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
+            <div className="inline-flex items-center gap-3 px-6 py-3 border border-gray-200 bg-white text-xs uppercase tracking-[0.3em] text-gray-600">
+              <span>Showing {filteredArtworks.length} of {stats.total} works</span>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   )

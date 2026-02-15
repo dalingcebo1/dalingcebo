@@ -58,7 +58,7 @@ export default function About() {
           </div>
 
           {/* Philosophy */}
-          <div className={`border-t border-gray-200 pt-24 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.6s' }}>
+          <div className={`border-t border-gray-200 pt-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.6s' }}>
             <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">PHILOSOPHY</h2>
             <div className="grid md:grid-cols-3 gap-8 md:gap-16 mb-24">
               <div className="space-y-4">
@@ -86,7 +86,7 @@ export default function About() {
           </div>
 
           {/* Process */}
-          <div className={`border-t border-gray-200 pt-24 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
+          <div className={`border-t border-gray-200 pt-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.9s' }}>
             <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">PROCESS</h2>
             <div className="space-y-6 mb-12 text-base leading-relaxed yeezy-body text-gray-700 max-w-4xl">
               <p>
@@ -115,7 +115,7 @@ export default function About() {
           </div>
 
           {/* Recognition */}
-          <div className={`border-t border-gray-200 pt-24 pb-12 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
+          <div className={`border-t border-gray-200 pt-8 pb-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
             <h2 className="yeezy-subheading text-3xl md:text-4xl mb-16 tracking-[0.15em]">EXHIBITIONS & RECOGNITION</h2>
             <div className="space-y-6 yeezy-body">
               <div className="flex flex-col md:flex-row md:justify-between md:items-start border-b border-gray-200 pb-6 gap-3">

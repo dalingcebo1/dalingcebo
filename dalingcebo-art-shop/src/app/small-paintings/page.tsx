@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Image from 'next/image'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
@@ -119,7 +120,13 @@ export default function SmallPaintings() {
               </div>
             )})}
           </div>
-        </PageShell>
+          {/* Cross-navigation to other category */}
+          <div className="mt-12 pt-8 border-t border-gray-200 text-center">
+            <p className="text-xs uppercase tracking-[0.2em] text-gray-500 mb-4">Explore More</p>
+            <Link href="/large-paintings" className="btn-yeezy inline-block">
+              View Large Paintings
+            </Link>
+          </div>        </PageShell>
 
       <Footer />
     </main>

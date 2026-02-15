@@ -36,6 +36,35 @@ body {
   padding-top: var(--nav-height);
 }
 
+/* Global link styles - black/grey theme */
+a,
+a:link,
+a:visited {
+  color: #000000;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover,
+a:focus {
+  color: #666666;
+}
+
+a:active {
+  color: #666666;
+}
+
+a:focus-visible {
+  outline: 1px solid #000000;
+  outline-offset: 2px;
+}
+
+/* Ensure Next.js Link components follow same styling */
+[class*="link"],
+[href] {
+  color: inherit;
+}
+
 /* Yeezy-style scrollbar */
 ::-webkit-scrollbar {
   width: 1px;
@@ -330,7 +359,7 @@ body {
 
 /* Hero section */
 .yeezy-hero {
-  height: 60vh;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -440,14 +469,14 @@ body {
 }
 
 .yeezy-section {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 @media (min-width: 768px) {
   .yeezy-section {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 }
 
@@ -483,22 +512,22 @@ body {
   }
 }
 
-/* Section spacing */
+/* Section spacing (aligned with .yeezy-section for consistent vertical rhythm) */
 .page-shell-section {
-  padding-top: 2rem; /* 32px mobile */
-  padding-bottom: 2rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
 @media (min-width: 1024px) {
   .page-shell-section {
-    padding-top: 3.5rem; /* 56px desktop */
-    padding-bottom: 3.5rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
   }
 }
 
 /* Hero section styling */
 .page-shell-hero {
-  height: 60vh;
+  height: 25vh;
   display: flex;
   align-items: center;
   justify-content: center;

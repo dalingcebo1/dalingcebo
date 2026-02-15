@@ -348,35 +348,35 @@ export default function ArtworkDetail() {
               )}
             </div>
 
-            <div className="space-y-8">
-              <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="px-3 py-1 bg-gray-100 text-gray-700 text-xs uppercase tracking-wider rounded-full flex-shrink-0">
+            <div className="space-y-6">
+              <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm">
+                <div className="flex flex-wrap items-center gap-2 mb-5">
+                  <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex-shrink-0">
                     {artwork.category}
                   </span>
                   {artwork.inStock ? (
-                    <span className="px-3 py-1 bg-green-100 text-green-700 text-xs uppercase tracking-wider rounded-full flex items-center gap-1.5 flex-shrink-0">
+                    <span className="px-3 py-1.5 bg-green-50 text-green-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex items-center gap-1.5 flex-shrink-0">
                       <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse flex-shrink-0"></span>
                       Available
                     </span>
                   ) : (
-                    <span className="px-3 py-1 bg-red-100 text-red-700 text-xs uppercase tracking-wider rounded-full flex-shrink-0">
+                    <span className="px-3 py-1.5 bg-red-50 text-red-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex-shrink-0">
                       Sold
                     </span>
                   )}
                 </div>
-                <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-6">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight mb-5 leading-tight">
                   {artwork.title}
                 </h1>
-                <div className="flex items-baseline gap-4 mb-2">
-                  <p className="text-4xl font-light">
+                <div className="flex items-baseline gap-4 mb-3">
+                  <p className="text-3xl md:text-4xl font-light">
                     ${currentPrice.toLocaleString()}
                   </p>
                   {artwork.inventory && artwork.inventory < 5 && artwork.inStock && (
-                    <span className="text-sm text-amber-600">Only {artwork.inventory} left</span>
+                    <span className="text-xs text-amber-600 font-medium">Only {artwork.inventory} left</span>
                   )}
                 </div>
-                <p className="text-sm text-gray-600 mb-6">
+                <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
                   {artwork.edition} • {artwork.year}
                 </p>
                 
@@ -387,43 +387,43 @@ export default function ArtworkDetail() {
                 />
               </div>
 
-              <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-                <h3 className="text-sm font-medium uppercase tracking-wider text-gray-700 mb-4">About This Piece</h3>
-                <p className="text-base leading-relaxed text-gray-900 mb-4">
+              <div className="bg-gray-50 rounded-xl p-5 md:p-6 border border-gray-200">
+                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-4">About This Piece</h3>
+                <p className="text-sm leading-relaxed text-gray-900 mb-3">
                   {artwork.description}
                 </p>
-                <p className="text-sm leading-relaxed text-gray-600">
+                <p className="text-xs leading-relaxed text-gray-600">
                   {artwork.details}
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                <h3 className="text-sm font-medium uppercase tracking-wider text-gray-700 mb-5">Specifications</h3>
-                <div className="space-y-4 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Medium</span>
-                    <span className="text-right">{artwork.medium}</span>
+              <div className="bg-white rounded-xl border border-gray-200 p-5 md:p-6 shadow-sm">
+                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-4">Specifications</h3>
+                <div className="space-y-3 text-xs">
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-500 uppercase tracking-wide">Medium</span>
+                    <span className="text-right text-gray-900 font-medium">{artwork.medium}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Size</span>
-                    <span>{artwork.size}</span>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-500 uppercase tracking-wide">Size</span>
+                    <span className="text-gray-900 font-medium">{artwork.size}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Year</span>
-                    <span>{artwork.year}</span>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-500 uppercase tracking-wide">Year</span>
+                    <span className="text-gray-900 font-medium">{artwork.year}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Edition</span>
-                    <span>{artwork.edition}</span>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-500 uppercase tracking-wide">Edition</span>
+                    <span className="text-gray-900 font-medium">{artwork.edition}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Availability</span>
-                    <span>{artwork.inStock ? 'In Stock' : 'Sold'}</span>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-500 uppercase tracking-wide">Availability</span>
+                    <span className="text-gray-900 font-medium">{artwork.inStock ? 'In Stock' : 'Sold'}</span>
                   </div>
                   {artwork.inventory !== undefined && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Pieces Remaining</span>
-                      <span>{artwork.inventory}</span>
+                    <div className="flex justify-between py-2">
+                      <span className="text-gray-500 uppercase tracking-wide">Pieces Remaining</span>
+                      <span className="text-gray-900 font-medium">{artwork.inventory}</span>
                     </div>
                   )}
                 </div>
@@ -492,32 +492,32 @@ export default function ArtworkDetail() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pt-6 border-t border-gray-200">
-                <span className="text-xs uppercase tracking-wider text-gray-500">Share:</span>
+              <div className="flex items-center gap-3 pt-5 border-t border-gray-200">
+                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Share:</span>
                 <div className="flex gap-2">
                   <Button
                     variant="icon"
                     size="icon"
-                    className="border border-gray-300"
+                    className="border border-gray-200 hover:border-gray-400"
                     title="Share on Facebook"
                   >
-                    <Facebook className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                    <Facebook className="w-4 h-4 text-gray-500" aria-hidden="true" />
                   </Button>
                   <Button
                     variant="icon"
                     size="icon"
-                    className="border border-gray-300"
+                    className="border border-gray-200 hover:border-gray-400"
                     title="Share on Twitter"
                   >
-                    <Twitter className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                    <Twitter className="w-4 h-4 text-gray-500" aria-hidden="true" />
                   </Button>
                   <Button
                     variant="icon"
                     size="icon"
-                    className="border border-gray-300"
+                    className="border border-gray-200 hover:border-gray-400"
                     title="Copy link"
                   >
-                    <LinkIcon className="w-5 h-5 text-gray-600" aria-hidden="true" />
+                    <LinkIcon className="w-4 h-4 text-gray-500" aria-hidden="true" />
                   </Button>
                 </div>
               </div>
@@ -525,7 +525,7 @@ export default function ArtworkDetail() {
           </div>
 
           {artwork.videos && artwork.videos.length > 0 && (
-            <div className="border-t border-gray-200 mt-24 pt-16">
+            <div className="border-t border-gray-200 mt-8 pt-6">
               <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
                 <div>
                   <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Studio Footage</p>
@@ -540,32 +540,42 @@ export default function ArtworkDetail() {
           )}
 
           {relatedArtworks.length > 0 && (
-            <div className="border-t border-gray-200 mt-24 pt-16">
-              <h2 className="yeezy-subheading text-3xl mb-12">You May Also Like</h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="border-t border-gray-200 mt-8 pt-6">
+              <div className="flex items-baseline justify-between mb-6">
+                <div>
+                  <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1.5">Explore Similar</p>
+                  <h2 className="text-xl md:text-2xl font-light tracking-tight">You May Also Like</h2>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
                 {relatedArtworks.map((related) => (
                   <button
                     key={related.id}
                     onClick={() => router.push(`/artwork/${related.id}`)}
-                    className="yeezy-grid-item bg-white cursor-pointer group"
+                    className="group text-left cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300"
+                    aria-label={`View artwork ${related.title}`}
                   >
                     <div
-                      className="yeezy-image bg-gray-50 relative overflow-hidden rounded-lg"
-                      style={{ aspectRatio: getArtworkAspectRatio(related.size) }}
+                      className="relative w-full h-48 md:h-56 bg-gray-50 overflow-hidden"
                     >
                       <Image
                         src={getArtworkPrimaryImage(related)}
                         alt={related.title}
                         fill
-                        className="object-contain"
-                        sizes="(max-width: 768px) 50vw, 20vw"
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                       />
                     </div>
-                    <div className="yeezy-overlay">
-                      <div className="w-full text-left">
-                        <h3 className="yeezy-title text-black mb-1">{related.title}</h3>
-                        <p className="yeezy-price text-black">${related.price.toLocaleString()}</p>
-                      </div>
+                    <div className="p-3 space-y-1.5">
+                      <p className="text-[9px] uppercase tracking-[0.15em] text-gray-400">
+                        {related.category}
+                      </p>
+                      <p className="text-xs font-medium text-gray-900 truncate leading-tight">
+                        {related.title}
+                      </p>
+                      <p className="text-xs text-gray-600 font-light">
+                        ${related.price.toLocaleString()}
+                      </p>
                     </div>
                   </button>
                 ))}

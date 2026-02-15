@@ -90,7 +90,11 @@ const CartIcon = ({ className = 'icon-nav' }: { className?: string }) => (
 const mobileNavLinks = [
   { label: 'Home', href: '/' },
   { label: 'Shop', href: '/shop' },
+  { label: 'Large Paintings', href: '/large-paintings' },
+  { label: 'Small Paintings', href: '/small-paintings' },
+  { label: 'About', href: '/about' },
   { label: 'Catalogs', href: '/catalogs' },
+  { label: 'Cart', href: '/cart' },
   { label: 'Account', href: '/account' },
   { label: 'Contact', href: '/contact' },
 ]
@@ -191,8 +195,8 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
           >
             <CartIcon />
             {itemCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">
-                {itemCount}
+              <span className="absolute -top-1.5 -right-1.5 bg-black text-white text-[9px] font-medium w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+                {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}
           </Link>
@@ -213,67 +217,21 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
       </div>
 
       {isMenuOpen && (
-        <div className="md:hidden mt-6 pt-6 border-t border-gray-200">
-          <div className="flex justify-between items-center px-4">
-            {showBackButton ? (
-              <button
-                type="button"
-                onClick={handleBack}
-                className="yeezy-nav-link"
-                title="Go Back"
-                aria-label="Go back to previous page"
-              >
-                <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M19 12H5M12 19l-7-7 7-7"/>
-                </svg>
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={handleZoomToggle}
-                className="yeezy-nav-link"
-                title={zoomLevel >= 2 ? 'Zoom Out' : 'Zoom In'}
-                aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
-              >
-                {zoomLevel >= 2 ? (
-                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35M8 11h6" />
-                  </svg>
-                ) : (
-                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
-                  </svg>
-                )}
-              </button>
-            )}
-
-            <div className="flex space-x-6">
-              {navIconLinks.map(link => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="yeezy-nav-link"
-                  onClick={() => setIsMenuOpen(false)}
-                  title={link.title}
-                  aria-label={link.title}
-                >
-                  {link.renderIcon('icon-nav')}
-                </Link>
-              ))}
-            </div>
-          </div>
-
-          <div className="mt-6 px-4 pb-4 space-y-3 text-sm yeezy-body">
+        <div className="md:hidden bg-white border-t border-gray-200">
+          <div className="px-6 py-6 space-y-1">
             {mobileNavLinks.map(link => (
-              <Link key={link.href} href={link.href} className="block text-gray-700" onClick={() => setIsMenuOpen(false)}>
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className="block text-gray-900 hover:text-gray-600 py-3 text-xs uppercase tracking-[0.2em] font-light transition-colors border-b border-gray-100 last:border-0" 
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <div className="px-4 pb-6 sm:hidden">
+          <div className="px-6 pb-6 pt-4 border-t border-gray-200 bg-gray-50">
             <AccountButton />
           </div>
         </div>

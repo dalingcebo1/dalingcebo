@@ -55,7 +55,7 @@ export default function Hero() {
         <div className="absolute -top-20 left-1/2 w-[420px] h-[420px] -translate-x-1/2 bg-gradient-to-br from-gray-900 via-gray-600 to-gray-200 opacity-30 blur-3xl"></div>
         <div className="absolute bottom-0 right-0 w-[260px] h-[260px] bg-gradient-to-br from-amber-200 via-white to-gray-200 opacity-40 blur-3xl"></div>
       </div>
-      <div className="yeezy-hero-content space-y-12">
+      <div className="yeezy-hero-content space-y-8 md:space-y-10">
         <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.2s' }}>
           <div className="inline-flex items-center gap-2 px-4 py-2 border border-black/10 uppercase tracking-[0.35em] text-[10px] flex-shrink-0">
             Studio Drop
@@ -64,19 +64,19 @@ export default function Hero() {
         </div>
 
         <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.4s' }}>
-          <h1 className="yeezy-main-logo text-black text-6xl md:text-8xl">
+          <h1 className="yeezy-main-logo text-black text-5xl md:text-7xl">
             DALINGCEBO
           </h1>
         </div>
         
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.8s' }}>
-          <p className="yeezy-body text-gray-600 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.6s' }}>
+          <p className="yeezy-body text-gray-600 text-sm md:text-base max-w-2xl mx-auto leading-relaxed">
             Contemporary statements in oil, mixed media, and sound. Crafted in Johannesburg, collected worldwide.
           </p>
         </div>
 
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1s' }}>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.8s' }}>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               type="button"
               onClick={scrollToGallery}
@@ -95,65 +95,60 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1s' }}>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
             {heroMetrics.map(metric => (
               <div
                 key={metric.label}
-                className="border border-black/10 bg-white/70 backdrop-blur-sm px-6 py-5 text-left"
+                className="border border-black/10 bg-white/80 backdrop-blur-sm px-6 py-5 text-center transition-colors hover:bg-white hover:border-black/20"
               >
-                <p className="text-[10px] uppercase tracking-[0.3em] text-gray-500 mb-3">{metric.label}</p>
-                <p className="text-3xl font-light">
+                <p className="text-2xl md:text-3xl font-light mb-2">
                   {isLoading ? '—' : metric.value}
                 </p>
+                <p className="text-[9px] uppercase tracking-[0.35em] text-gray-500">{metric.label}</p>
               </div>
             ))}
           </div>
-          <div className="mt-8 flex flex-col items-center gap-3 text-xs uppercase tracking-[0.3em] text-gray-500">
-            <div className="inline-flex items-center gap-3 px-5 py-2 border border-gray-300 bg-white/80 flex-shrink-0">
-              <span className="whitespace-nowrap">Catalogue Value</span>
-              <span className="text-black whitespace-nowrap">{isLoading ? 'Calculating…' : `$${stats.totalValue.toLocaleString()}`}</span>
-            </div>
+        </div>
+
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.1s' }}>
+          <div className="flex items-center justify-center">
             <button
               type="button"
-              className="yeezy-nav-link focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2"
               onClick={scrollToGallery}
-              aria-label="Scroll down to artworks grid"
+              aria-label="Scroll down to artworks collection"
             >
-              Scroll to works ↓
+              Explore Collection
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
             </button>
           </div>
         </div>
 
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.4s' }}>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.2s' }}>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto">
             {heroNavLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group border border-gray-200 bg-white/80 px-5 py-4 flex items-start justify-between gap-4 hover:border-black hover:bg-white transition-colors"
+                className="group border border-gray-200 bg-white/80 px-5 py-5 flex flex-col gap-2 hover:border-black hover:bg-white hover:shadow-sm transition-all"
               >
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-1">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="text-[11px] uppercase tracking-[0.3em] text-gray-900 font-medium group-hover:text-black">
                     {item.label}
                   </p>
-                  <p className="text-xs text-gray-600 leading-snug">
-                    {item.description}
-                  </p>
+                  <svg className="w-4 h-4 text-gray-400 group-hover:text-black transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7m10 0v10" />
+                  </svg>
                 </div>
-                <span className="text-sm tracking-widest text-gray-400 group-hover:text-black" aria-hidden>
-                  ↗
-                </span>
+                <p className="text-[10px] text-gray-600 leading-relaxed">
+                  {item.description}
+                </p>
               </Link>
             ))}
           </div>
-        </div>
-
-        <div 
-          className={`absolute bottom-12 left-1/2 transform -translate-x-1/2 fade-in-slow ${isVisible ? '' : ''}`}
-          style={{ animationDelay: '1.6s' }}
-        >
-          <div className="w-px h-16 bg-gray-400 opacity-40"></div>
         </div>
       </div>
     </section>

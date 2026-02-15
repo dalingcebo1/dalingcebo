@@ -62,7 +62,7 @@ export default function PageShell({
         <section className="page-shell-hero bg-black text-white">
           <div className="page-shell-hero-content fade-in-slow">
             {title && (
-              <h1 className="yeezy-main-logo text-white mb-8">
+              <h1 className="yeezy-main-logo text-white mb-2">
                 {title}
               </h1>
             )}
