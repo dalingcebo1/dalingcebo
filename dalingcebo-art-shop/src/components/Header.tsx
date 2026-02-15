@@ -21,12 +21,13 @@ const navIconLinks = [
         className={className}
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#000000"
-        strokeWidth="1.5"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <rect x="2" y="6" width="20" height="12" />
+        <rect x="3" y="7" width="18" height="10" rx="1" />
+        <path d="M3 7L12 2l9 5" opacity="0.5" />
       </svg>
     ),
   },
@@ -38,15 +39,15 @@ const navIconLinks = [
         className={className}
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#000000"
-        strokeWidth="1.5"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <rect x="3" y="3" width="8" height="8" />
-        <rect x="13" y="3" width="8" height="8" />
-        <rect x="3" y="13" width="8" height="8" />
-        <rect x="13" y="13" width="8" height="8" />
+        <rect x="3" y="3" width="7" height="7" rx="0.5" />
+        <rect x="14" y="3" width="7" height="7" rx="0.5" />
+        <rect x="3" y="14" width="7" height="7" rx="0.5" />
+        <rect x="14" y="14" width="7" height="7" rx="0.5" />
       </svg>
     ),
   },
@@ -58,13 +59,13 @@ const navIconLinks = [
         className={className}
         viewBox="0 0 24 24"
         fill="none"
-        stroke="#000000"
-        strokeWidth="1.5"
-        strokeLinecap="square"
-        strokeLinejoin="miter"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v8M12 8h.01" />
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+        <circle cx="12" cy="7" r="4" />
       </svg>
     ),
   },
@@ -75,14 +76,14 @@ const CartIcon = ({ className = 'icon-nav' }: { className?: string }) => (
     className={className}
     viewBox="0 0 24 24"
     fill="none"
-    stroke="#000000"
-    strokeWidth="1.5"
-    strokeLinecap="square"
-    strokeLinejoin="miter"
+    stroke="currentColor"
+    strokeWidth="1.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
   >
-    <path d="M6 6h15l-1.5 9H7.5z" />
-    <circle cx="9" cy="20" r="1" fill="#000000" />
-    <circle cx="17" cy="20" r="1" fill="#000000" />
+    <path d="M9 2L7.2 5M22 5H7H2l2.5 14H19l2.5-14H22ZM10 9h4" />
+    <circle cx="10" cy="21" r="1" fill="currentColor" />
+    <circle cx="18" cy="21" r="1" fill="currentColor" />
   </svg>
 )
 
@@ -137,8 +138,8 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             title="Go Back"
             aria-label="Go back to previous page"
           >
-            <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-              <path d="M19 12H5M12 5l-7 7 7 7"/>
+            <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
           </button>
         ) : (
@@ -150,12 +151,14 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
             aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
           >
             {zoomLevel >= 2 ? (
-              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-                <path d="M5 12h14" />
+              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M8 11h6" />
               </svg>
             ) : (
-              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-                <path d="M12 5v14M5 12h14" />
+              <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
               </svg>
             )}
           </button>
@@ -220,8 +223,8 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
                 title="Go Back"
                 aria-label="Go back to previous page"
               >
-                <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-                  <path d="M19 12H5M12 5l-7 7 7 7"/>
+                <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7"/>
                 </svg>
               </button>
             ) : (
@@ -233,12 +236,14 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
                 aria-label={zoomLevel >= 2 ? 'Zoom out of artworks grid' : 'Zoom into artworks grid'}
               >
                 {zoomLevel >= 2 ? (
-                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-                    <path d="M5 12h14" />
+                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35M8 11h6" />
                   </svg>
                 ) : (
-                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
-                    <path d="M12 5v14M5 12h14" />
+                  <svg className="icon-nav" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <path d="M21 21l-4.35-4.35M11 8v6M8 11h6" />
                   </svg>
                 )}
               </button>
