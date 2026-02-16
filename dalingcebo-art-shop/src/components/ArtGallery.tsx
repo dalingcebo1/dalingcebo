@@ -156,16 +156,16 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           <div className="flex flex-col gap-4">
             {/* Scale Pills */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Scale</span>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Scale</span>
               <div className="flex gap-1.5 flex-wrap">
                 {['all', 'large', 'small'].map(option => (
                   <button
                     key={option}
                     onClick={() => handleFilterChange('scale', option)}
-                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
+                    className={`px-5 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light transition-all border ${
                       filters.scale === option
-                        ? 'bg-black text-white shadow-sm'
-                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                        ? 'bg-black text-white border-black'
+                        : 'bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50'
                     }`}
                     aria-pressed={filters.scale === option}
                   >
@@ -177,7 +177,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
 
             {/* Availability Pills */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Status</span>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Status</span>
               <div className="flex gap-1.5 flex-wrap">
                 {[
                   { label: 'All', value: 'all' },
@@ -187,10 +187,10 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                   <button
                     key={value}
                     onClick={() => handleFilterChange('availability', value)}
-                    className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
+                    className={`px-5 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light transition-all border ${
                       filters.availability === value
-                        ? 'bg-black text-white shadow-sm'
-                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                        ? 'bg-black text-white border-black'
+                        : 'bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50'
                     }`}
                     aria-pressed={filters.availability === value}
                   >
@@ -202,12 +202,12 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
 
             {/* Category Dropdown - Minimal */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-wider text-gray-400 font-medium whitespace-nowrap min-w-[60px]">Category</span>
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Category</span>
               <select
                 id="category-filter"
-                className="px-3 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black border-0 focus:outline-none focus:ring-2 focus:ring-black/20 transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right w-full sm:w-auto sm:min-w-[140px]"
+                className="px-4 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light bg-white text-gray-800 border border-gray-300 hover:border-black hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-black transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right w-full sm:w-auto sm:min-w-[140px]"
                 style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23666'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
                   backgroundSize: '12px',
                   backgroundPosition: 'right 10px center'
                 }}
