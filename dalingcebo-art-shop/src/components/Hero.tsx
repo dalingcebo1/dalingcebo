@@ -111,7 +111,7 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.1s' }}>
+        <div className="fade-in-slow" style={{ animationDelay: '1.1s' }}>
           <div className="flex items-center justify-center mt-8 mb-8">
             <button
               type="button"
