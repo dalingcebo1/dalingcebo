@@ -137,8 +137,10 @@ export default function ArtworkDetail() {
   const handleAddToCart = () => {
     if (!artwork) return
     
-    // Get the inventory limit - default to 1 for artworks (usually unique pieces)
-    // or use artwork.inventory if available
+    // Get the inventory limit
+    // For original artworks (inStock = false when sold), inventory typically defaults to 1
+    // For prints or reproductions, artwork.inventory should be set to the available quantity
+    // If inventory is not set, we default to 1 to be safe
     const maxQuantity = artwork.inventory ?? 1;
     
     const wasAdded = addToCart({

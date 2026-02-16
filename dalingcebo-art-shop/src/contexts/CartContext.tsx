@@ -53,7 +53,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [items]);
 
   const addToCart = (item: Omit<CartItem, 'quantity'>, maxQuantity?: number) => {
-    let added = false;
+    let wasAdded = false;
+    
     setItems(currentItems => {
       // Check for exact match including variants
       const existingItem = currentItems.find(i => {
@@ -70,10 +71,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (existingItem) {
         // Check if we can add more based on maxQuantity
         if (maxQuantity !== undefined && existingItem.quantity >= maxQuantity) {
-          added = false;
+          wasAdded = false;
           return currentItems; // Don't add if we've reached max quantity
         }
-        added = true;
+        wasAdded = true;
         return currentItems.map(i =>
           i === existingItem ? { ...i, quantity: i.quantity + 1 } : i
         );
@@ -81,14 +82,15 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       
       // For new items, check if maxQuantity allows at least 1
       if (maxQuantity !== undefined && maxQuantity < 1) {
-        added = false;
+        wasAdded = false;
         return currentItems;
       }
       
-      added = true;
+      wasAdded = true;
       return [...currentItems, { ...item, quantity: 1 }];
     });
-    return added;
+    
+    return wasAdded;
   };
 
   const removeFromCart = (id: number) => {
