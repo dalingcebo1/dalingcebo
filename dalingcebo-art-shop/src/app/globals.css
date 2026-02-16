@@ -365,6 +365,7 @@ a:focus-visible {
   align-items: center;
   justify-content: center;
   padding: 8px;
+  position: relative;
 }
 
 .yeezy-nav-link svg {

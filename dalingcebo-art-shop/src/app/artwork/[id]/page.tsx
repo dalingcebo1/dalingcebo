@@ -235,7 +235,7 @@ export default function ArtworkDetail() {
     </main>
   )
 
-  if (isLoading) {
+  if (isLoading || (!artwork && !error)) {
     return (
       <>
         <main className="min-h-screen">
@@ -249,8 +249,8 @@ export default function ArtworkDetail() {
     )
   }
 
-  if (error) {
-    if (error === 'not-found') {
+  if (error || !artwork) {
+    if (error === 'not-found' || !artwork) {
       return renderFallback('Artwork Not Found', "We couldn't find the artwork you're looking for.")
     }
     if (error === 'invalid-link') {
@@ -274,10 +274,6 @@ export default function ArtworkDetail() {
       () => router.push('/shop'),
       'Back to Shop'
     )
-  }
-
-  if (!artwork) {
-    return renderFallback('Artwork Not Available', "This artwork is currently unavailable.")
   }
 
   const currentPrice = selectedVariant ? selectedVariant.finalPrice : artwork.price

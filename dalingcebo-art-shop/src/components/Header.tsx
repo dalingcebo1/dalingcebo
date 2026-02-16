@@ -197,16 +197,16 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
 
           <Link
             href="/cart"
-            className="yeezy-nav-link relative"
+            className="yeezy-nav-link relative flex items-center gap-3"
             title="Cart"
             aria-label={itemCount > 0 ? `Cart with ${itemCount} items` : 'Cart'}
           >
-            <CartIcon />
             {itemCount > 0 && (
-              <span className="absolute -top-2 -left-6 bg-black text-white text-[9px] font-medium w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+              <span className="bg-black text-white text-[9px] font-medium w-5 h-5 flex items-center justify-center rounded-full">
                 {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}
+            <CartIcon />
           </Link>
 
           <button
