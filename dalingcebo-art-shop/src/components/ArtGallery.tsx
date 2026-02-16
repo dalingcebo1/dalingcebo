@@ -165,7 +165,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
                       filters.scale === option
                         ? 'bg-black text-white shadow-sm'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
+                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
                     }`}
                     aria-pressed={filters.scale === option}
                   >
@@ -190,7 +190,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     className={`px-4 py-1.5 rounded-full text-[10px] uppercase tracking-wide font-medium transition-all ${
                       filters.availability === value
                         ? 'bg-black text-white shadow-sm'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-black'
+                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
                     }`}
                     aria-pressed={filters.availability === value}
                   >
