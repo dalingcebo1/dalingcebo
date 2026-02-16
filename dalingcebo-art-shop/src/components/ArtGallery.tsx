@@ -152,20 +152,20 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
             )}
           </div>
 
-          {/* Modern Pill Filters - Responsive */}
-          <div className="flex flex-col gap-4">
+          {/* Sophisticated Filter Section */}
+          <div className="flex flex-col gap-8">
             {/* Scale Pills */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Scale</span>
-              <div className="flex gap-1.5 flex-wrap">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[70px]">Scale</span>
+              <div className="flex gap-3 flex-wrap">
                 {['all', 'large', 'small'].map(option => (
                   <button
                     key={option}
                     onClick={() => handleFilterChange('scale', option)}
-                    className={`px-5 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light transition-all border ${
+                    className={`px-6 py-2.5 rounded-sm text-[11px] uppercase tracking-[0.2em] font-light transition-all duration-300 border ${
                       filters.scale === option
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50'
+                        ? 'bg-black text-white border-black shadow-md'
+                        : 'bg-white text-gray-800 border-gray-300 hover:border-gray-600 hover:shadow-sm'
                     }`}
                     aria-pressed={filters.scale === option}
                   >
@@ -176,9 +176,9 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
             </div>
 
             {/* Availability Pills */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Status</span>
-              <div className="flex gap-1.5 flex-wrap">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[70px]">Status</span>
+              <div className="flex gap-3 flex-wrap">
                 {[
                   { label: 'All', value: 'all' },
                   { label: 'Available', value: 'available' },
@@ -187,10 +187,10 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                   <button
                     key={value}
                     onClick={() => handleFilterChange('availability', value)}
-                    className={`px-5 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light transition-all border ${
+                    className={`px-6 py-2.5 rounded-sm text-[11px] uppercase tracking-[0.2em] font-light transition-all duration-300 border ${
                       filters.availability === value
-                        ? 'bg-black text-white border-black'
-                        : 'bg-white text-gray-800 border-gray-300 hover:border-black hover:bg-gray-50'
+                        ? 'bg-black text-white border-black shadow-md'
+                        : 'bg-white text-gray-800 border-gray-300 hover:border-gray-600 hover:shadow-sm'
                     }`}
                     aria-pressed={filters.availability === value}
                   >
@@ -200,16 +200,16 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               </div>
             </div>
 
-            {/* Category Dropdown - Minimal */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
-              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[60px]">Category</span>
+            {/* Category Dropdown - Refined */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+              <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[70px]">Category</span>
               <select
                 id="category-filter"
-                className="px-4 py-2 rounded-sm text-[11px] uppercase tracking-[0.15em] font-light bg-white text-gray-800 border border-gray-300 hover:border-black hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-black transition-all cursor-pointer appearance-none pr-8 bg-no-repeat bg-right w-full sm:w-auto sm:min-w-[140px]"
+                className="px-5 py-2.5 rounded-sm text-[11px] uppercase tracking-[0.2em] font-light bg-white text-gray-800 border border-gray-300 hover:border-gray-600 hover:shadow-sm focus:outline-none focus:ring-1 focus:ring-black transition-all duration-300 cursor-pointer appearance-none pr-10 bg-no-repeat bg-right w-full sm:w-auto sm:min-w-[160px]"
                 style={{
                   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23333'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                  backgroundSize: '12px',
-                  backgroundPosition: 'right 10px center'
+                  backgroundSize: '14px',
+                  backgroundPosition: 'right 12px center'
                 }}
                 value={filters.category}
                 onChange={(e) => handleFilterChange('category', e.target.value)}
