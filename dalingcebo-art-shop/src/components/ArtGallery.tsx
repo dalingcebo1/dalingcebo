@@ -283,8 +283,8 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           {error && !isLoading && (
             <div className="col-span-full text-center py-20 px-4">
               <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                <div className="mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center" style={{ width: '64px', height: '64px' }}>
+                  <svg className="text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5" width="32" height="32">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                   </svg>
                 </div>
@@ -303,8 +303,8 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           {!isLoading && !error && filteredArtworks.length === 0 && (
             <div className="col-span-full text-center py-20 px-4">
               <div className="max-w-md mx-auto">
-                <div className="w-16 h-16 mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                <div className="mx-auto mb-6 bg-gray-100 rounded-full flex items-center justify-center" style={{ width: '64px', height: '64px' }}>
+                  <svg className="text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5" width="32" height="32">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                   </svg>
                 </div>
