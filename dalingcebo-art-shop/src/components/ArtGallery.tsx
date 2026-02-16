@@ -326,6 +326,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           {!isLoading && !error && filteredArtworks.map((artwork) => {
             const primaryImage = getArtworkPrimaryImage(artwork)
             const aspectRatio = getArtworkAspectRatio(artwork.size)
+            const hasMultipleImages = artwork.images && artwork.images.length > 1
 
             return (
             <div
@@ -337,6 +338,16 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               {!artwork.inStock && (
                 <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-black text-white text-[9px] uppercase tracking-[0.3em] font-medium">
                   Sold
+                </div>
+              )}
+              
+              {/* Multiple Images Indicator */}
+              {hasMultipleImages && (
+                <div className="absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] font-medium text-gray-700 rounded-full">
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {artwork.images.length}
                 </div>
               )}
 
@@ -374,16 +385,39 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                       </p>
                     </div>
                   </div>
-                  <div className="flex justify-between items-center pt-3 border-t border-gray-200">
-                    <p className="text-[10px] text-gray-500 uppercase tracking-wider">
-                      {artwork.size} • {artwork.year}
-                    </p>
-                    <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.2em] text-black transition-transform group-hover:translate-x-0.5">
-                      View
-                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center pt-3 border-t border-gray-200">
+                      <p className="text-[10px] text-gray-500 uppercase tracking-wider">
+                        {artwork.size} • {artwork.year}
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.2em] text-black transition-transform group-hover:translate-x-0.5">
+                        View
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                        </svg>
+                      </span>
+                    </div>
+                    {/* Show additional info */}
+                    {(hasMultipleImages || artwork.variants?.length) && (
+                      <div className="flex gap-2 text-[9px] text-gray-600 uppercase tracking-wider">
+                        {hasMultipleImages && (
+                          <span className="inline-flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            {artwork.images.length} Images
+                          </span>
+                        )}
+                        {artwork.variants && artwork.variants.length > 0 && (
+                          <span className="inline-flex items-center gap-1">
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                            </svg>
+                            {artwork.variants.length} Variants
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

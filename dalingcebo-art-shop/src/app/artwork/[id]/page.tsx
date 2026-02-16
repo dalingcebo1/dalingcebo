@@ -137,7 +137,11 @@ export default function ArtworkDetail() {
   const handleAddToCart = () => {
     if (!artwork) return
     
-    addToCart({
+    // Get the inventory limit - default to 1 for artworks (usually unique pieces)
+    // or use artwork.inventory if available
+    const maxQuantity = artwork.inventory ?? 1;
+    
+    const wasAdded = addToCart({
       id: artwork.id,
       title: artwork.title,
       artist: artwork.artist,
@@ -150,9 +154,13 @@ export default function ArtworkDetail() {
         canvasVariantName: selectedVariant.canvasVariantName,
       } : undefined,
       processingDays: selectedVariant?.processingDays
-    })
+    }, maxQuantity)
 
-    setToastMessage(`${artwork.title} added to cart`)
+    if (wasAdded) {
+      setToastMessage(`${artwork.title} added to cart`)
+    } else {
+      setToastMessage(`Cannot add more - maximum quantity reached`)
+    }
     setShowToast(true)
     setTimeout(() => setShowToast(false), 3000)
   }

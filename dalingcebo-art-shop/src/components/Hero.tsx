@@ -112,15 +112,15 @@ export default function Hero() {
         </div>
 
         <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.1s' }}>
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center mt-6 mb-4">
             <button
               type="button"
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-gray-500 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-gray-700 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 py-2"
               onClick={scrollToGallery}
               aria-label="Scroll down to artworks collection"
             >
               Explore Collection
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="16" height="16">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </button>
