@@ -203,7 +203,7 @@ export default function Header({ zoomLevel = 0, setZoomLevel, showBackButton = f
           >
             <CartIcon />
             {itemCount > 0 && (
-              <span className="absolute -top-1.5 -left-1.5 bg-black text-white text-[9px] font-medium w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
+              <span className="absolute -top-2 -left-6 bg-black text-white text-[9px] font-medium w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
                 {itemCount > 9 ? '9+' : itemCount}
               </span>
             )}

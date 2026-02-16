@@ -111,11 +111,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '1.1s' }}>
-          <div className="flex items-center justify-center mt-6 mb-4">
+        <div className="fade-in-slow" style={{ animationDelay: '1.1s' }}>
+          <div className="flex items-center justify-center mt-8 mb-8">
             <button
               type="button"
-              className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-gray-700 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 py-2"
+              className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-gray-700 hover:text-black transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-black focus-visible:ring-offset-2 py-2 px-4"
               onClick={scrollToGallery}
               aria-label="Scroll down to artworks collection"
             >
