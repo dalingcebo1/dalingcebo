@@ -120,7 +120,7 @@ export default function Hero() {
               aria-label="Scroll down to artworks collection"
             >
               Explore Collection
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
             </button>
@@ -139,7 +139,7 @@ export default function Hero() {
                   <p className="text-[11px] uppercase tracking-[0.3em] text-gray-900 font-medium group-hover:text-black">
                     {item.label}
                   </p>
-                  <svg className="w-4 h-4 text-gray-400 group-hover:text-black transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                  <svg className="text-gray-400 group-hover:text-black transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="16" height="16">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M17 7H7m10 0v10" />
                   </svg>
                 </div>
