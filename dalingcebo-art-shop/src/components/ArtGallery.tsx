@@ -153,11 +153,11 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
           </div>
 
           {/* Sophisticated Filter Section */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col" style={{ gap: '2rem' }}>
             {/* Scale Pills */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[70px]">Scale</span>
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex flex-wrap" style={{ gap: '0.75rem' }}>
                 {['all', 'large', 'small'].map(option => (
                   <button
                     key={option}
@@ -178,7 +178,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
             {/* Availability Pills */}
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               <span className="text-[9px] uppercase tracking-[0.3em] text-gray-400 font-light whitespace-nowrap min-w-[70px]">Status</span>
-              <div className="flex gap-3 flex-wrap">
+              <div className="flex flex-wrap" style={{ gap: '0.75rem' }}>
                 {[
                   { label: 'All', value: 'all' },
                   { label: 'Available', value: 'available' },
