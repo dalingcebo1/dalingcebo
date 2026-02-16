@@ -330,12 +330,12 @@ export default function ArtworkDetail() {
               </button>
 
               {imageList.length > 1 && (
-                <div className="grid grid-cols-4 gap-3">
+                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                   {imageList.map((image, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square overflow-hidden rounded-lg transition-all bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
+                      className={`relative aspect-square overflow-hidden rounded-lg transition-all bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 flex-shrink-0 w-20 h-20 md:w-24 md:h-24 ${
                         selectedImage === index 
                           ? 'ring-2 ring-black shadow-lg scale-105' 
                           : 'opacity-60 hover:opacity-100 hover:shadow-md'

@@ -79,6 +79,25 @@ a:focus-visible {
   border-radius: 0;
 }
 
+/* Horizontal scrollbar for image galleries */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f5f5f5;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
 /* Typography inspired by Yeezy */
 .yeezy-heading {
   font-family: 'Inter', sans-serif;
