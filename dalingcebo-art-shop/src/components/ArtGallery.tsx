@@ -144,7 +144,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                 onClick={resetFilters}
                 className="text-[10px] uppercase tracking-wider text-gray-500 hover:text-black transition-colors flex items-center gap-1.5 group self-start sm:self-auto"
               >
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
                 Clear All
@@ -234,7 +234,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     className="hover:text-black ml-0.5 -mr-0.5"
                     aria-label="Remove scale filter"
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" width="12" height="12">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -248,7 +248,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     className="hover:text-black ml-0.5 -mr-0.5"
                     aria-label="Remove availability filter"
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" width="12" height="12">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -262,7 +262,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     className="hover:text-black ml-0.5 -mr-0.5"
                     aria-label="Remove category filter"
                   >
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5" width="12" height="12">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -380,7 +380,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
                     </p>
                     <span className="inline-flex items-center gap-1 text-xs uppercase tracking-[0.2em] text-black transition-transform group-hover:translate-x-0.5">
                       View
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2" width="14" height="14">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                       </svg>
                     </span>
