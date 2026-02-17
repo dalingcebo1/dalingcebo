@@ -178,7 +178,7 @@ export default function CheckoutPage() {
       colorBackground: '#ffffff',
       colorText: '#000000',
       colorDanger: '#ef4444',
-      fontFamily: 'Inter, system-ui, sans-serif',
+      fontFamily: 'Audiowide, system-ui, sans-serif',
       spacingUnit: '4px',
       borderRadius: '8px',
     },
