@@ -1,39 +1,20 @@
 /* ========================================
-   FONT IMPORTS - NEUROPOL STANDARDIZATION
+   FONT IMPORTS - STANDARDIZATION
    ======================================== */
 /* 
- * Standard font: Neuropol by Typodermic
- * Wide variant for titles: Neuropol X
+ * Title font: Audiowide (Google Fonts)
+ * Sub headers and body: Exo 2 (Google Fonts, 100-900 weights)
  * 
- * Currently using Audiowide from Google Fonts as a temporary substitute
- * with similar futuristic/geometric aesthetic.
- * 
- * TO USE ACTUAL NEUROPOL FONTS:
- * 1. Place Neuropol font files in /public/fonts/
- * 2. Uncomment the @font-face declarations below
- * 3. Remove the Audiowide import
+ * Use thin and bold variants of Exo 2 for different text types.
  */
 
-/* Temporary Google Font substitute (remove when Neuropol is available) */
+/* Google Fonts - Audiowide for titles */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
-/* @font-face {
-  font-family: 'Neuropol';
-  src: url('/fonts/Neuropol-Regular.woff2') format('woff2'),
-       url('/fonts/Neuropol-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Google Fonts - Exo 2 for sub headers and body text (all weights 100-900) */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
-@font-face {
-  font-family: 'Neuropol X';
-  src: url('/fonts/NeuropolX-Regular.woff2') format('woff2'),
-       url('/fonts/NeuropolX-Regular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-} */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -61,8 +42,8 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when font files are available */
-  font-family: 'Audiowide', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Using Exo 2 for body text */
+  font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 400;
   line-height: 1.3;
   overflow-x: hidden;
@@ -134,13 +115,13 @@ a:focus-visible {
 }
 
 /* ========================================
-   TYPOGRAPHY CLASSES - NEUROPOL STANDARDIZATION
+   TYPOGRAPHY CLASSES - FONT STANDARDIZATION
    ======================================== */
-/* All typography now uses Neuropol/Audiowide for consistency */
+/* Titles use Audiowide, sub headers and body text use Exo 2 */
 
-/* Large headings and titles - use Neuropol X (wide variant) when available */
+/* Large headings and titles - use Audiowide */
 .yeezy-heading {
-  /* Using Audiowide as Neuropol X substitute - replace with 'Neuropol X' when available */
+  /* Using Audiowide for titles */
   font-family: 'Audiowide', sans-serif;
   font-weight: 400;
   letter-spacing: 0.05em;
@@ -148,9 +129,9 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-/* Main logo - use Neuropol X (wide variant) when available */
+/* Main logo - use Audiowide */
 .yeezy-main-logo {
-  /* Using Audiowide as Neuropol X substitute - replace with 'Neuropol X' when available */
+  /* Using Audiowide for main logo */
   font-family: 'Audiowide', sans-serif;
   font-weight: 400;
   letter-spacing: 0.15em;
@@ -158,20 +139,20 @@ a:focus-visible {
   text-transform: uppercase;
 }
 
-/* Subheadings - use standard Neuropol */
+/* Subheadings - use Exo 2 (bold variant) */
 .yeezy-subheading {
-  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when available */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 bold for sub headers */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-/* Body text - use standard Neuropol */
+/* Body text - use Exo 2 (regular/thin variant) */
 .yeezy-body {
-  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when available */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 for body text */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 300;
   letter-spacing: 0.02em;
   line-height: 1.4;
 }
@@ -241,9 +222,9 @@ a:focus-visible {
   background: transparent;
   color: black;
   padding: 12px 24px;
-  /* Using Audiowide as Neuropol substitute */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 bold for buttons */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -261,9 +242,9 @@ a:focus-visible {
   background: black;
   color: white;
   padding: 12px 24px;
-  /* Using Audiowide as Neuropol substitute */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 bold for buttons */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -330,17 +311,17 @@ a:focus-visible {
 
 /* Text styles */
 .yeezy-price {
-  /* Using Audiowide as Neuropol substitute */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 semi-bold for prices */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.06em;
 }
 
 .yeezy-title {
-  /* Using Audiowide as Neuropol substitute */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 semi-bold for titles */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -404,9 +385,9 @@ a:focus-visible {
 }
 
 .yeezy-nav-link {
-  /* Using Audiowide as Neuropol substitute */
-  font-family: 'Audiowide', sans-serif;
-  font-weight: 400;
+  /* Using Exo 2 medium for navigation */
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 500;
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
