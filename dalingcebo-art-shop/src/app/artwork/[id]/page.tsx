@@ -16,7 +16,7 @@ import { Artwork } from '@/types/artwork'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage, getArtworkPlaceholder } from '@/lib/media'
 import { Button } from '@/components/ui/Button'
-import { X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react'
+import { X, ZoomIn, ChevronLeft, ChevronRight, ShoppingCart, Bookmark, MessageSquare } from 'lucide-react'
 
 interface SelectedVariant {
   frameVariantId?: string
@@ -435,46 +435,59 @@ export default function ArtworkDetail() {
               </div>
             </section>
 
-            {/* ROW 4: CTA Buttons - columns 4-9, flex with 16px gap, 48px height, 12px border-radius */}
+            {/* ROW 4: CTA Buttons - horizontal icon layout with supporting text */}
             <section className="mt-8">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
-                  <div className="flex flex-col sm:flex-row justify-center gap-4">
+                  <div className="flex flex-row justify-center items-start gap-6 sm:gap-8">
                     {artwork.inStock ? (
                       <>
-                        {/* Primary button: 2 columns width equivalent */}
+                        {/* Add to Cart - Icon with text */}
                         <button
                           onClick={handleAddToCart}
-                          className="h-12 px-8 bg-black text-white text-[12px] uppercase tracking-[0.08em] rounded-xl hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
                           aria-label="Add artwork to shopping cart"
                         >
-                          Add to Cart
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-xl flex items-center justify-center group-hover:bg-gray-800 transition-colors">
+                            <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={1.5} aria-hidden="true" />
+                          </div>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Add to Cart</span>
                         </button>
                         
-                        {/* Secondary buttons: No borders as per requirement */}
+                        {/* Reserve - Icon with text */}
                         <button
                           onClick={handleReserve}
-                          className="h-12 px-8 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:bg-gray-50 hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
                           aria-label="Reserve this artwork"
                         >
-                          Reserve
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                            <Bookmark className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900" strokeWidth={1.5} aria-hidden="true" />
+                          </div>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Reserve</span>
                         </button>
                         
+                        {/* Inquire - Icon with text */}
                         <button
                           onClick={handleInquire}
-                          className="h-12 px-8 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:bg-gray-50 hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
                           aria-label="Inquire about this artwork"
                         >
-                          Inquire
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
+                            <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900" strokeWidth={1.5} aria-hidden="true" />
+                          </div>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Inquire</span>
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={handleInquire}
-                        className="h-12 px-8 bg-black text-white text-[12px] uppercase tracking-[0.08em] rounded-xl hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
                         aria-label="Get notified when artwork becomes available"
                       >
-                        Notify Me
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-xl flex items-center justify-center group-hover:bg-gray-800 transition-colors">
+                          <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={1.5} aria-hidden="true" />
+                        </div>
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Notify Me</span>
                       </button>
                     )}
                   </div>
