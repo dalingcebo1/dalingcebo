@@ -98,6 +98,21 @@ export default function ArtworkDetail() {
           throw new Error('Unable to load artwork details.')
         }
         const data: Artwork = await response.json()
+        
+        // Load additional images from the artwork-images.json file
+        try {
+          const imagesResponse = await fetch('/artwork-images.json')
+          if (imagesResponse.ok) {
+            const imagesData = await imagesResponse.json()
+            if (imagesData[params.id]?.images) {
+              data.images = imagesData[params.id].images
+            }
+          }
+        } catch (err) {
+          // No additional images or error loading them, continue with default
+          console.log('No additional images found for artwork', params.id)
+        }
+        
         setArtwork(data)
         setSelectedImage(0)
         setError(null)

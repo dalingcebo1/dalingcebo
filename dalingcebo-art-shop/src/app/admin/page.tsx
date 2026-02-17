@@ -54,6 +54,218 @@ const defaultForm: FormState = {
 const ADMIN_IMAGE_PLACEHOLDER = getArtworkPlaceholder('admin')
 const ADMIN_PREVIEW_PLACEHOLDER = getArtworkPlaceholder('thumb')
 
+// Images Management Component
+function ImagesManagementView({ 
+  artworks, 
+  onSuccess, 
+  onError 
+}: { 
+  artworks: Artwork[]
+  onSuccess: (message: string) => void
+  onError: (message: string) => void
+}) {
+  const [selectedArtwork, setSelectedArtwork] = useState<number | null>(null)
+  const [imageUrls, setImageUrls] = useState('')
+  const [saving, setSaving] = useState(false)
+  const [existingImages, setExistingImages] = useState<Record<string, string[]>>({})
+
+  // Load existing images
+  useEffect(() => {
+    async function loadExistingImages() {
+      try {
+        const response = await fetch('/artwork-images.json')
+        if (response.ok) {
+          const data = await response.json()
+          setExistingImages(data)
+        }
+      } catch (error) {
+        console.log('No existing images file found')
+      }
+    }
+    loadExistingImages()
+  }, [])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    
+    if (!selectedArtwork) {
+      onError('Please select an artwork')
+      return
+    }
+
+    const urls = imageUrls.split('\n').filter(url => url.trim())
+    
+    if (urls.length === 0) {
+      onError('Please enter at least one image URL')
+      return
+    }
+
+    setSaving(true)
+    try {
+      const response = await fetch('/api/admin/artwork-images', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          artworkId: selectedArtwork,
+          images: urls
+        })
+      })
+
+      if (response.ok) {
+        onSuccess(`Successfully added ${urls.length} images to artwork #${selectedArtwork}`)
+        setImageUrls('')
+        
+        // Reload existing images
+        const updatedResponse = await fetch('/artwork-images.json')
+        if (updatedResponse.ok) {
+          const data = await updatedResponse.json()
+          setExistingImages(data)
+        }
+      } else {
+        onError('Failed to save images')
+      }
+    } catch (error) {
+      onError('Error saving images')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const selectedArtworkDetails = artworks.find(a => a.id === selectedArtwork)
+  const currentImages = selectedArtwork ? existingImages[selectedArtwork.toString()] || [] : []
+
+  return (
+    <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-xl font-semibold mb-2">Manage Artwork Images</h2>
+        <p className="text-sm text-gray-600">Add multiple images to showcase artworks from different angles</p>
+      </div>
+
+      <div className="p-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Form Section */}
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Select Artwork
+                </label>
+                <select
+                  value={selectedArtwork || ''}
+                  onChange={(e) => {
+                    const id = parseInt(e.target.value)
+                    setSelectedArtwork(id || null)
+                    // Pre-fill existing images if any
+                    if (id && existingImages[id.toString()]) {
+                      setImageUrls(existingImages[id.toString()].join('\n'))
+                    } else {
+                      setImageUrls('')
+                    }
+                  }}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                >
+                  <option value="">Choose an artwork...</option>
+                  {artworks.map(artwork => (
+                    <option key={artwork.id} value={artwork.id}>
+                      #{artwork.id} - {artwork.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Image URLs (one per line)
+                </label>
+                <textarea
+                  value={imageUrls}
+                  onChange={(e) => setImageUrls(e.target.value)}
+                  className="w-full px-4 py-2.5 border border-gray-300 rounded-lg font-mono text-sm h-64 focus:ring-2 focus:ring-black focus:border-transparent"
+                  placeholder="/images/artworks/artwork-front.jpg&#10;/images/artworks/artwork-side.jpg&#10;/images/artworks/artwork-detail.jpg&#10;/images/artworks/artwork-back.jpg"
+                />
+                <p className="text-xs text-gray-500 mt-2">
+                  💡 Tip: Upload images to <code className="bg-gray-100 px-1 py-0.5 rounded">/public/images/artworks/</code> first, then paste paths here
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={saving || !selectedArtwork}
+                className="w-full bg-black text-white py-3 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors font-medium"
+              >
+                {saving ? 'Saving...' : 'Save Images'}
+              </button>
+            </form>
+
+            {/* Instructions */}
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <h3 className="font-semibold text-sm mb-2 text-blue-900">📋 Quick Guide for Interns:</h3>
+              <ol className="list-decimal list-inside space-y-1.5 text-xs text-blue-800">
+                <li>Upload images to <code className="bg-blue-100 px-1 rounded">/public/images/artworks/</code></li>
+                <li>Select the artwork from the dropdown</li>
+                <li>Paste image paths (one per line)</li>
+                <li>Click "Save Images"</li>
+                <li>Images appear in the order listed</li>
+              </ol>
+            </div>
+          </div>
+
+          {/* Preview Section */}
+          <div>
+            <h3 className="text-sm font-medium text-gray-700 mb-3">Preview</h3>
+            
+            {selectedArtworkDetails && (
+              <div className="mb-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <p className="text-xs text-gray-500 mb-1">Selected Artwork</p>
+                <p className="font-semibold">{selectedArtworkDetails.title}</p>
+                <p className="text-sm text-gray-600">by {selectedArtworkDetails.artist}</p>
+              </div>
+            )}
+
+            {currentImages.length > 0 && (
+              <div className="mb-4">
+                <p className="text-sm font-medium mb-2">Current Images ({currentImages.length})</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {currentImages.map((img, idx) => (
+                    <div key={idx} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+                      <Image
+                        src={img}
+                        alt={`Image ${idx + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="150px"
+                      />
+                      <div className="absolute top-1 left-1 bg-black/70 text-white text-xs px-2 py-0.5 rounded">
+                        {idx + 1}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {imageUrls.trim() && (
+              <div>
+                <p className="text-sm font-medium mb-2 text-gray-700">
+                  New Images ({imageUrls.split('\n').filter(u => u.trim()).length})
+                </p>
+                <div className="space-y-1 max-h-64 overflow-y-auto">
+                  {imageUrls.split('\n').filter(u => u.trim()).map((url, idx) => (
+                    <div key={idx} className="flex items-center gap-2 text-xs bg-gray-50 p-2 rounded border border-gray-200">
+                      <span className="font-mono text-gray-500 min-w-[20px]">{idx + 1}.</span>
+                      <code className="flex-1 text-gray-700 truncate">{url}</code>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   return (
     <Suspense
@@ -85,7 +297,7 @@ function AdminDashboard() {
   const [submitting, setSubmitting] = useState(false)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
   const [toastType, setToastType] = useState<'success' | 'error'>('success')
-    const [activeView, setActiveView] = useState<'catalogue' | 'inquiries' | 'orders'>('catalogue')
+    const [activeView, setActiveView] = useState<'catalogue' | 'inquiries' | 'orders' | 'images'>('catalogue')
     const [inquiries, setInquiries] = useState<InquiryRecord[]>([])
     const [orders, setOrders] = useState<OrderRecord[]>([])
     const [secondaryLoading, setSecondaryLoading] = useState(false)
@@ -574,7 +786,7 @@ function AdminDashboard() {
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
               <div>
                 <div className="inline-flex items-center gap-2 px-3 py-1 bg-black text-white text-[9px] uppercase tracking-[0.4em] mb-3">
-                  <Layers className="w-3 h-3" />
+                  <Layers className="w-3 h-3" strokeWidth={1.2} />
                   Studio Dashboard
                 </div>
                 <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-2">Dalingcebo Admin</h1>
@@ -586,7 +798,7 @@ function AdminDashboard() {
                   onClick={resetForm}
                   disabled={submitting}
                 >
-                  <Plus className="inline-block w-4 h-4 mr-2" />
+                  <Plus className="inline-block w-4 h-4 mr-2" strokeWidth={1.2} />
                   Add New Artwork
                 </button>
               )}
@@ -632,7 +844,7 @@ function AdminDashboard() {
                     <p className="text-3xl font-light text-gray-900">{card.value}</p>
                   </div>
                   <div className="text-gray-400">
-                    <card.Icon className="w-6 h-6" strokeWidth={1.5} />
+                    <card.Icon className="w-5 h-5" strokeWidth={1.2} />
                   </div>
                 </div>
               </div>
@@ -646,11 +858,12 @@ function AdminDashboard() {
                 { id: 'catalogue', label: 'Catalogue', count: stats.total },
                 { id: 'inquiries', label: 'Inquiries', count: inquiries.length },
                 { id: 'orders', label: 'Orders', count: orders.length },
+                { id: 'images', label: 'Images', count: 0 },
               ].map((tab) => (
                 <button
                   key={tab.id}
                   type="button"
-                  onClick={() => setActiveView(tab.id as 'catalogue' | 'inquiries' | 'orders')}
+                  onClick={() => setActiveView(tab.id as 'catalogue' | 'inquiries' | 'orders' | 'images')}
                   className={`flex-1 px-6 py-3 rounded-md text-sm font-medium tracking-wide transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 ${
                     activeView === tab.id
                       ? 'bg-black text-white shadow-sm'
@@ -1140,7 +1353,7 @@ function AdminDashboard() {
                                   onClick={() => handleEdit(artwork)}
                                   title="Edit this artwork"
                                 >
-                                  <Edit2 className="inline-block w-4 h-4 mr-1.5" />
+                                  <Edit2 className="inline-block w-4 h-4 mr-1.5" strokeWidth={1.2} />
                                   Edit
                                 </button>
                                 <button
@@ -1148,7 +1361,7 @@ function AdminDashboard() {
                                   onClick={() => handleDuplicate(artwork)}
                                   title="Duplicate this artwork"
                                 >
-                                  <Copy className="inline-block w-4 h-4 mr-1.5" />
+                                  <Copy className="inline-block w-4 h-4 mr-1.5" strokeWidth={1.2} />
                                   Duplicate
                                 </button>
                                 <button
@@ -1165,9 +1378,9 @@ function AdminDashboard() {
                                   ) : (
                                     <>
                                       {artwork.inStock ? (
-                                        <X className="inline-block w-4 h-4 mr-1.5" />
+                                        <X className="inline-block w-4 h-4 mr-1.5" strokeWidth={1.2} />
                                       ) : (
-                                        <CheckCircle className="inline-block w-4 h-4 mr-1.5" />
+                                        <CheckCircle className="inline-block w-4 h-4 mr-1.5" strokeWidth={1.2} />
                                       )}
                                       {artwork.inStock ? 'Mark as Sold' : 'Mark Available'}
                                     </>
@@ -1177,7 +1390,7 @@ function AdminDashboard() {
                                   className="px-4 py-2 border border-red-200 bg-red-50 rounded-lg text-xs font-medium text-red-600 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
                                   onClick={() => handleDelete(artwork)}
                                 >
-                                  <Trash2 className="inline-block w-4 h-4 mr-1.5" />
+                                  <Trash2 className="inline-block w-4 h-4 mr-1.5" strokeWidth={1.2} />
                                   Delete
                                 </button>
                               </div>
@@ -1186,7 +1399,7 @@ function AdminDashboard() {
                         </div>
                       ) : (
                         <div className="px-6 py-12 text-center">
-                          <Archive className="mx-auto w-12 h-12 text-gray-400 mb-4" strokeWidth={1.5} />
+                          <Archive className="mx-auto w-8 h-8 text-gray-400 mb-4" strokeWidth={1.2} />
                           <p className="text-sm text-gray-500">No artworks match your filters</p>
                           <button 
                             className="mt-4 text-sm text-black hover:underline"
@@ -1222,7 +1435,7 @@ function AdminDashboard() {
               {secondaryError && (
                 <div className="p-8">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <AlertCircle className="mx-auto w-12 h-12 text-red-400 mb-4" />
+                    <AlertCircle className="mx-auto w-8 h-8 text-red-400 mb-4" strokeWidth={1.2} />
                     <p className="text-sm text-red-600">{secondaryError}</p>
                   </div>
                 </div>
@@ -1230,7 +1443,7 @@ function AdminDashboard() {
 
               {!secondaryError && inquiries.length === 0 && !secondaryLoading && (
                 <div className="p-12 text-center">
-                  <Mail className="mx-auto w-12 h-12 text-gray-300 mb-4" strokeWidth={1.5} />
+                  <Mail className="mx-auto w-8 h-8 text-gray-300 mb-4" strokeWidth={1.2} />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">No Inquiries Yet</h3>
                   <p className="text-sm text-gray-500">
                     Collector inquiries will appear here when visitors reach out through the site.
@@ -1257,19 +1470,19 @@ function AdminDashboard() {
                             </div>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 mb-2">
                               <a href={`mailto:${inquiry.email}`} className="hover:text-black flex items-center gap-1.5">
-                                <Mail className="w-4 h-4" />
+                                <Mail className="w-4 h-4" strokeWidth={1.2} />
                                 {inquiry.email}
                               </a>
                               {inquiry.phone && (
                                 <a href={`tel:${inquiry.phone}`} className="hover:text-black flex items-center gap-1.5">
-                                  <Phone className="w-4 h-4" />
+                                  <Phone className="w-4 h-4" strokeWidth={1.2} />
                                   {inquiry.phone}
                                 </a>
                               )}
                             </div>
                             {inquiry.artworkTitle && (
                               <div className="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 border border-blue-200 rounded-md text-xs text-blue-700 mb-2">
-                                <ImageIcon className="w-3.5 h-3.5" />
+                                <ImageIcon className="w-3.5 h-3.5" strokeWidth={1.2} />
                                 {inquiry.artworkTitle}
                               </div>
                             )}
@@ -1326,7 +1539,7 @@ function AdminDashboard() {
               {secondaryError && (
                 <div className="p-8">
                   <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-                    <AlertCircle className="mx-auto w-12 h-12 text-red-400 mb-4" />
+                    <AlertCircle className="mx-auto w-8 h-8 text-red-400 mb-4" strokeWidth={1.2} />
                     <p className="text-sm text-red-600">{secondaryError}</p>
                   </div>
                 </div>
@@ -1334,7 +1547,7 @@ function AdminDashboard() {
 
               {!secondaryError && orders.length === 0 && !secondaryLoading && (
                 <div className="p-12 text-center">
-                  <ShoppingBag className="mx-auto w-12 h-12 text-gray-300 mb-4" strokeWidth={1.5} />
+                  <ShoppingBag className="mx-auto w-8 h-8 text-gray-300 mb-4" strokeWidth={1.2} />
                   <h3 className="text-lg font-medium text-gray-900 mb-2">No Orders Yet</h3>
                   <p className="text-sm text-gray-500">
                     Checkout requests from the cart will appear here.
@@ -1363,18 +1576,18 @@ function AdminDashboard() {
                             </div>
                             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-gray-600 mb-2">
                               <a href={`mailto:${order.email}`} className="hover:text-black flex items-center gap-1.5">
-                                <Mail className="w-4 h-4" />
+                                <Mail className="w-4 h-4" strokeWidth={1.2} />
                                 {order.email}
                               </a>
                               {order.phone && (
                                 <a href={`tel:${order.phone}`} className="hover:text-black flex items-center gap-1.5">
-                                  <Phone className="w-4 h-4" />
+                                  <Phone className="w-4 h-4" strokeWidth={1.2} />
                                   {order.phone}
                                 </a>
                               )}
                             </div>
                             <div className="flex items-start gap-2 text-sm text-gray-600 mb-2">
-                              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                              <MapPin className="w-4 h-4 mt-0.5 flex-shrink-0" strokeWidth={1.2} />
                               <span className="leading-tight">{order.address}</span>
                             </div>
                             <p className="text-xs text-gray-400">
@@ -1438,6 +1651,21 @@ function AdminDashboard() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Images Management View */}
+          {activeView === 'images' && (
+            <ImagesManagementView 
+              artworks={artworks}
+              onSuccess={(message: string) => {
+                setToastMessage(message)
+                setToastType('success')
+              }}
+              onError={(message: string) => {
+                setToastMessage(message)
+                setToastType('error')
+              }}
+            />
           )}
         </div>
       </section>
