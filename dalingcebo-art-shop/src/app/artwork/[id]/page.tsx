@@ -16,7 +16,7 @@ import { Artwork } from '@/types/artwork'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage, getArtworkPlaceholder } from '@/lib/media'
 import { Button } from '@/components/ui/Button'
-import { ShoppingCart, Bell, CheckCircle, X, ZoomIn, Facebook, Twitter, Link as LinkIcon, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ShoppingCart, Bell, CheckCircle, X, ZoomIn, Facebook, Twitter, Link as LinkIcon, ChevronLeft, ChevronRight, MessageSquare, Bookmark } from 'lucide-react'
 
 interface SelectedVariant {
   frameVariantId?: string
@@ -301,101 +301,173 @@ export default function ArtworkDetail() {
         </section>
       
       <section className="yeezy-section">
-        <div className="yeezy-container">
-          <div className={`grid lg:grid-cols-[1.2fr_1fr] gap-8 md:gap-12 fade-in-slow ${isVisible ? '' : ''}`}>
-            {/* Image Gallery */}
-            <div className="space-y-4">
-              <button 
-                onClick={() => setIsLightboxOpen(true)}
-                className="relative bg-gray-50 overflow-hidden group cursor-zoom-in rounded-xl shadow-sm hover:shadow-md transition-all duration-500"
-                style={{ aspectRatio: heroAspectRatio }}
-              >
+        <div className="yeezy-container max-w-5xl mx-auto">
+          {/* Centered Image Carousel */}
+          <div className={`fade-in-slow ${isVisible ? '' : ''}`}>
+            <div className="relative mb-8">
+              {/* Main Carousel Image */}
+              <div className="relative bg-gray-50 overflow-hidden rounded-xl min-h-[400px]" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
                 <Image
                   src={imageList[selectedImage] ?? getArtworkPlaceholder()}
                   alt={artwork.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, 60vw"
-                  className="object-contain group-hover:scale-105 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, 80vw"
+                  className="object-contain"
                   priority
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors flex items-center justify-center">
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full">
-                    <ZoomIn className="w-5 h-5" aria-hidden="true" />
-                  </div>
-                </div>
-              </button>
+                
+                {/* Arrow Navigation */}
+                {imageList.length > 1 && (
+                  <>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                      aria-label="Previous image"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                    </button>
+                    <button
+                      onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                      aria-label="Next image"
+                    >
+                      <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                    </button>
+                  </>
+                )}
+                
+                {/* Zoom button */}
+                <button
+                  onClick={() => setIsLightboxOpen(true)}
+                  className="absolute bottom-4 right-4 p-2.5 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                  aria-label="View fullscreen"
+                >
+                  <ZoomIn className="w-4 h-4 text-gray-900" aria-hidden="true" />
+                </button>
+              </div>
 
+              {/* Pagination Dots */}
               {imageList.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                  {imageList.map((image, index) => (
+                <div className="flex justify-center gap-2 mt-4">
+                  {imageList.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`relative aspect-square overflow-hidden rounded-lg transition-all bg-gray-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 flex-shrink-0 w-20 h-20 md:w-24 md:h-24 ${
+                      className={`transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                         selectedImage === index 
-                          ? 'ring-2 ring-black shadow-lg scale-105' 
-                          : 'opacity-60 hover:opacity-100 hover:shadow-md'
+                          ? 'w-8 h-2 bg-black' 
+                          : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
                       }`}
-                      aria-label={`View image ${index + 1}`}
-                      aria-pressed={selectedImage === index}
-                    >
-                      <Image
-                        src={image}
-                        alt={`${artwork.title} detail ${index + 1}`}
-                        fill
-                        className="object-contain"
-                      />
-                      {selectedImage === index && (
-                        <div className="absolute inset-0 ring-2 ring-inset ring-black/20"></div>
-                      )}
-                    </button>
+                      aria-label={`View image ${index + 1} of ${imageList.length}${selectedImage === index ? ' (currently selected)' : ''}`}
+                      aria-current={selectedImage === index}
+                    />
                   ))}
                 </div>
               )}
             </div>
 
-            <div className="space-y-6">
-              <div className="bg-white rounded-xl border border-gray-200 p-6 md:p-8 shadow-sm">
-                <div className="flex flex-wrap items-center gap-2 mb-5">
-                  <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex-shrink-0">
-                    {artwork.category}
+            {/* Artwork Info - Centered */}
+            <div className="text-center max-w-3xl mx-auto mb-8">
+              <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
+                <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-[10px] uppercase tracking-[0.15em] rounded-full">
+                  {artwork.category}
+                </span>
+                {artwork.inStock ? (
+                  <span className="px-3 py-1.5 bg-green-50 text-green-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+                    Available
                   </span>
-                  {artwork.inStock ? (
-                    <span className="px-3 py-1.5 bg-green-50 text-green-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex items-center gap-1.5 flex-shrink-0">
-                      <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse flex-shrink-0"></span>
-                      Available
-                    </span>
-                  ) : (
-                    <span className="px-3 py-1.5 bg-red-50 text-red-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex-shrink-0">
-                      Sold
-                    </span>
-                  )}
-                </div>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight mb-5 leading-tight">
-                  {artwork.title}
-                </h1>
-                <div className="flex items-baseline gap-4 mb-3">
-                  <p className="text-3xl md:text-4xl font-light">
-                    ${currentPrice.toLocaleString()}
-                  </p>
-                  {artwork.inventory && artwork.inventory < 5 && artwork.inStock && (
-                    <span className="text-xs text-amber-600 font-medium">Only {artwork.inventory} left</span>
-                  )}
-                </div>
-                <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
-                  {artwork.edition} • {artwork.year}
+                ) : (
+                  <span className="px-3 py-1.5 bg-red-50 text-red-700 text-[10px] uppercase tracking-[0.15em] rounded-full">
+                    Sold
+                  </span>
+                )}
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight mb-4 leading-tight">
+                {artwork.title}
+              </h1>
+              
+              <div className="flex items-baseline justify-center gap-4 mb-2">
+                <p className="text-3xl md:text-4xl font-light">
+                  ${currentPrice.toLocaleString()}
                 </p>
-                
+                {artwork.inventory && artwork.inventory < 5 && artwork.inStock && (
+                  <span className="text-xs text-amber-600 font-medium">Only {artwork.inventory} left</span>
+                )}
+              </div>
+              
+              <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
+                {artwork.edition} • {artwork.year}
+              </p>
+              
+              {/* Variant Selector - Centered */}
+              <div className="max-w-md mx-auto mb-6">
                 <VariantSelector 
                   artworkId={artwork.id} 
                   basePrice={artwork.price} 
                   onVariantChange={handleVariantChange} 
                 />
               </div>
+            </div>
 
-              <div className="bg-gray-50 rounded-xl p-5 md:p-6 border border-gray-200">
-                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-4">About This Piece</h3>
-                <p className="text-sm leading-relaxed text-gray-900 mb-3">
+            {/* Action Icons - Horizontal */}
+            <div className="flex justify-center gap-8 mb-12 pb-8 border-b border-gray-200">
+              {artwork.inStock ? (
+                <>
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                    aria-label="Add artwork to shopping cart"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <ShoppingCart className="w-6 h-6 text-white" aria-hidden="true" />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Add to Cart</span>
+                  </button>
+                  
+                  <button
+                    onClick={handleReserve}
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                    aria-label="Reserve this artwork"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <Bookmark className="w-6 h-6 text-white" aria-hidden="true" />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Reserve</span>
+                  </button>
+                  
+                  <button
+                    onClick={handleInquire}
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                    aria-label="Inquire about this artwork"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <MessageSquare className="w-6 h-6 text-white" aria-hidden="true" />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Inquire</span>
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleInquire}
+                  className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                  aria-label="Get notified when artwork becomes available"
+                >
+                  <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Bell className="w-6 h-6 text-white" aria-hidden="true" />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-wider text-gray-500">Notify Me</span>
+                </button>
+              )}
+            </div>
+
+            {/* Details Section - Compact Grid */}
+            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
+              {/* Description */}
+              <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">About This Piece</h3>
+                <p className="text-sm leading-relaxed text-gray-900 mb-2">
                   {artwork.description}
                 </p>
                 <p className="text-xs leading-relaxed text-gray-600">
@@ -403,189 +475,92 @@ export default function ArtworkDetail() {
                 </p>
               </div>
 
-              <div className="bg-white rounded-xl border border-gray-200 p-5 md:p-6 shadow-sm">
-                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-4">Specifications</h3>
-                <div className="space-y-3 text-xs">
-                  <div className="flex justify-between py-2 border-b border-gray-100">
+              {/* Specifications */}
+              <div className="bg-white rounded-xl border border-gray-200 p-5">
+                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">Specifications</h3>
+                <div className="space-y-2 text-xs">
+                  <div className="flex justify-between py-1.5 border-b border-gray-100">
                     <span className="text-gray-500 uppercase tracking-wide">Medium</span>
                     <span className="text-right text-gray-900 font-medium">{artwork.medium}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
+                  <div className="flex justify-between py-1.5 border-b border-gray-100">
                     <span className="text-gray-500 uppercase tracking-wide">Size</span>
                     <span className="text-gray-900 font-medium">{artwork.size}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
+                  <div className="flex justify-between py-1.5 border-b border-gray-100">
                     <span className="text-gray-500 uppercase tracking-wide">Year</span>
                     <span className="text-gray-900 font-medium">{artwork.year}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
+                  <div className="flex justify-between py-1.5">
                     <span className="text-gray-500 uppercase tracking-wide">Edition</span>
                     <span className="text-gray-900 font-medium">{artwork.edition}</span>
                   </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-500 uppercase tracking-wide">Availability</span>
-                    <span className="text-gray-900 font-medium">{artwork.inStock ? 'In Stock' : 'Sold'}</span>
-                  </div>
-                  {artwork.inventory !== undefined && (
-                    <div className="flex justify-between py-2">
-                      <span className="text-gray-500 uppercase tracking-wide">Pieces Remaining</span>
-                      <span className="text-gray-900 font-medium">{artwork.inventory}</span>
-                    </div>
-                  )}
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-4">
-                {artwork.inStock ? (
-                  <>
-                    <div className="flex flex-col sm:flex-row gap-3">
-                      <Button
-                        variant="primary"
-                        size="default"
-                        onClick={handleAddToCart}
-                        className="flex-[2]"
-                        aria-label="Add artwork to shopping cart"
-                      >
-                        <ShoppingCart className="w-4 h-4" aria-hidden="true" />
-                        Add to Cart
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        size="default"
-                        onClick={handleReserve}
-                        className="flex-1"
-                        aria-label="Reserve this artwork"
-                      >
-                        Reserve
-                      </Button>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="default"
-                      onClick={handleInquire}
-                      className="w-full border border-gray-300"
-                      aria-label="Inquire about this artwork"
-                    >
-                      Inquire About This Piece
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    variant="primary"
-                    size="default"
-                    onClick={handleInquire}
-                    className="w-full"
-                    aria-label="Get notified when artwork becomes available"
-                  >
-                    <Bell className="w-4 h-4" aria-hidden="true" />
-                    Notify When Available
-                  </Button>
-                )}
-
-                <div className="bg-gray-50 border border-gray-100 rounded-lg p-4 text-[10px] uppercase tracking-wider text-gray-600 space-y-2">
-                  <p className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                    Certificate of Authenticity
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                    Secure Packaging & Shipping
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                    14-day returns
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-3 pt-5 border-t border-gray-200">
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-400">Share:</span>
-                <div className="flex gap-2">
-                  <Button
-                    variant="icon"
-                    size="icon"
-                    className="border border-gray-200 hover:border-gray-400"
-                    title="Share on Facebook"
-                  >
-                    <Facebook className="w-4 h-4 text-gray-500" aria-hidden="true" />
-                  </Button>
-                  <Button
-                    variant="icon"
-                    size="icon"
-                    className="border border-gray-200 hover:border-gray-400"
-                    title="Share on Twitter"
-                  >
-                    <Twitter className="w-4 h-4 text-gray-500" aria-hidden="true" />
-                  </Button>
-                  <Button
-                    variant="icon"
-                    size="icon"
-                    className="border border-gray-200 hover:border-gray-400"
-                    title="Copy link"
-                  >
-                    <LinkIcon className="w-4 h-4 text-gray-500" aria-hidden="true" />
-                  </Button>
-                </div>
-              </div>
+            {/* Trust Badges - Centered */}
+            <div className="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto mb-8 text-[10px] uppercase tracking-wider text-gray-600">
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                Certificate of Authenticity
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                Secure Shipping
+              </p>
+              <p className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
+                14-day Returns
+              </p>
             </div>
           </div>
 
-          {artwork.videos && artwork.videos.length > 0 && (
-            <div className="border-t border-gray-200 mt-8 pt-6">
-              <div className="flex items-center justify-between mb-8 flex-wrap gap-4">
-                <div>
-                  <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Studio Footage</p>
-                  <h2 className="yeezy-subheading text-3xl">Process & Installation</h2>
-                </div>
-                <span className="text-xs uppercase tracking-[0.3em] text-gray-500">
-                  {artwork.videos.length} video{artwork.videos.length === 1 ? '' : 's'}
-                </span>
-              </div>
-              <VideoGallery videos={artwork.videos} />
-            </div>
-          )}
-
           {relatedArtworks.length > 0 && (
-            <div className="border-t border-gray-200 mt-8 pt-6">
-              <div className="flex items-baseline justify-between mb-6">
-                <div>
-                  <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1.5">Explore Similar</p>
-                  <h2 className="text-xl md:text-2xl font-light tracking-tight">You May Also Like</h2>
-                </div>
+            <div className="border-t border-gray-200 pt-8 mt-8">
+              <div className="text-center mb-6">
+                <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1.5">Explore Similar</p>
+                <h2 className="text-xl md:text-2xl font-light tracking-tight">You May Also Like</h2>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5">
-                {relatedArtworks.map((related) => (
+              {/* Display maximum 2 related artworks for minimal design */}
+              <div className="flex justify-center gap-6 max-w-2xl mx-auto">
+                {relatedArtworks.slice(0, 2).map((related) => (
                   <button
                     key={related.id}
                     onClick={() => router.push(`/artwork/${related.id}`)}
-                    className="group text-left cursor-pointer bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300"
+                    className="group text-left cursor-pointer flex-1 max-w-xs"
                     aria-label={`View artwork ${related.title}`}
                   >
-                    <div
-                      className="relative w-full h-48 md:h-56 bg-gray-50 overflow-hidden"
-                    >
+                    <div className="relative w-full h-48 bg-gray-50 overflow-hidden rounded-lg mb-3 shadow-sm group-hover:shadow-md transition-shadow">
                       <Image
                         src={getArtworkPrimaryImage(related)}
                         alt={related.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
-                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        sizes="(max-width: 640px) 50vw, 300px"
                       />
                     </div>
-                    <div className="p-3 space-y-1.5">
-                      <p className="text-[9px] uppercase tracking-[0.15em] text-gray-400">
-                        {related.category}
-                      </p>
-                      <p className="text-xs font-medium text-gray-900 truncate leading-tight">
+                    <div className="text-center space-y-1">
+                      <p className="text-sm font-medium text-gray-900 truncate">
                         {related.title}
                       </p>
-                      <p className="text-xs text-gray-600 font-light">
+                      <p className="text-xs text-gray-600">
                         ${related.price.toLocaleString()}
                       </p>
                     </div>
                   </button>
                 ))}
               </div>
+            </div>
+          )}
+
+          {artwork.videos && artwork.videos.length > 0 && (
+            <div className="border-t border-gray-200 mt-8 pt-8">
+              <div className="text-center mb-8">
+                <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Studio Footage</p>
+                <h2 className="text-2xl md:text-3xl font-light tracking-tight">Process & Installation</h2>
+              </div>
+              <VideoGallery videos={artwork.videos} />
             </div>
           )}
         </div>
