@@ -99,7 +99,7 @@ Prominent but not overwhelming
 .yeezy-nav-link       → Navigation items (Exo 2 Medium 500)
 .btn-yeezy            → Outline buttons (Exo 2 Bold 700)
 .btn-yeezy-primary    → Filled buttons (Exo 2 Bold 700)
-body                  → Default body text (Exo 2 Regular 400)
+body                  → Default body text (Exo 2 Light 300)
 ```
 
 ## Technical Implementation

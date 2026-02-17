@@ -33,7 +33,7 @@ The website now uses a two-font system:
   - `.yeezy-nav-link` - Navigation items (Exo 2 Medium - 500)
   - `.btn-yeezy` - Outline buttons (Exo 2 Bold - 700)
   - `.btn-yeezy-primary` - Primary buttons (Exo 2 Bold - 700)
-  - `body` - Base body font (Exo 2 - 400)
+  - `body` - Base body font (Exo 2 Light - 300)
 
 ### 2. `src/app/checkout/page.tsx`
 - Updated Stripe payment element appearance configuration
@@ -63,8 +63,7 @@ Used for readable content:
 ## Font Weight Usage
 
 ### Exo 2 Weights in Use
-- **300 (Light)** - Body text for optimal readability
-- **400 (Regular)** - Default body font
+- **300 (Light)** - Body text and default body for optimal readability
 - **500 (Medium)** - Navigation links
 - **600 (Semi-Bold)** - Prices and small titles
 - **700 (Bold)** - Sub headers and buttons
