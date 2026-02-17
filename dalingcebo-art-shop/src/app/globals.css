@@ -1,5 +1,39 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+/* ========================================
+   FONT IMPORTS - NEUROPOL STANDARDIZATION
+   ======================================== */
+/* 
+ * Standard font: Neuropol by Typodermic
+ * Wide variant for titles: Neuropol X
+ * 
+ * Currently using Audiowide from Google Fonts as a temporary substitute
+ * with similar futuristic/geometric aesthetic.
+ * 
+ * TO USE ACTUAL NEUROPOL FONTS:
+ * 1. Place Neuropol font files in /public/fonts/
+ * 2. Uncomment the @font-face declarations below
+ * 3. Remove the Audiowide import
+ */
+
+/* Temporary Google Font substitute (remove when Neuropol is available) */
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+
+/* @font-face {
+  font-family: 'Neuropol';
+  src: url('/fonts/Neuropol-Regular.woff2') format('woff2'),
+       url('/fonts/Neuropol-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Neuropol X';
+  src: url('/fonts/NeuropolX-Regular.woff2') format('woff2'),
+       url('/fonts/NeuropolX-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+} */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -27,9 +61,10 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-weight: 300;
-  line-height: 1.2;
+  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when font files are available */
+  font-family: 'Audiowide', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 400;
+  line-height: 1.3;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -98,35 +133,47 @@ a:focus-visible {
   background: #999;
 }
 
-/* Typography inspired by Yeezy */
+/* ========================================
+   TYPOGRAPHY CLASSES - NEUROPOL STANDARDIZATION
+   ======================================== */
+/* All typography now uses Neuropol/Audiowide for consistency */
+
+/* Large headings and titles - use Neuropol X (wide variant) when available */
 .yeezy-heading {
-  font-family: 'Inter', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.85;
-  text-transform: uppercase;
-}
-
-.yeezy-main-logo {
-  font-family: 'Orbitron', monospace;
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  line-height: 0.85;
-  text-transform: uppercase;
-}
-
-.yeezy-subheading {
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  /* Using Audiowide as Neuropol X substitute - replace with 'Neuropol X' when available */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
   letter-spacing: 0.05em;
+  line-height: 0.95;
   text-transform: uppercase;
 }
 
+/* Main logo - use Neuropol X (wide variant) when available */
+.yeezy-main-logo {
+  /* Using Audiowide as Neuropol X substitute - replace with 'Neuropol X' when available */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+/* Subheadings - use standard Neuropol */
+.yeezy-subheading {
+  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when available */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Body text - use standard Neuropol */
 .yeezy-body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.01em;
-  line-height: 1.3;
+  /* Using Audiowide as Neuropol substitute - replace with 'Neuropol' when available */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 /* Yeezy-style animations */
@@ -194,10 +241,11 @@ a:focus-visible {
   background: transparent;
   color: black;
   padding: 12px 24px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  /* Using Audiowide as Neuropol substitute */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -213,10 +261,11 @@ a:focus-visible {
   background: black;
   color: white;
   padding: 12px 24px;
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  /* Using Audiowide as Neuropol substitute */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -281,17 +330,19 @@ a:focus-visible {
 
 /* Text styles */
 .yeezy-price {
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  /* Using Audiowide as Neuropol substitute */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
   font-size: 14px;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .yeezy-title {
-  font-family: 'Inter', sans-serif;
-  font-weight: 300;
+  /* Using Audiowide as Neuropol substitute */
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
   font-size: 12px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   opacity: 0.8;
 }
@@ -353,10 +404,11 @@ a:focus-visible {
 }
 
 .yeezy-nav-link {
-  font-family: 'Inter', sans-serif;
+  /* Using Audiowide as Neuropol substitute */
+  font-family: 'Audiowide', sans-serif;
   font-weight: 400;
   font-size: 11px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #000;
   text-decoration: none;
