@@ -451,10 +451,10 @@ export default function ArtworkDetail() {
                           Add to Cart
                         </button>
                         
-                        {/* Secondary buttons: Equal width */}
+                        {/* Secondary buttons: No borders as per requirement */}
                         <button
                           onClick={handleReserve}
-                          className="h-12 px-8 border border-gray-300 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:border-black hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          className="h-12 px-8 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:bg-gray-50 hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                           aria-label="Reserve this artwork"
                         >
                           Reserve
@@ -462,7 +462,7 @@ export default function ArtworkDetail() {
                         
                         <button
                           onClick={handleInquire}
-                          className="h-12 px-8 border border-gray-300 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:border-black hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          className="h-12 px-8 text-black text-[12px] uppercase tracking-[0.08em] rounded-xl hover:bg-gray-50 hover:scale-[1.02] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                           aria-label="Inquire about this artwork"
                         >
                           Inquire
@@ -537,37 +537,37 @@ export default function ArtworkDetail() {
               </div>
             </section>
 
-            {/* ROW 7: Related Works - columns 1-12, margin-top 96px, 3-column grid, 32px gap */}
+            {/* ROW 7: Related Works - columns 1-12, margin-top 96px, small thumbnail grid */}
             {relatedArtworks.length > 0 && (
               <section className="mt-24">
                 <div className="grid grid-cols-12 gap-6">
                   <div className="col-span-12">
                     <h2 className="text-[12px] uppercase tracking-[0.08em] text-gray-500 mb-8 text-center">Related Works</h2>
                     
-                    {/* 3-column layout with 32px gap */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Horizontal layout with small thumbnails - max 2x2 cm (approx 80px) */}
+                    <div className="flex justify-center items-start gap-8 flex-wrap">
                       {relatedArtworks.slice(0, 3).map((related) => (
                         <button
                           key={related.id}
                           onClick={() => router.push(`/artwork/${related.id}`)}
-                          className="group text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded transition-all"
+                          className="group text-center cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded transition-all"
                           aria-label={`View artwork ${related.title}`}
                         >
-                          {/* Image aspect ratio locked */}
-                          <div className="relative w-full bg-gray-50 overflow-hidden mb-4" style={{ aspectRatio: '3/4' }}>
+                          {/* Small image - 2x2 cm max (80px) */}
+                          <div className="relative bg-gray-50 overflow-hidden mb-2" style={{ width: '80px', height: '80px' }}>
                             <Image
                               src={getArtworkPrimaryImage(related)}
                               alt={related.title}
                               fill
-                              className="object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                              className="object-cover group-hover:scale-[1.05] transition-transform duration-300"
+                              sizes="80px"
                             />
                           </div>
-                          <div className="space-y-1">
-                            <p className="text-[14px] font-medium text-gray-900">
+                          <div className="space-y-1" style={{ maxWidth: '80px' }}>
+                            <p className="text-[10px] font-medium text-gray-900 truncate">
                               {related.title}
                             </p>
-                            <p className="text-[14px] text-gray-500">
+                            <p className="text-[10px] text-gray-500">
                               ${related.price.toLocaleString()}
                             </p>
                           </div>
