@@ -15,7 +15,7 @@ async function readArtworksFromJSON(): Promise<Artwork[]> {
       artist: artwork.artist ?? '',
       price: artwork.price ?? 0,
       category: artwork.category ?? '',
-      scale: artwork.scale ?? '',
+      scale: (artwork.scale ?? 'large') as 'large' | 'small',
       size: artwork.size ?? '',
       year: artwork.year ?? 0,
       medium: artwork.medium ?? '',
@@ -27,7 +27,7 @@ async function readArtworksFromJSON(): Promise<Artwork[]> {
       images: artwork.images ?? [],
       tags: artwork.tags ?? [],
       inventory: artwork.inventory ?? 0,
-      videos: []
+      videos: artwork.videos ?? []
     }));
   } catch (error) {
     console.error('Error reading artworks from JSON:', error);
