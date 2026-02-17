@@ -742,7 +742,7 @@ function AdminDashboard() {
                           <input
                             required
                             type="number"
-                            className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
+                            className="w-full border border-gray-300 rounded-md pl-24 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
                             placeholder="0"
                             value={formState.price}
                             onChange={(e) => setFormState({ ...formState, price: e.target.value })}
