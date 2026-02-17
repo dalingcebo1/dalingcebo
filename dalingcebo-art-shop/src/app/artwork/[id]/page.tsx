@@ -306,7 +306,7 @@ export default function ArtworkDetail() {
           <div className={`fade-in-slow ${isVisible ? '' : ''}`}>
             <div className="relative mb-8">
               {/* Main Carousel Image */}
-              <div className="relative bg-gray-50 overflow-hidden rounded-xl" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
+              <div className="relative bg-gray-50 overflow-hidden rounded-xl min-h-[400px]" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
                 <Image
                   src={imageList[selectedImage] ?? getArtworkPlaceholder()}
                   alt={artwork.title}
@@ -358,7 +358,7 @@ export default function ArtworkDetail() {
                           ? 'w-8 h-2 bg-black' 
                           : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
                       }`}
-                      aria-label={`View image ${index + 1} of ${imageList.length}`}
+                      aria-label={`View image ${index + 1} of ${imageList.length}${selectedImage === index ? ' (currently selected)' : ''}`}
                       aria-current={selectedImage === index}
                     />
                   ))}
@@ -431,7 +431,7 @@ export default function ArtworkDetail() {
                     className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
                     aria-label="Reserve this artwork"
                   >
-                    <div className="w-14 h-14 rounded-full bg-gray-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
                       <Bookmark className="w-6 h-6 text-white" aria-hidden="true" />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500">Reserve</span>
@@ -442,7 +442,7 @@ export default function ArtworkDetail() {
                     className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
                     aria-label="Inquire about this artwork"
                   >
-                    <div className="w-14 h-14 rounded-full bg-gray-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
                       <MessageSquare className="w-6 h-6 text-white" aria-hidden="true" />
                     </div>
                     <span className="text-[10px] uppercase tracking-wider text-gray-500">Inquire</span>
@@ -522,6 +522,7 @@ export default function ArtworkDetail() {
                 <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1.5">Explore Similar</p>
                 <h2 className="text-xl md:text-2xl font-light tracking-tight">You May Also Like</h2>
               </div>
+              {/* Display maximum 2 related artworks for minimal design */}
               <div className="flex justify-center gap-6 max-w-2xl mx-auto">
                 {relatedArtworks.slice(0, 2).map((related) => (
                   <button
