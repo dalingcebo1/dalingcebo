@@ -1,5 +1,44 @@
 import { createServiceRoleClient } from '@/lib/db/supabase';
 import { Artwork, ArtworkVideo } from '@/types/artwork';
+import path from 'path';
+import fs from 'fs/promises';
+
+// JSON fallback for when Supabase is not available
+async function readArtworksFromJSON(): Promise<Artwork[]> {
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'artworks.json');
+    const fileContents = await fs.readFile(filePath, 'utf8');
+    const artworks: Partial<Artwork>[] = JSON.parse(fileContents);
+    return artworks.map((artwork) => ({
+      id: artwork.id ?? 0,
+      title: artwork.title ?? '',
+      artist: artwork.artist ?? '',
+      price: artwork.price ?? 0,
+      category: artwork.category ?? '',
+      scale: (artwork.scale ?? 'large') as 'large' | 'small',
+      size: artwork.size ?? '',
+      year: artwork.year ?? 0,
+      medium: artwork.medium ?? '',
+      description: artwork.description ?? '',
+      details: artwork.details ?? '',
+      inStock: artwork.inStock ?? true,
+      edition: artwork.edition ?? '',
+      image: artwork.image ?? '',
+      images: artwork.images ?? [],
+      tags: artwork.tags ?? [],
+      inventory: artwork.inventory ?? 0,
+      videos: artwork.videos ?? []
+    }));
+  } catch (error) {
+    console.error('Error reading artworks from JSON:', error);
+    return [];
+  }
+}
+
+async function getArtworkByIdFromJSON(id: number): Promise<Artwork | undefined> {
+  const artworks = await readArtworksFromJSON();
+  return artworks.find(artwork => artwork.id === id);
+}
 
 function normalizeGoogleDriveUrl(url: string): string {
   if (!url) return ''
@@ -55,32 +94,45 @@ function mapRowToArtwork(row: any): Artwork {
 }
 
 export async function readArtworks(): Promise<Artwork[]> {
-  const supabase = createServiceRoleClient()
-  
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*')
-    .order('id', { ascending: true })
+  try {
+    const supabase = createServiceRoleClient()
+    
+    const { data, error } = await supabase
+      .from('artworks')
+      .select('*')
+      .order('id', { ascending: true })
 
-  if (error) {
-    console.error('Error fetching artworks:', error)
-    return []
+    if (error) {
+      console.error('Error fetching artworks from Supabase, falling back to JSON:', error)
+      return await readArtworksFromJSON()
+    }
+
+    return data.map(mapRowToArtwork)
+  } catch (error) {
+    console.error('Error in readArtworks, falling back to JSON:', error)
+    return await readArtworksFromJSON()
   }
-
-  return data.map(mapRowToArtwork)
 }
 
 export async function getArtworkById(id: number): Promise<Artwork | undefined> {
-  const supabase = createServiceRoleClient()
-  
-  const { data, error } = await supabase
-    .from('artworks')
-    .select('*, artwork_videos(*)')
-    .eq('id', id)
-    .single()
+  try {
+    const supabase = createServiceRoleClient()
+    
+    const { data, error } = await supabase
+      .from('artworks')
+      .select('*, artwork_videos(*)')
+      .eq('id', id)
+      .single()
 
-  if (error || !data) return undefined
-  return mapRowToArtwork(data)
+    if (error || !data) {
+      console.error('Error fetching artwork from Supabase, falling back to JSON:', error)
+      return await getArtworkByIdFromJSON(id)
+    }
+    return mapRowToArtwork(data)
+  } catch (error) {
+    console.error('Error in getArtworkById, falling back to JSON:', error)
+    return await getArtworkByIdFromJSON(id)
+  }
 }
 
 export async function upsertArtwork(payload: Omit<Artwork, 'id'>, id?: number): Promise<Artwork> {
