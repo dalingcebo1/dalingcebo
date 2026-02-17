@@ -738,11 +738,11 @@ function AdminDashboard() {
                           Price (USD) <span className="text-red-500">*</span>
                         </span>
                         <div className="relative">
-                          <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">$</span>
+                          <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm">$</span>
                           <input
                             required
                             type="number"
-                            className="w-full border border-gray-300 rounded-md pl-24 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
+                            className="w-full border border-gray-300 rounded-md pl-32 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
                             placeholder="0"
                             value={formState.price}
                             onChange={(e) => setFormState({ ...formState, price: e.target.value })}
