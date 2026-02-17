@@ -122,12 +122,13 @@ export default function ArtworkDetail() {
   }, [catalogue, artwork])
 
   const imageList = useMemo(() => {
-    if (!artwork) return [getArtworkPlaceholder()]
+    if (!artwork) return [getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder()]
     const gallery = (artwork.images || []).filter(Boolean)
-    if (gallery.length > 0) {
-      return gallery
-    }
-    return [getArtworkPrimaryImage(artwork)]
+    const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
+    
+    // Ensure we always have 4 placeholders
+    const placeholders = [getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder()]
+    return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
   }, [artwork])
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
@@ -300,35 +301,39 @@ export default function ArtworkDetail() {
           </div>
         </section>
       
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-5xl mx-auto">
+      <section className="yeezy-section bg-white">
+        <div className="yeezy-container max-w-6xl mx-auto">
           {/* Centered Image Carousel */}
-          <div className={`fade-in-slow ${isVisible ? '' : ''}`}>
-            <div className="relative mb-8">
-              {/* Main Carousel Image */}
-              <div className="relative bg-gray-50 overflow-hidden rounded-xl min-h-[400px]" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
-                <Image
-                  src={imageList[selectedImage] ?? getArtworkPlaceholder()}
-                  alt={artwork.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 80vw"
-                  className="object-contain"
-                  priority
-                />
+          <div className={`transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+            {/* Main Carousel Container */}
+            <div className="relative mb-6 flex justify-center">
+              {/* Main Carousel Image with smooth transitions */}
+              <div className="relative bg-gray-50 overflow-hidden rounded-lg" style={{ width: '100%', maxWidth: '900px', aspectRatio: heroAspectRatio, minHeight: '500px', maxHeight: '70vh' }}>
+                <div className="relative w-full h-full flex items-center justify-center">
+                  <Image
+                    key={selectedImage}
+                    src={imageList[selectedImage] ?? getArtworkPlaceholder()}
+                    alt={`${artwork.title} - Image ${selectedImage + 1} of ${imageList.length}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 900px"
+                    className="object-contain transition-opacity duration-500 ease-in-out"
+                    priority
+                  />
+                </div>
                 
                 {/* Arrow Navigation */}
                 {imageList.length > 1 && (
                   <>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-md backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" />
                     </button>
                     <button
                       onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-2 bg-white/90 hover:bg-white rounded-full shadow-md backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                       aria-label="Next image"
                     >
                       <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
@@ -339,7 +344,7 @@ export default function ArtworkDetail() {
                 {/* Zoom button */}
                 <button
                   onClick={() => setIsLightboxOpen(true)}
-                  className="absolute bottom-4 right-4 p-2.5 bg-white/80 hover:bg-white rounded-full shadow-lg backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                  className="absolute bottom-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full shadow-md backdrop-blur-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                   aria-label="View fullscreen"
                 >
                   <ZoomIn className="w-4 h-4 text-gray-900" aria-hidden="true" />
@@ -348,15 +353,15 @@ export default function ArtworkDetail() {
 
               {/* Pagination Dots */}
               {imageList.length > 1 && (
-                <div className="flex justify-center gap-2 mt-4">
+                <div className="flex justify-center gap-1.5 mt-3">
                   {imageList.map((_, index) => (
                     <button
                       key={index}
                       onClick={() => setSelectedImage(index)}
-                      className={`transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
+                      className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                         selectedImage === index 
-                          ? 'w-8 h-2 bg-black' 
-                          : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                          ? 'w-6 h-1.5 bg-black' 
+                          : 'w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400'
                       }`}
                       aria-label={`View image ${index + 1} of ${imageList.length}${selectedImage === index ? ' (currently selected)' : ''}`}
                       aria-current={selectedImage === index}
@@ -366,42 +371,21 @@ export default function ArtworkDetail() {
               )}
             </div>
 
-            {/* Artwork Info - Centered */}
-            <div className="text-center max-w-3xl mx-auto mb-8">
-              <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
-                <span className="px-3 py-1.5 bg-gray-100 text-gray-700 text-[10px] uppercase tracking-[0.15em] rounded-full">
-                  {artwork.category}
-                </span>
-                {artwork.inStock ? (
-                  <span className="px-3 py-1.5 bg-green-50 text-green-700 text-[10px] uppercase tracking-[0.15em] rounded-full flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
-                    Available
-                  </span>
-                ) : (
-                  <span className="px-3 py-1.5 bg-red-50 text-red-700 text-[10px] uppercase tracking-[0.15em] rounded-full">
-                    Sold
-                  </span>
-                )}
-              </div>
-              
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-light tracking-tight mb-4 leading-tight">
+            {/* Title and Price - Minimal */}
+            <div className="text-center mb-6">
+              <h1 className="text-2xl md:text-3xl font-light tracking-tight mb-2">
                 {artwork.title}
               </h1>
-              
-              <div className="flex items-baseline justify-center gap-4 mb-2">
-                <p className="text-3xl md:text-4xl font-light">
-                  ${currentPrice.toLocaleString()}
-                </p>
-                {artwork.inventory && artwork.inventory < 5 && artwork.inStock && (
-                  <span className="text-xs text-amber-600 font-medium">Only {artwork.inventory} left</span>
-                )}
-              </div>
-              
-              <p className="text-xs text-gray-500 uppercase tracking-wider mb-6">
-                {artwork.edition} • {artwork.year}
+              <p className="text-2xl font-light mb-1">
+                ${currentPrice.toLocaleString()}
               </p>
-              
-              {/* Variant Selector - Centered */}
+              <p className="text-xs text-gray-500 uppercase tracking-wider">
+                {artwork.edition}
+              </p>
+            </div>
+
+            {/* Variant Selector - Minimal */}
+            {artwork.inStock && (
               <div className="max-w-md mx-auto mb-6">
                 <VariantSelector 
                   artworkId={artwork.id} 
@@ -409,142 +393,109 @@ export default function ArtworkDetail() {
                   onVariantChange={handleVariantChange} 
                 />
               </div>
-            </div>
+            )}
 
-            {/* Action Icons - Horizontal */}
-            <div className="flex justify-center gap-8 mb-12 pb-8 border-b border-gray-200">
+            {/* Action Icons - Horizontal with minimal text - Match Cart Icon Style */}
+            <div className="flex justify-center items-center gap-8 mb-8 pb-6 border-b border-gray-100">
               {artwork.inStock ? (
                 <>
                   <button
-                    onClick={handleAddToCart}
-                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
-                    aria-label="Add artwork to shopping cart"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <ShoppingCart className="w-6 h-6 text-white" aria-hidden="true" />
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Add to Cart</span>
-                  </button>
-                  
-                  <button
                     onClick={handleReserve}
-                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-1 transition-all"
                     aria-label="Reserve this artwork"
                   >
-                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <Bookmark className="w-6 h-6 text-white" aria-hidden="true" />
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Reserve</span>
+                    <Bookmark className="w-5 h-5 text-black group-hover:opacity-70 transition-opacity" strokeWidth="1.2" aria-hidden="true" />
+                    <span className="text-[9px] uppercase tracking-wider text-gray-500 group-hover:text-black transition-colors">Reserve</span>
                   </button>
                   
                   <button
                     onClick={handleInquire}
-                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-1 transition-all"
                     aria-label="Inquire about this artwork"
                   >
-                    <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <MessageSquare className="w-6 h-6 text-white" aria-hidden="true" />
-                    </div>
-                    <span className="text-[10px] uppercase tracking-wider text-gray-500">Inquire</span>
+                    <MessageSquare className="w-5 h-5 text-black group-hover:opacity-70 transition-opacity" strokeWidth="1.2" aria-hidden="true" />
+                    <span className="text-[9px] uppercase tracking-wider text-gray-500 group-hover:text-black transition-colors">Inquire</span>
+                  </button>
+                  
+                  <button
+                    onClick={handleAddToCart}
+                    className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-1 transition-all"
+                    aria-label="Add artwork to shopping cart"
+                  >
+                    <ShoppingCart className="w-5 h-5 text-black group-hover:opacity-70 transition-opacity" strokeWidth="1.2" aria-hidden="true" />
+                    <span className="text-[9px] uppercase tracking-wider text-gray-500 group-hover:text-black transition-colors">Add to Cart</span>
                   </button>
                 </>
               ) : (
                 <button
                   onClick={handleInquire}
-                  className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-3 hover:bg-gray-50 transition-colors"
+                  className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-1 transition-all"
                   aria-label="Get notified when artwork becomes available"
                 >
-                  <div className="w-14 h-14 rounded-full bg-black flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <Bell className="w-6 h-6 text-white" aria-hidden="true" />
-                  </div>
-                  <span className="text-[10px] uppercase tracking-wider text-gray-500">Notify Me</span>
+                  <Bell className="w-5 h-5 text-black group-hover:opacity-70 transition-opacity" strokeWidth="1.2" aria-hidden="true" />
+                  <span className="text-[9px] uppercase tracking-wider text-gray-500 group-hover:text-black transition-colors">Notify Me</span>
                 </button>
               )}
             </div>
 
-            {/* Details Section - Compact Grid */}
-            <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-8">
-              {/* Description */}
-              <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
-                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">About This Piece</h3>
-                <p className="text-sm leading-relaxed text-gray-900 mb-2">
-                  {artwork.description}
-                </p>
-                <p className="text-xs leading-relaxed text-gray-600">
-                  {artwork.details}
-                </p>
-              </div>
-
-              {/* Specifications */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5">
-                <h3 className="text-[10px] font-semibold uppercase tracking-[0.2em] text-gray-600 mb-3">Specifications</h3>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between py-1.5 border-b border-gray-100">
-                    <span className="text-gray-500 uppercase tracking-wide">Medium</span>
-                    <span className="text-right text-gray-900 font-medium">{artwork.medium}</span>
+            {/* Details Section - Single Row Compact */}
+            <div className="max-w-3xl mx-auto mb-6">
+              <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
+                <h3 className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3">Details</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-xs mb-3 pb-3 border-b border-gray-200">
+                  <div>
+                    <span className="text-gray-500 uppercase tracking-wide text-[10px] block mb-0.5">Medium</span>
+                    <span className="text-gray-900 font-medium">{artwork.medium}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 border-b border-gray-100">
-                    <span className="text-gray-500 uppercase tracking-wide">Size</span>
+                  <div>
+                    <span className="text-gray-500 uppercase tracking-wide text-[10px] block mb-0.5">Size</span>
                     <span className="text-gray-900 font-medium">{artwork.size}</span>
                   </div>
-                  <div className="flex justify-between py-1.5 border-b border-gray-100">
-                    <span className="text-gray-500 uppercase tracking-wide">Year</span>
+                  <div>
+                    <span className="text-gray-500 uppercase tracking-wide text-[10px] block mb-0.5">Year</span>
                     <span className="text-gray-900 font-medium">{artwork.year}</span>
                   </div>
-                  <div className="flex justify-between py-1.5">
-                    <span className="text-gray-500 uppercase tracking-wide">Edition</span>
-                    <span className="text-gray-900 font-medium">{artwork.edition}</span>
+                  <div>
+                    <span className="text-gray-500 uppercase tracking-wide text-[10px] block mb-0.5">Status</span>
+                    <span className={`font-medium ${artwork.inStock ? 'text-green-700' : 'text-red-700'}`}>
+                      {artwork.inStock ? 'Available' : 'Sold'}
+                    </span>
                   </div>
                 </div>
+                <p className="text-xs leading-relaxed text-gray-700">
+                  {artwork.description}
+                </p>
               </div>
             </div>
 
-            {/* Trust Badges - Centered */}
-            <div className="flex flex-wrap justify-center gap-6 max-w-2xl mx-auto mb-8 text-[10px] uppercase tracking-wider text-gray-600">
-              <p className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                Certificate of Authenticity
-              </p>
-              <p className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                Secure Shipping
-              </p>
-              <p className="flex items-center gap-2">
-                <CheckCircle className="w-4 h-4 flex-shrink-0" aria-hidden="true" />
-                14-day Returns
-              </p>
-            </div>
           </div>
 
+          {/* You May Also Like - Minimal */}
           {relatedArtworks.length > 0 && (
-            <div className="border-t border-gray-200 pt-8 mt-8">
-              <div className="text-center mb-6">
-                <p className="text-[9px] uppercase tracking-[0.3em] text-gray-400 mb-1.5">Explore Similar</p>
-                <h2 className="text-xl md:text-2xl font-light tracking-tight">You May Also Like</h2>
-              </div>
-              {/* Display maximum 2 related artworks for minimal design */}
-              <div className="flex justify-center gap-6 max-w-2xl mx-auto">
+            <div className="border-t border-gray-100 pt-6 mt-6">
+              <h2 className="text-base font-light tracking-tight text-center mb-4 text-gray-900">You May Also Like</h2>
+              <div className="flex justify-center gap-4 max-w-lg mx-auto">
                 {relatedArtworks.slice(0, 2).map((related) => (
                   <button
                     key={related.id}
                     onClick={() => router.push(`/artwork/${related.id}`)}
-                    className="group text-left cursor-pointer flex-1 max-w-xs"
+                    className="group text-left cursor-pointer flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg"
                     aria-label={`View artwork ${related.title}`}
                   >
-                    <div className="relative w-full h-48 bg-gray-50 overflow-hidden rounded-lg mb-3 shadow-sm group-hover:shadow-md transition-shadow">
+                    <div className="relative w-full h-32 bg-gray-50 overflow-hidden rounded-md mb-2 border border-gray-100">
                       <Image
                         src={getArtworkPrimaryImage(related)}
                         alt={related.title}
                         fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        sizes="(max-width: 640px) 50vw, 300px"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        sizes="(max-width: 640px) 50vw, 250px"
                       />
                     </div>
-                    <div className="text-center space-y-1">
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-medium text-gray-900 truncate">
                         {related.title}
                       </p>
-                      <p className="text-xs text-gray-600">
+                      <p className="text-xs text-gray-500">
                         ${related.price.toLocaleString()}
                       </p>
                     </div>
@@ -554,15 +505,7 @@ export default function ArtworkDetail() {
             </div>
           )}
 
-          {artwork.videos && artwork.videos.length > 0 && (
-            <div className="border-t border-gray-200 mt-8 pt-8">
-              <div className="text-center mb-8">
-                <p className="text-[10px] uppercase tracking-[0.35em] text-gray-500 mb-2">Studio Footage</p>
-                <h2 className="text-2xl md:text-3xl font-light tracking-tight">Process & Installation</h2>
-              </div>
-              <VideoGallery videos={artwork.videos} />
-            </div>
-          )}
+          {/* Videos Section - Removed to minimize vertical scroll */}
         </div>
       </section>
 
