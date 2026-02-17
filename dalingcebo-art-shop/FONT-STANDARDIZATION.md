@@ -65,8 +65,8 @@ When you have the Neuropol font files:
    - `NeuropolX-Regular.woff2` and `.woff`
 
 2. Edit `src/app/globals.css`:
-   - Remove the Audiowide import line
-   - Uncomment the @font-face declarations (lines ~17-33)
+   - Remove the Audiowide import line (line 18)
+   - Uncomment the @font-face declarations (lines 20-36)
    - Replace `'Audiowide'` with `'Neuropol'` or `'Neuropol X'` in the CSS classes
 
 3. Rebuild the application:
