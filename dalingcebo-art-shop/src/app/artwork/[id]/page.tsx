@@ -344,6 +344,22 @@ export default function ArtworkDetail() {
                           >
                             <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
                           </button>
+                          
+                          {/* Mobile arrows - visible on small screens */}
+                          <button
+                            onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
+                            className="absolute left-3 top-1/2 -translate-y-1/2 lg:hidden p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            aria-label="Previous image"
+                          >
+                            <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                          </button>
+                          <button
+                            onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 lg:hidden p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            aria-label="Next image"
+                          >
+                            <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                          </button>
                         </>
                       )}
                       

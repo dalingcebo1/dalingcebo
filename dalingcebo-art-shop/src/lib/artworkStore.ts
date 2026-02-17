@@ -8,11 +8,25 @@ async function readArtworksFromJSON(): Promise<Artwork[]> {
   try {
     const filePath = path.join(process.cwd(), 'data', 'artworks.json');
     const fileContents = await fs.readFile(filePath, 'utf8');
-    const artworks = JSON.parse(fileContents);
-    return artworks.map((artwork: any) => ({
-      ...artwork,
+    const artworks: Partial<Artwork>[] = JSON.parse(fileContents);
+    return artworks.map((artwork) => ({
+      id: artwork.id ?? 0,
+      title: artwork.title ?? '',
+      artist: artwork.artist ?? '',
+      price: artwork.price ?? 0,
+      category: artwork.category ?? '',
+      scale: artwork.scale ?? '',
+      size: artwork.size ?? '',
+      year: artwork.year ?? 0,
+      medium: artwork.medium ?? '',
+      description: artwork.description ?? '',
+      details: artwork.details ?? '',
       inStock: artwork.inStock ?? true,
-      details: artwork.details || '',
+      edition: artwork.edition ?? '',
+      image: artwork.image ?? '',
+      images: artwork.images ?? [],
+      tags: artwork.tags ?? [],
+      inventory: artwork.inventory ?? 0,
       videos: []
     }));
   } catch (error) {
