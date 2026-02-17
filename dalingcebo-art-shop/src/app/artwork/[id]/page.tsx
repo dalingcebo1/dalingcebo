@@ -435,59 +435,51 @@ export default function ArtworkDetail() {
               </div>
             </section>
 
-            {/* ROW 4: CTA Buttons - horizontal icon layout with supporting text */}
+            {/* ROW 4: CTA Buttons - minimal modern icon layout */}
             <section className="mt-8">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
-                  <div className="flex flex-row justify-center items-start gap-6 sm:gap-8">
+                  <div className="flex flex-row justify-center items-start gap-8 sm:gap-12">
                     {artwork.inStock ? (
                       <>
-                        {/* Add to Cart - Icon with text */}
+                        {/* Add to Cart - Minimal icon with text */}
                         <button
                           onClick={handleAddToCart}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
                           aria-label="Add artwork to shopping cart"
                         >
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-xl flex items-center justify-center group-hover:bg-gray-800 transition-colors">
-                            <ShoppingCart className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={1.5} aria-hidden="true" />
-                          </div>
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Add to Cart</span>
+                          <ShoppingCart className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Add to Cart</span>
                         </button>
                         
-                        {/* Reserve - Icon with text */}
+                        {/* Reserve - Minimal icon with text */}
                         <button
                           onClick={handleReserve}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
                           aria-label="Reserve this artwork"
                         >
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                            <Bookmark className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900" strokeWidth={1.5} aria-hidden="true" />
-                          </div>
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Reserve</span>
+                          <Bookmark className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Reserve</span>
                         </button>
                         
-                        {/* Inquire - Icon with text */}
+                        {/* Inquire - Minimal icon with text */}
                         <button
                           onClick={handleInquire}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
                           aria-label="Inquire about this artwork"
                         >
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-gray-100 rounded-xl flex items-center justify-center group-hover:bg-gray-200 transition-colors">
-                            <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-gray-900" strokeWidth={1.5} aria-hidden="true" />
-                          </div>
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Inquire</span>
+                          <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Inquire</span>
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={handleInquire}
-                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg p-2 transition-all duration-300 hover:scale-[1.02]"
+                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
                         aria-label="Get notified when artwork becomes available"
                       >
-                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-black rounded-xl flex items-center justify-center group-hover:bg-gray-800 transition-colors">
-                          <MessageSquare className="w-6 h-6 sm:w-7 sm:h-7 text-white" strokeWidth={1.5} aria-hidden="true" />
-                        </div>
-                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-900 font-medium">Notify Me</span>
+                        <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Notify Me</span>
                       </button>
                     )}
                   </div>
