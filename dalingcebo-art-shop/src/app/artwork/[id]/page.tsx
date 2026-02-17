@@ -306,9 +306,9 @@ export default function ArtworkDetail() {
           {/* Centered Image Carousel */}
           <div className={`transition-opacity duration-700 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
             {/* Main Carousel Container */}
-            <div className="relative mb-6 flex justify-center">
+            <div className="relative mb-4 flex justify-center">
               {/* Main Carousel Image with smooth transitions */}
-              <div className="relative bg-gray-50 overflow-hidden rounded-lg" style={{ width: '100%', maxWidth: '900px', aspectRatio: heroAspectRatio, minHeight: '500px', maxHeight: '70vh' }}>
+              <div className="relative bg-gray-50 overflow-hidden rounded-lg" style={{ width: '100%', maxWidth: '900px', aspectRatio: heroAspectRatio, minHeight: '450px', maxHeight: '65vh' }}>
                 <div className="relative w-full h-full flex items-center justify-center">
                   <Image
                     key={selectedImage}
@@ -353,7 +353,7 @@ export default function ArtworkDetail() {
 
               {/* Pagination Dots */}
               {imageList.length > 1 && (
-                <div className="flex justify-center gap-1.5 mt-3">
+                <div className="flex justify-center gap-1.5 mt-2.5">
                   {imageList.map((_, index) => (
                     <button
                       key={index}
@@ -372,7 +372,7 @@ export default function ArtworkDetail() {
             </div>
 
             {/* Title and Price - Minimal */}
-            <div className="text-center mb-6">
+            <div className="text-center mb-4">
               <h1 className="text-2xl md:text-3xl font-light tracking-tight mb-2">
                 {artwork.title}
               </h1>
@@ -386,7 +386,7 @@ export default function ArtworkDetail() {
 
             {/* Variant Selector - Minimal */}
             {artwork.inStock && (
-              <div className="max-w-md mx-auto mb-6">
+              <div className="max-w-md mx-auto mb-4">
                 <VariantSelector 
                   artworkId={artwork.id} 
                   basePrice={artwork.price} 
@@ -396,7 +396,7 @@ export default function ArtworkDetail() {
             )}
 
             {/* Action Icons - Horizontal with minimal text - Match Cart Icon Style */}
-            <div className="flex justify-center items-center gap-8 mb-8 pb-6 border-b border-gray-100">
+            <div className="flex justify-center items-center gap-8 mb-5 pb-4 border-b border-gray-100">
               {artwork.inStock ? (
                 <>
                   <button
@@ -439,10 +439,10 @@ export default function ArtworkDetail() {
             </div>
 
             {/* Details Section - Single Row Compact */}
-            <div className="max-w-3xl mx-auto mb-6">
-              <div className="bg-gray-50 rounded-lg p-4 border border-gray-100">
-                <h3 className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-3">Details</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-2 text-xs mb-3 pb-3 border-b border-gray-200">
+            <div className="max-w-3xl mx-auto mb-5">
+              <div className="bg-gray-50 rounded-lg p-3.5 border border-gray-100">
+                <h3 className="text-[9px] font-semibold uppercase tracking-[0.2em] text-gray-500 mb-2">Details</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-1.5 text-xs mb-2.5 pb-2.5 border-b border-gray-200">
                   <div>
                     <span className="text-gray-500 uppercase tracking-wide text-[10px] block mb-0.5">Medium</span>
                     <span className="text-gray-900 font-medium">{artwork.medium}</span>
@@ -472,30 +472,30 @@ export default function ArtworkDetail() {
 
           {/* You May Also Like - Minimal */}
           {relatedArtworks.length > 0 && (
-            <div className="border-t border-gray-100 pt-6 mt-6">
-              <h2 className="text-base font-light tracking-tight text-center mb-4 text-gray-900">You May Also Like</h2>
-              <div className="flex justify-center gap-4 max-w-lg mx-auto">
+            <div className="border-t border-gray-100 pt-5 mt-5">
+              <h2 className="text-[10px] font-light text-center mb-3 text-gray-900 uppercase tracking-[0.15em]">You May Also Like</h2>
+              <div className="flex justify-center gap-3 max-w-md mx-auto">
                 {relatedArtworks.slice(0, 2).map((related) => (
                   <button
                     key={related.id}
                     onClick={() => router.push(`/artwork/${related.id}`)}
-                    className="group text-left cursor-pointer flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg"
+                    className="group text-left cursor-pointer flex-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded-lg transition-all"
                     aria-label={`View artwork ${related.title}`}
                   >
-                    <div className="relative w-full h-32 bg-gray-50 overflow-hidden rounded-md mb-2 border border-gray-100">
+                    <div className="relative w-full h-20 bg-gray-50 overflow-hidden rounded-md mb-1.5 border border-gray-100">
                       <Image
                         src={getArtworkPrimaryImage(related)}
                         alt={related.title}
                         fill
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        sizes="(max-width: 640px) 50vw, 250px"
+                        sizes="(max-width: 640px) 50vw, 200px"
                       />
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-xs font-medium text-gray-900 truncate">
+                      <p className="text-[10px] font-medium text-gray-900 truncate">
                         {related.title}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-[10px] text-gray-500">
                         ${related.price.toLocaleString()}
                       </p>
                     </div>
