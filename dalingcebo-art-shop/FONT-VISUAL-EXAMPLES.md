@@ -1,83 +1,101 @@
 # Font Standardization - Visual Examples
 
-## Current Font Setup
+## Before & After
 
 ### Typography Hierarchy
 
-#### 1. Main Logo / Hero Titles (Audiowide)
+#### 1. Main Logo / Hero Titles
+**Before (Orbitron):**
+```
+Font: Orbitron, 900 weight, 0.1em letter-spacing
+Example: "DALINGCEBO"
+```
+
+**After (Audiowide/Neuropol X):**
 ```
 Font: Audiowide, 400 weight, 0.15em letter-spacing
 Example: "DALINGCEBO"
-Distinctive, wide-spaced, geometric display font
+More geometric, wider spacing, futuristic aesthetic
 ```
 
-#### 2. Section Headings (Audiowide)
+#### 2. Section Headings
+**Before (Inter):**
+```
+Font: Inter, 800 weight, -0.02em letter-spacing
+Example: "EXPLORE THE COLLECTION"
+Clean, modern sans-serif
+```
+
+**After (Audiowide/Neuropol):**
 ```
 Font: Audiowide, 400 weight, 0.05em letter-spacing
 Example: "EXPLORE THE COLLECTION"
-Bold, futuristic, eye-catching
+Tech-inspired, distinctive character
 ```
 
-#### 3. Sub Headers (Exo 2 Bold)
+#### 3. Body Text
+**Before (Inter):**
 ```
-Font: Exo 2, 700 weight, 0.08em letter-spacing
-Example: "NEW ARRIVALS"
-Strong emphasis, clear hierarchy
-```
-
-#### 4. Body Text (Exo 2 Light)
-```
-Font: Exo 2, 300 weight, 0.02em letter-spacing
+Font: Inter, 300 weight, 0.01em letter-spacing
 Example: "Discover contemporary art by Dalingcebo..."
-Light weight, readable, modern aesthetic
+Light, readable
 ```
 
-#### 5. Navigation Links (Exo 2 Medium)
+**After (Audiowide/Neuropol):**
 ```
-Font: Exo 2, 500 weight, 0.12em letter-spacing
+Font: Audiowide, 400 weight, 0.02em letter-spacing
+Example: "Discover contemporary art by Dalingcebo..."
+Bold, distinctive, consistent with headings
+```
+
+#### 4. Navigation Links
+**Before (Inter):**
+```
+Font: Inter, 400 weight, 0.1em letter-spacing
 Example: "HOME • SHOP • ABOUT • CONTACT"
-Clear, balanced, professional
 ```
 
-#### 6. Buttons (Exo 2 Bold)
+**After (Audiowide/Neuropol):**
 ```
-Font: Exo 2, 700 weight, 0.12em letter-spacing
+Font: Audiowide, 400 weight, 0.12em letter-spacing
+Example: "HOME • SHOP • ABOUT • CONTACT"
+Stronger presence, tech aesthetic
+```
+
+#### 5. Buttons
+**Before (Inter):**
+```
+Font: Inter, 300 weight, 0.1em letter-spacing
 Example: "ADD TO CART"
-Strong call-to-action, clear emphasis
 ```
 
-#### 7. Prices (Exo 2 Semi-Bold)
+**After (Audiowide/Neuropol):**
 ```
-Font: Exo 2, 600 weight, 0.06em letter-spacing
-Example: "R 15,000.00"
-Prominent but not overwhelming
+Font: Audiowide, 400 weight, 0.12em letter-spacing
+Example: "ADD TO CART"
+More impactful, consistent brand voice
 ```
 
 ## Key Visual Differences
 
-### Font Pairing
-- **Audiowide**: Display font for titles - distinctive, geometric, tech-inspired
-- **Exo 2**: Text font for everything else - modern, versatile, using 4 optimized weights (300, 500, 600, 700)
+### Character Shape
+- **Inter**: Rounded, neutral, highly legible
+- **Audiowide/Neuropol**: Angular, geometric, tech-inspired with distinctive character
 
 ### Letter Spacing
-- Titles (Audiowide): Wide spacing (0.15em for logo, 0.05em for headings)
-- Sub headers (Exo 2): Moderate spacing (0.08em)
-- Body text (Exo 2): Minimal spacing (0.02em)
-- UI elements (Exo 2): Balanced spacing (0.06em - 0.12em)
+- Increased across most elements for better readability with the display font
+- Main logo: 0.1em → 0.15em
+- Navigation: 0.1em → 0.12em
+- Body text: 0.01em → 0.02em
 
-### Font Weight Strategy
-- **Titles**: Single weight (Audiowide 400)
-- **Sub headers**: Bold (Exo 2 700)
-- **Body text**: Light (Exo 2 300)
-- **Navigation**: Medium (Exo 2 500)
-- **Prices**: Semi-Bold (Exo 2 600)
-- **Buttons**: Bold (Exo 2 700)
+### Font Weight
+- Simplified from varied weights (200-900) to single weight (400)
+- Consistent visual weight across all elements
+- Less hierarchy through weight, more through size and spacing
 
 ### Brand Impact
-- **Distinctive hierarchy**: Clear separation between titles and content
-- **Professional appearance**: Text font optimized for readability
-- **Flexible system**: 4 optimized Exo 2 weights for varied emphasis
-- **Modern aesthetic**: Contemporary design with tech-forward feel
+- **Before**: Professional, clean, modern but generic
+- **After**: Distinctive, tech-forward, memorable, cohesive brand identity
 
 ## Pages Showcasing Font Changes
 
@@ -90,82 +108,78 @@ Prominent but not overwhelming
 
 ### All Typography Classes Affected
 ```css
-.yeezy-main-logo      → Logo and main titles (Audiowide 400)
-.yeezy-heading        → Section headings (Audiowide 400)
-.yeezy-subheading     → Subsection headings (Exo 2 Bold 700)
-.yeezy-body           → Body text (Exo 2 Light 300)
-.yeezy-price          → Product prices (Exo 2 Semi-Bold 600)
-.yeezy-title          → Small titles (Exo 2 Semi-Bold 600)
-.yeezy-nav-link       → Navigation items (Exo 2 Medium 500)
-.btn-yeezy            → Outline buttons (Exo 2 Bold 700)
-.btn-yeezy-primary    → Filled buttons (Exo 2 Bold 700)
-body                  → Default body text (Exo 2 Light 300)
+.yeezy-main-logo      → Logo and main titles
+.yeezy-heading        → Section headings
+.yeezy-subheading     → Subsection headings
+.yeezy-body           → Body text
+.yeezy-price          → Product prices
+.yeezy-title          → Small titles
+.yeezy-nav-link       → Navigation items
+.btn-yeezy            → Outline buttons
+.btn-yeezy-primary    → Filled buttons
+body                  → Default body text
 ```
 
 ## Technical Implementation
 
 ### Font Loading
 ```css
-/* Audiowide for titles */
+/* Audiowide (temporary substitute) */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
-/* Exo 2 for sub headers and body text (only weights in use: 300, 500, 600, 700) */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700&display=swap');
+/* Future Neuropol implementation (commented) */
+@font-face {
+  font-family: 'Neuropol';
+  src: url('/fonts/Neuropol-Regular.woff2') format('woff2'),
+       url('/fonts/Neuropol-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 ```
 
-### Example Class Updates
+### Example Class Update
 ```css
-/* Title - Audiowide */
+/* Before */
+.yeezy-heading {
+  font-family: 'Inter', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* After */
 .yeezy-heading {
   font-family: 'Audiowide', sans-serif;
   font-weight: 400;
   letter-spacing: 0.05em;
 }
-
-/* Sub header - Exo 2 Bold */
-.yeezy-subheading {
-  font-family: 'Exo 2', sans-serif;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-}
-
-/* Body text - Exo 2 Light */
-.yeezy-body {
-  font-family: 'Exo 2', sans-serif;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-  line-height: 1.4;
-}
 ```
 
 ## Performance Impact
 
-### Font Loading
-- 2 font families (Audiowide + Exo 2)
-- Audiowide: 1 weight (400) - ~20KB
-- Exo 2: 4 weights loaded (300, 500, 600, 700) - ~40-50KB total
-- **Total: ~60-70KB font data**
+### Before
+- 2 font families loaded (Inter, Orbitron)
+- Multiple weights (200, 300, 400, 500, 600, 700, 800, 900 for Inter)
+- ~50-60KB total font data
 
-### Optimization Notes
-- Both fonts loaded from Google Fonts CDN with optimal compression
-- `display=swap` ensures text remains visible during font loading
-- Only required Exo 2 weights are loaded for optimal performance
-- ~70% reduction in font payload compared to loading all 18 Exo 2 weights
-- Additional weights can be added if needed in the future
+### After
+- 1 font family (Audiowide)
+- Single weight (400)
+- ~20-25KB total font data
+- **~50% reduction in font loading size**
 
 ## Accessibility Considerations
 
 ### Maintained
 - ✅ High contrast ratios preserved
-- ✅ Letter spacing optimized for each font
-- ✅ Line height adjusted for optimal readability
+- ✅ Letter spacing adjusted for readability
+- ✅ Line height optimized for display font
 - ✅ Responsive sizing maintained
 
 ### Improved
-- ✅ Clear visual hierarchy through font pairing
-- ✅ Readable body text with Exo 2 Light (300)
-- ✅ Strong emphasis with Exo 2 Bold (700)
-- ✅ Flexible weight system for varied emphasis
+- ✅ Consistent font family reduces cognitive load
+- ✅ Distinctive characters may improve dyslexia readability
+- ✅ Stronger visual hierarchy through size rather than weight
 
 ## Browser Compatibility
 
@@ -176,13 +190,20 @@ Audiowide/Neuropol font implementation:
 - ✅ System font stack fallback
 - ✅ `font-display: swap` for optimal loading
 
+## Next Steps to Use Actual Neuropol
+
+1. **Obtain License**: Purchase from Typodermic Fonts
+2. **Add Font Files**: Place in `/public/fonts/`
+3. **Update CSS**: Uncomment @font-face, remove Audiowide
+4. **Test**: Verify rendering across browsers
+5. **Deploy**: Push to production
+
 ## Summary
 
 This font standardization:
-- ✅ Creates clear typographic hierarchy with font pairing
-- ✅ Uses Audiowide for distinctive title styling
-- ✅ Uses Exo 2 with 4 optimized weights for sub headers and body text
-- ✅ Implements both light (300) and bold (700) Exo 2 variants as recommended
-- ✅ Maintains professional, modern aesthetic
-- ✅ Optimizes performance by loading only necessary font weights
-- ✅ Ensures accessibility standards
+- ✅ Creates consistent brand identity
+- ✅ Reduces font loading by ~50%
+- ✅ Simplifies maintenance (single font)
+- ✅ Provides distinctive, memorable aesthetic
+- ✅ Maintains accessibility standards
+- ✅ Easy migration path to Neuropol
