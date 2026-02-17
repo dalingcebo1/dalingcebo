@@ -111,7 +111,7 @@ The font change provides:
 - No font-related errors
 
 ### Verification Steps Completed
-1. ✅ Added Exo 2 (all 18 weights) from Google Fonts
+1. ✅ Added Exo 2 with 4 optimized weights (300, 500, 600, 700) from Google Fonts
 2. ✅ Updated all typography classes with appropriate font families
 3. ✅ Assigned correct Exo 2 weights for different use cases
 4. ✅ Updated inline styles (Stripe config)

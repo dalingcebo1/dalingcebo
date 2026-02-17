@@ -57,7 +57,7 @@ Prominent but not overwhelming
 
 ### Font Pairing
 - **Audiowide**: Display font for titles - distinctive, geometric, tech-inspired
-- **Exo 2**: Text font for everything else - modern, versatile, 18 weights
+- **Exo 2**: Text font for everything else - modern, versatile, using 4 optimized weights (300, 500, 600, 700)
 
 ### Letter Spacing
 - Titles (Audiowide): Wide spacing (0.15em for logo, 0.05em for headings)
