@@ -22,7 +22,7 @@ The website now uses a two-font system:
 
 ### 1. `src/app/globals.css` (Main Changes)
 - **Removed**: Old Neuropol-related comments and font-face declarations
-- **Added**: Google Fonts imports for both Audiowide and Exo 2 (all 18 weights)
+- **Added**: Google Fonts imports for both Audiowide and Exo 2 (4 optimized weights: 300, 500, 600, 700)
 - **Updated 10 CSS typography classes**:
   - `.yeezy-heading` - Large section headings (Audiowide)
   - `.yeezy-main-logo` - Logo/main titles (Audiowide)
@@ -97,9 +97,9 @@ Note: Only these 4 weights are loaded for optimal performance. Additional weight
 
 The font change provides:
 - **Clear typography hierarchy** - Audiowide for titles, Exo 2 for everything else
-- **Flexible weight system** - 18 weights of Exo 2 for varied emphasis
+- **Flexible weight system** - 4 optimized Exo 2 weights (300, 500, 600, 700) for varied emphasis
 - **Modern aesthetic** - Distinctive title font with readable body text
-- **Better readability** - Exo 2's thin variant (300) for body text is easier to read than Audiowide
+- **Better readability** - Exo 2's light variant (300) for body text is easier to read than Audiowide
 - **Professional appearance** - Combination of display and text fonts
 
 ## Testing
