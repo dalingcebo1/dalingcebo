@@ -473,7 +473,7 @@ export default function ArtworkDetail() {
           {/* You May Also Like - Minimal */}
           {relatedArtworks.length > 0 && (
             <div className="border-t border-gray-100 pt-5 mt-5">
-              <h2 className="text-sm font-light tracking-tight text-center mb-3 text-gray-900 uppercase tracking-wider" style={{ fontSize: '10px', letterSpacing: '0.15em' }}>You May Also Like</h2>
+              <h2 className="text-[10px] font-light text-center mb-3 text-gray-900 uppercase tracking-[0.15em]">You May Also Like</h2>
               <div className="flex justify-center gap-3 max-w-md mx-auto">
                 {relatedArtworks.slice(0, 2).map((related) => (
                   <button
