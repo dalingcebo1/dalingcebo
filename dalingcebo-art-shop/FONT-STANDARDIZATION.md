@@ -3,7 +3,7 @@
 ## Overview
 All fonts across the Dalingcebo Art Shop website have been standardized to use two Google Fonts families:
 - **Audiowide** - For titles and headings
-- **Exo 2** - For sub headers, body text, navigation, and UI elements
+- **Exo 2** - For sub headers, body text, navigation, and UI elements (weights: 300, 500, 600, 700)
 
 ## What Changed
 
@@ -14,9 +14,9 @@ The website used:
 ### After
 The website now uses a two-font system:
 - **Audiowide** (400 weight) - Titles, main logo, and large headings
-- **Exo 2** (100-900 weights) - Sub headers, body text, navigation, buttons, and all other UI elements
-  - Uses both thin (300) and bold (700) variants as recommended
-  - 18 different weights available (100-900) for flexible typography
+- **Exo 2** (weights: 300, 500, 600, 700) - Sub headers, body text, navigation, buttons, and all other UI elements
+  - Uses both light (300) and bold (700) variants as recommended
+  - 4 optimized weights for performance and flexibility
 
 ## Files Modified
 
@@ -67,7 +67,8 @@ Used for readable content:
 - **500 (Medium)** - Navigation links
 - **600 (Semi-Bold)** - Prices and small titles
 - **700 (Bold)** - Sub headers and buttons
-- **100-900** - All weights available for future customization
+
+Note: Only these 4 weights are loaded for optimal performance. Additional weights (100, 200, 400, 800, 900) can be added if needed in the future.
 
 ## Impact
 
@@ -121,6 +122,7 @@ The font change provides:
 
 - Email templates intentionally kept with system fonts for email client compatibility
 - Audiowide (Google Font) provides distinctive title styling
-- Exo 2 (Google Font) offers 18 weights for maximum flexibility
-- Both thin (300) and bold (700+) variants of Exo 2 are used as recommended
+- Exo 2 (Google Font) offers excellent readability with optimized weight selection
+- Both light (300) and bold (700) variants of Exo 2 are used as recommended
 - Letter spacing has been optimized for each font and use case
+- Only necessary font weights (300, 500, 600, 700) are loaded for optimal performance

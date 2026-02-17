@@ -3,16 +3,16 @@
    ======================================== */
 /* 
  * Title font: Audiowide (Google Fonts)
- * Sub headers and body: Exo 2 (Google Fonts, 100-900 weights)
+ * Sub headers and body: Exo 2 (Google Fonts, weights: 300, 500, 600, 700)
  * 
- * Use thin and bold variants of Exo 2 for different text types.
+ * Use light (300) and bold (700) variants of Exo 2 for different text types.
  */
 
 /* Google Fonts - Audiowide for titles */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
-/* Google Fonts - Exo 2 for sub headers and body text (all weights 100-900) */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Google Fonts - Exo 2 for sub headers and body text (only weights in use: 300, 500, 600, 700) */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700&display=swap');
 
 
 @tailwind base;

@@ -29,7 +29,7 @@ Strong emphasis, clear hierarchy
 ```
 Font: Exo 2, 300 weight, 0.02em letter-spacing
 Example: "Discover contemporary art by Dalingcebo..."
-Thin, readable, modern aesthetic
+Light weight, readable, modern aesthetic
 ```
 
 #### 5. Navigation Links (Exo 2 Medium)
@@ -68,7 +68,7 @@ Prominent but not overwhelming
 ### Font Weight Strategy
 - **Titles**: Single weight (Audiowide 400)
 - **Sub headers**: Bold (Exo 2 700)
-- **Body text**: Light/Thin (Exo 2 300)
+- **Body text**: Light (Exo 2 300)
 - **Navigation**: Medium (Exo 2 500)
 - **Prices**: Semi-Bold (Exo 2 600)
 - **Buttons**: Bold (Exo 2 700)
@@ -76,7 +76,7 @@ Prominent but not overwhelming
 ### Brand Impact
 - **Distinctive hierarchy**: Clear separation between titles and content
 - **Professional appearance**: Text font optimized for readability
-- **Flexible system**: 18 Exo 2 weights available for future needs
+- **Flexible system**: 4 optimized Exo 2 weights for varied emphasis
 - **Modern aesthetic**: Contemporary design with tech-forward feel
 
 ## Pages Showcasing Font Changes
@@ -109,8 +109,8 @@ body                  → Default body text (Exo 2 Light 300)
 /* Audiowide for titles */
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
 
-/* Exo 2 for sub headers and body text (all weights 100-900) */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* Exo 2 for sub headers and body text (only weights in use: 300, 500, 600, 700) */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;500;600;700&display=swap');
 ```
 
 ### Example Class Updates
@@ -143,14 +143,15 @@ body                  → Default body text (Exo 2 Light 300)
 ### Font Loading
 - 2 font families (Audiowide + Exo 2)
 - Audiowide: 1 weight (400) - ~20KB
-- Exo 2: All 18 weights loaded (100-900) - ~180KB total
-- **Total: ~200KB font data**
+- Exo 2: 4 weights loaded (300, 500, 600, 700) - ~40-50KB total
+- **Total: ~60-70KB font data**
 
 ### Optimization Notes
 - Both fonts loaded from Google Fonts CDN with optimal compression
 - `display=swap` ensures text remains visible during font loading
-- Could optimize by loading only required Exo 2 weights if size is a concern
-- Currently loading all weights for maximum design flexibility
+- Only required Exo 2 weights are loaded for optimal performance
+- ~70% reduction in font payload compared to loading all 18 Exo 2 weights
+- Additional weights can be added if needed in the future
 
 ## Accessibility Considerations
 
@@ -180,8 +181,8 @@ Audiowide/Neuropol font implementation:
 This font standardization:
 - ✅ Creates clear typographic hierarchy with font pairing
 - ✅ Uses Audiowide for distinctive title styling
-- ✅ Uses Exo 2 with 18 weights for flexible sub headers and body text
-- ✅ Implements both thin (300) and bold (700) Exo 2 variants as recommended
+- ✅ Uses Exo 2 with 4 optimized weights for sub headers and body text
+- ✅ Implements both light (300) and bold (700) Exo 2 variants as recommended
 - ✅ Maintains professional, modern aesthetic
-- ✅ Provides design flexibility with multiple font weights
+- ✅ Optimizes performance by loading only necessary font weights
 - ✅ Ensures accessibility standards
