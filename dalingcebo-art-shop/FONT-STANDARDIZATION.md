@@ -1,78 +1,74 @@
 # Font Standardization Summary
 
 ## Overview
-All fonts across the Dalingcebo Art Shop website have been standardized to use **Audiowide** (Google Fonts) as a temporary substitute for **Neuropol by Typodermic**.
+All fonts across the Dalingcebo Art Shop website have been standardized to use two Google Fonts families:
+- **Audiowide** - For titles and headings
+- **Exo 2** - For sub headers, body text, navigation, and UI elements (weights: 300, 500, 600, 700)
 
 ## What Changed
 
 ### Before
-The website used multiple fonts:
-- **Inter** (200-900 weights) - Body text, navigation, buttons
-- **Orbitron** (400, 700, 900 weights) - Logo and titles
+The website used:
+- **Audiowide** (400 weight) - ALL text elements across the entire site
 
 ### After
-The website now uses a single font family:
-- **Audiowide** (400 weight) - ALL text elements across the entire site
-  - This serves as a temporary substitute with similar futuristic/geometric aesthetic
-  - When Neuropol font files are available, they can be easily swapped in
+The website now uses a two-font system:
+- **Audiowide** (400 weight) - Titles, main logo, and large headings
+- **Exo 2** (weights: 300, 500, 600, 700) - Sub headers, body text, navigation, buttons, and all other UI elements
+  - Uses both light (300) and bold (700) variants as recommended
+  - 4 optimized weights for performance and flexibility
 
 ## Files Modified
 
 ### 1. `src/app/globals.css` (Main Changes)
-- **Removed**: Google Fonts imports for Inter and Orbitron
-- **Added**: Audiowide import and @font-face declarations for future Neuropol fonts
+- **Removed**: Old Neuropol-related comments and font-face declarations
+- **Added**: Google Fonts imports for both Audiowide and Exo 2 (4 optimized weights: 300, 500, 600, 700)
 - **Updated 10 CSS typography classes**:
-  - `.yeezy-heading` - Large section headings
-  - `.yeezy-main-logo` - Logo/main titles (e.g., "DALINGCEBO")
-  - `.yeezy-subheading` - Secondary headings
-  - `.yeezy-body` - Body text
-  - `.yeezy-price` - Product prices
-  - `.yeezy-title` - Small titles
-  - `.yeezy-nav-link` - Navigation items
-  - `.btn-yeezy` - Outline buttons
-  - `.btn-yeezy-primary` - Primary buttons
-  - `body` - Base body font
+  - `.yeezy-heading` - Large section headings (Audiowide)
+  - `.yeezy-main-logo` - Logo/main titles (Audiowide)
+  - `.yeezy-subheading` - Secondary headings (Exo 2 Bold - 700)
+  - `.yeezy-body` - Body text (Exo 2 Light - 300)
+  - `.yeezy-price` - Product prices (Exo 2 Semi-Bold - 600)
+  - `.yeezy-title` - Small titles (Exo 2 Semi-Bold - 600)
+  - `.yeezy-nav-link` - Navigation items (Exo 2 Medium - 500)
+  - `.btn-yeezy` - Outline buttons (Exo 2 Bold - 700)
+  - `.btn-yeezy-primary` - Primary buttons (Exo 2 Bold - 700)
+  - `body` - Base body font (Exo 2 Light - 300)
 
 ### 2. `src/app/checkout/page.tsx`
 - Updated Stripe payment element appearance configuration
-- Changed `fontFamily: 'Inter, system-ui, sans-serif'` to `fontFamily: 'Audiowide, system-ui, sans-serif'`
-
-### 3. `public/fonts/README.md` (New File)
-- Created instructions for adding actual Neuropol font files
-- Documented licensing information
-- Provided setup guide for converting to Neuropol when available
+- Changed `fontFamily: 'Audiowide, system-ui, sans-serif'` to `fontFamily: 'Exo 2, system-ui, sans-serif'`
 
 ## Typography Classes Details
 
-### Large Text (Neuropol X - Wide Variant)
-Used for titles and larger text elements:
-- `.yeezy-main-logo` - Letter spacing: 0.15em
-- `.yeezy-heading` - Letter spacing: 0.05em
+### Titles (Audiowide)
+Used for large titles and brand elements:
+- `.yeezy-main-logo` - Letter spacing: 0.15em, uppercase
+- `.yeezy-heading` - Letter spacing: 0.05em, uppercase
 
-### Standard Text (Neuropol Regular)
-Used for body text and UI elements:
-- `.yeezy-subheading` - Letter spacing: 0.08em
-- `.yeezy-body` - Letter spacing: 0.02em
-- `.yeezy-nav-link` - Letter spacing: 0.12em
-- `.btn-yeezy` / `.btn-yeezy-primary` - Letter spacing: 0.12em
+### Sub Headers (Exo 2 Bold - 700 weight)
+Used for section headings and emphasis:
+- `.yeezy-subheading` - Letter spacing: 0.08em, uppercase
 
-## How to Activate Neuropol Fonts
+### Body Text (Exo 2 Light - 300 weight)
+Used for readable content:
+- `.yeezy-body` - Letter spacing: 0.02em, line-height: 1.4
 
-When you have the Neuropol font files:
+### UI Elements (Exo 2 with varying weights)
+- `.yeezy-nav-link` - Medium (500 weight), letter spacing: 0.12em
+- `.btn-yeezy` / `.btn-yeezy-primary` - Bold (700 weight), letter spacing: 0.12em
+- `.yeezy-price` - Semi-Bold (600 weight), letter spacing: 0.06em
+- `.yeezy-title` - Semi-Bold (600 weight), letter spacing: 0.12em
 
-1. Place font files in `/public/fonts/`:
-   - `Neuropol-Regular.woff2` and `.woff`
-   - `NeuropolX-Regular.woff2` and `.woff`
+## Font Weight Usage
 
-2. Edit `src/app/globals.css`:
-   - Remove the Audiowide import line (line 18)
-   - Uncomment the @font-face declarations (lines 20-36)
-   - Replace `'Audiowide'` with `'Neuropol'` or `'Neuropol X'` in the CSS classes
+### Exo 2 Weights in Use
+- **300 (Light)** - Body text and default body for optimal readability
+- **500 (Medium)** - Navigation links
+- **600 (Semi-Bold)** - Prices and small titles
+- **700 (Bold)** - Sub headers and buttons
 
-3. Rebuild the application:
-   ```bash
-   npm run build
-   ```
+Note: Only these 4 weights are loaded for optimal performance. Additional weights (100, 200, 400, 800, 900) can be added if needed in the future.
 
 ## Impact
 
@@ -99,11 +95,12 @@ When you have the Neuropol font files:
 
 ## Visual Changes
 
-The font change from Inter (sans-serif) and Orbitron (display) to Audiowide/Neuropol provides:
-- **More consistent brand identity** - Single font family across entire site
-- **Futuristic aesthetic** - Matches the modern art gallery theme
-- **Better readability** - Consistent spacing and weight
-- **Unique character** - Distinctive from generic sans-serif fonts
+The font change provides:
+- **Clear typography hierarchy** - Audiowide for titles, Exo 2 for everything else
+- **Flexible weight system** - 4 optimized Exo 2 weights (300, 500, 600, 700) for varied emphasis
+- **Modern aesthetic** - Distinctive title font with readable body text
+- **Better readability** - Exo 2's light variant (300) for body text is easier to read than Audiowide
+- **Professional appearance** - Combination of display and text fonts
 
 ## Testing
 
@@ -114,15 +111,18 @@ The font change from Inter (sans-serif) and Orbitron (display) to Audiowide/Neur
 - No font-related errors
 
 ### Verification Steps Completed
-1. ✅ Removed all Inter and Orbitron references from CSS
-2. ✅ Updated all typography classes
-3. ✅ Updated inline styles (Stripe config)
-4. ✅ Verified build completes without errors
-5. ✅ Ensured email templates use system fonts (for compatibility)
+1. ✅ Added Exo 2 with 4 optimized weights (300, 500, 600, 700) from Google Fonts
+2. ✅ Updated all typography classes with appropriate font families
+3. ✅ Assigned correct Exo 2 weights for different use cases
+4. ✅ Updated inline styles (Stripe config)
+5. ✅ Verified build completes without errors
+6. ✅ Ensured email templates use system fonts (for compatibility)
 
 ## Notes
 
 - Email templates intentionally kept with system fonts for email client compatibility
-- The Audiowide font is a free Google Font that provides a similar aesthetic to Neuropol
-- Letter spacing has been adjusted slightly compared to original values for better readability with Audiowide
-- When switching to actual Neuropol, you may need to fine-tune letter-spacing values based on the font's characteristics
+- Audiowide (Google Font) provides distinctive title styling
+- Exo 2 (Google Font) offers excellent readability with optimized weight selection
+- Both light (300) and bold (700) variants of Exo 2 are used as recommended
+- Letter spacing has been optimized for each font and use case
+- Only necessary font weights (300, 500, 600, 700) are loaded for optimal performance
