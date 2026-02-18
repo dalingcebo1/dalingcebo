@@ -9,7 +9,7 @@ import Toast from '@/components/Toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import InquiryModal from '@/components/InquiryModal'
 import VariantSelector from '@/components/VariantSelector'
-import { VideoGallery } from '@/components/VideoPlayer'
+import VideoPlayer from '@/components/VideoPlayer'
 import Breadcrumb from '@/components/Breadcrumb'
 import { useCart } from '@/contexts/CartContext'
 import { Artwork } from '@/types/artwork'
@@ -37,6 +37,7 @@ export default function ArtworkDetail() {
   const { artworks: catalogue } = useArtworks()
   const [zoomLevel, setZoomLevel] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  // Index across all hero media (images first, then videos)
   const [selectedImage, setSelectedImage] = useState(0)
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
@@ -47,6 +48,8 @@ export default function ArtworkDetail() {
   const [inquiryMode, setInquiryMode] = useState<'inquiry' | 'reserve'>('inquiry')
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant | null>(null)
+
+  const placeholderImage = getArtworkPlaceholder()
 
   // Early validation: check if ID is valid
   const isValidId = /^\d+$/.test(params.id) && parseInt(params.id, 10) > 0
@@ -102,20 +105,6 @@ export default function ArtworkDetail() {
         }
         const data: Artwork = await response.json()
         
-        // Load additional images from the artwork-images.json file
-        try {
-          const imagesResponse = await fetch('/artwork-images.json')
-          if (imagesResponse.ok) {
-            const imagesData = await imagesResponse.json()
-            if (imagesData[params.id]?.images) {
-              data.images = imagesData[params.id].images
-            }
-          }
-        } catch (err) {
-          // No additional images or error loading them, continue with default
-          console.log('No additional images found for artwork', params.id)
-        }
-        
         setArtwork(data)
         setSelectedImage(0)
         setError(null)
@@ -140,14 +129,25 @@ export default function ArtworkDetail() {
   }, [catalogue, artwork])
 
   const imageList = useMemo(() => {
-    if (!artwork) return [GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER]
+    if (!artwork) return [placeholderImage, placeholderImage, placeholderImage, placeholderImage]
     const gallery = (artwork.images || []).filter(Boolean)
     const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
     
-    // Fill remaining slots with grey placeholders to always have 4 images
-    const placeholders = [GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER]
+    // Ensure we always have 4 placeholders
+    const placeholders = [placeholderImage, placeholderImage, placeholderImage, placeholderImage]
     return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
+  }, [artwork, placeholderImage])
+
+  // Videos associated with this artwork (for hero carousel)
+  const videoList = useMemo(() => {
+    if (!artwork || !Array.isArray(artwork.videos)) return []
+    return artwork.videos.filter((video) => video.youtubeId || video.storageUrl)
   }, [artwork])
+
+  const totalMediaItems = imageList.length + videoList.length
+
+  const isVideoSlide = videoList.length > 0 && selectedImage >= imageList.length
+  const isPlaceholderSlide = !isVideoSlide && imageList[selectedImage] === placeholderImage
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
@@ -331,63 +331,82 @@ export default function ArtworkDetail() {
                 <div className="col-span-12 lg:col-start-3 lg:col-span-8">
                   {/* Main Carousel Container */}
                   <div className="relative">
-                    {/* Main Carousel Image */}
-                    <div className="relative bg-gray-50 overflow-hidden" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
+                    {/* Main Carousel Media (images first, then optional video) */}
+                    <div className="relative bg-gray-50 overflow-hidden mx-auto" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
                       <div className="relative w-full h-full flex items-center justify-center">
-                        <Image
-                          key={selectedImage}
-                          src={imageList[selectedImage] ?? GREY_PLACEHOLDER}
-                          alt={`${artwork.title} - Image ${selectedImage + 1} of ${imageList.length}`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 66vw"
-                          className="object-contain transition-opacity duration-300 ease-in-out"
-                          priority
-                        />
+                        {isVideoSlide ? (
+                          <div className="w-full h-full flex items-center justify-center bg-black">
+                            <div className="w-full h-full max-h-[70vh]">
+                              <VideoPlayer
+                                video={videoList[selectedImage - imageList.length]}
+                                autoplay={false}
+                              />
+                            </div>
+                          </div>
+                        ) : isPlaceholderSlide ? (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-200" aria-hidden="true" />
+                        ) : (
+                          <Image
+                            key={selectedImage}
+                            src={imageList[selectedImage] ?? getArtworkPlaceholder()}
+                            alt={`${artwork.title} - Image ${selectedImage + 1} of ${totalMediaItems}`}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 66vw"
+                            className="object-contain transition-opacity duration-300 ease-in-out"
+                            priority
+                          />
+                        )}
                       </div>
                       
-                      {/* Arrow Navigation - On sides of image */}
-                      {imageList.length > 1 && (
+                      {/* Arrow Navigation - aligned to sides of the media */}
+                      {totalMediaItems > 1 && (
                         <>
                           <button
-                            onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 hover:opacity-70 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded z-10"
+                            onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : totalMediaItems - 1))}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 flex p-2.5 bg-white/95 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="w-6 h-6 text-black" strokeWidth={1.5} aria-hidden="true" />
+                            <ChevronLeft className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.5} />
                           </button>
                           <button
-                            onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:opacity-70 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded z-10"
+                            onClick={() => setSelectedImage((prev) => (prev < totalMediaItems - 1 ? prev + 1 : 0))}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 flex p-2.5 bg-white/95 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
                             aria-label="Next image"
                           >
-                            <ChevronRight className="w-6 h-6 text-black" strokeWidth={1.5} aria-hidden="true" />
+                            <ChevronRight className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.5} />
                           </button>
                         </>
                       )}
                       
-                      {/* Zoom button */}
-                      <button
-                        onClick={() => setIsLightboxOpen(true)}
-                        className="absolute bottom-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-                        aria-label="View fullscreen"
-                      >
-                        <ZoomIn className="w-4 h-4 text-gray-900" aria-hidden="true" />
-                      </button>
+                      {/* Zoom button (images only) */}
+                      {!isVideoSlide && (
+                        <button
+                          onClick={() => setIsLightboxOpen(true)}
+                          className="absolute bottom-3 right-3 p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                          aria-label="View fullscreen"
+                        >
+                          <ZoomIn className="w-4 h-4 text-gray-900" aria-hidden="true" />
+                        </button>
+                      )}
                     </div>
 
-                    {/* Pagination Dots - Centered below image */}
-                    {imageList.length > 1 && (
+                    {/* Pagination Dots - Centered within columns 5-8 equivalent */}
+                    {totalMediaItems > 1 && (
                       <div className="flex justify-center gap-2.5 mt-6">
-                        {imageList.map((_, index) => (
+                        {Array.from({ length: totalMediaItems }).map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImage(index)}
                             className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                               selectedImage === index 
-                                ? 'w-10 h-3 bg-black' 
-                                : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'
+                                ? 'w-12 h-4 bg-black' 
+                                : 'w-4 h-4 bg-gray-300 hover:bg-gray-400'
                             }`}
-                            aria-label={`View image ${index + 1} of ${imageList.length}${selectedImage === index ? ' (currently selected)' : ''}`}
+                            aria-label={
+                              index < imageList.length
+                                ? `View image ${index + 1} of ${totalMediaItems}${selectedImage === index ? ' (currently selected)' : ''}`
+                                : `View video ${index - imageList.length + 1} of ${videoList.length}`
+                            }
                             aria-current={selectedImage === index}
                           />
                         ))}
@@ -607,8 +626,8 @@ export default function ArtworkDetail() {
         startMode={inquiryMode}
       />
 
-      {/* Lightbox */}
-      {isLightboxOpen && (
+      {/* Lightbox (images only) */}
+      {isLightboxOpen && selectedImage < imageList.length && (
         <div 
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
           onClick={() => setIsLightboxOpen(false)}
@@ -645,7 +664,7 @@ export default function ArtworkDetail() {
                 className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-5 h-5 text-white" aria-hidden="true" />
+                <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={1.5} />
               </button>
               <button
                 onClick={(e) => {
@@ -655,9 +674,9 @@ export default function ArtworkDetail() {
                 className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
                 aria-label="Next image"
               >
-                <ChevronRight className="w-5 h-5 text-white" aria-hidden="true" />
+                <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={1.5} />
               </button>
-              {/* Pagination indicators */}
+              {/* Thumbnail indicators */}
               <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full">
                 {imageList.map((_, index) => (
                   <button
@@ -666,8 +685,8 @@ export default function ArtworkDetail() {
                       e.stopPropagation()
                       setSelectedImage(index)
                     }}
-                    className={`rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                      selectedImage === index ? 'bg-white w-10 h-3' : 'bg-white/50 hover:bg-white/75 w-3 h-3'
+                    className={`w-3 h-3 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                      selectedImage === index ? 'bg-white w-10' : 'bg-white/50 hover:bg-white/75'
                     }`}
                     aria-label={`View image ${index + 1} of ${imageList.length}`}
                     aria-current={selectedImage === index}

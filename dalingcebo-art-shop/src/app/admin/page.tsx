@@ -27,6 +27,9 @@ interface FormState {
   edition: string
   image: string
   imagesInput: string
+  videoUrlsInput: string
+  videoTitlesInput: string
+  videoTypesInput: string
   tagsInput: string
   inventory: string
   inStock: boolean
@@ -46,6 +49,9 @@ const defaultForm: FormState = {
   edition: '',
   image: '',
   imagesInput: '',
+  videoUrlsInput: '',
+  videoTitlesInput: '',
+  videoTypesInput: '',
   tagsInput: '',
   inventory: '',
   inStock: true,
@@ -418,10 +424,57 @@ function AdminDashboard() {
       edition: artwork.edition,
       image: artwork.image,
       imagesInput: artwork.images?.join('\n') ?? artwork.image,
+      videoUrlsInput: '',
+      videoTitlesInput: '',
+      videoTypesInput: '',
       tagsInput: artwork.tags?.join(', ') ?? '',
       inventory: artwork.inventory?.toString() ?? '',
       inStock: artwork.inStock,
     })
+
+    // Load any videos for this artwork (if any) and map them to URLs, one per line
+    void (async () => {
+      try {
+        const res = await fetch(`/api/artworks/${artwork.id}`)
+        if (!res.ok) return
+        const fullArtwork: Artwork = await res.json()
+        const videos = Array.isArray(fullArtwork.videos) ? fullArtwork.videos : []
+        if (videos.length > 0) {
+          const urls = videos
+            .map((video) =>
+              video.youtubeId
+                ? `https://www.youtube.com/watch?v=${video.youtubeId}`
+                : video.storageUrl ?? ''
+            )
+            .filter((url) => url.trim().length > 0)
+            .join('\n')
+
+          const titles = videos
+            .map((video) => video.title?.trim() || '')
+            .join('\n')
+
+          const types = videos
+            .map((video) => video.videoType || 'detail')
+            .join('\n')
+
+          setFormState((prev) => ({
+            ...prev,
+            videoUrlsInput: urls,
+            videoTitlesInput: titles,
+            videoTypesInput: types,
+          }))
+        } else {
+          setFormState((prev) => ({
+            ...prev,
+            videoUrlsInput: '',
+            videoTitlesInput: '',
+            videoTypesInput: '',
+          }))
+        }
+      } catch (error) {
+        console.error('Unable to load artwork video', error)
+      }
+    })()
 
     // Bring the edit form into view and focus the first field
     requestAnimationFrame(() => {
@@ -447,6 +500,9 @@ function AdminDashboard() {
       edition: artwork.edition,
       image: artwork.image,
       imagesInput: artwork.images?.join('\n') ?? artwork.image,
+      videoUrlsInput: '',
+      videoTitlesInput: '',
+      videoTypesInput: '',
       tagsInput: artwork.tags?.join(', ') ?? '',
       inventory: artwork.inventory?.toString() ?? '',
       inStock: true,
@@ -535,6 +591,51 @@ function AdminDashboard() {
       if (!response.ok) {
         const { message } = await response.json()
         throw new Error(message || 'Unable to save artwork. Please try again.')
+      }
+
+      const savedArtwork: Artwork = await response.json()
+
+      // Sync artwork videos (optional). Empty input clears any existing videos.
+      try {
+        const urlLines = formState.videoUrlsInput
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean)
+
+        const titleLines = formState.videoTitlesInput
+          .split('\n')
+          .map((line) => line.trim())
+
+        const typeLines = formState.videoTypesInput
+          .split('\n')
+          .map((line) => line.trim().toLowerCase())
+
+        const allowedTypes = ['process', 'detail', 'installation', 'exhibition'] as const
+
+        const videosPayload = urlLines.map((url, index) => {
+          const rawTitle = titleLines[index] ?? ''
+          const rawType = typeLines[index] ?? ''
+          const videoType = allowedTypes.includes(rawType as any) ? (rawType as (typeof allowedTypes)[number]) : 'detail'
+          return {
+            url,
+            title: rawTitle || 'Artwork video',
+            videoType,
+          }
+        })
+
+        const videoHeaders: HeadersInit = { 'Content-Type': 'application/json' }
+        if (authToken) {
+          videoHeaders['x-admin-key'] = authToken
+        }
+
+        await fetch(`/api/artworks/${savedArtwork.id}/video`, {
+          method: 'PUT',
+          headers: videoHeaders,
+          body: JSON.stringify({ videos: videosPayload }),
+        })
+      } catch (videoError) {
+        console.error('Unable to sync artwork videos', videoError)
+        showToast('Artwork saved, but videos could not be updated. Please try again later.', 'error')
       }
 
       showToast(`✓ Artwork ${editingId ? 'updated' : 'created'} successfully!`, 'success')
@@ -951,11 +1052,11 @@ function AdminDashboard() {
                           Price (USD) <span className="text-red-500">*</span>
                         </span>
                         <div className="relative">
-                          <span className="absolute left-1.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-sm">$</span>
+                          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-400">$</span>
                           <input
                             required
                             type="number"
-                            className="w-full border border-gray-300 rounded-md pl-32 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
+                            className="w-full border border-gray-300 rounded-md pl-10 pr-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
                             placeholder="0"
                             value={formState.price}
                             onChange={(e) => setFormState({ ...formState, price: e.target.value })}
@@ -1151,6 +1252,48 @@ function AdminDashboard() {
                           onChange={(e) => setFormState({ ...formState, imagesInput: e.target.value })}
                         />
                       </label>
+
+                      <label className="block">
+                        <span className="text-xs uppercase tracking-wider text-gray-600 mb-2 block flex items-center gap-2">
+                          Artwork Videos
+                          <span className="text-[10px] text-gray-400 normal-case">(optional – one URL per line, videos appear after images)</span>
+                        </span>
+                        <textarea
+                          rows={3}
+                          className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all resize-none font-mono"
+                          placeholder="https://youtu.be/...\nhttps://youtu.be/...\nhttps://...mp4"
+                          value={formState.videoUrlsInput}
+                          onChange={(e) => setFormState({ ...formState, videoUrlsInput: e.target.value })}
+                        />
+                      </label>
+
+                      <label className="block">
+                        <span className="text-xs uppercase tracking-wider text-gray-600 mb-2 block flex items-center gap-2">
+                          Video Titles
+                          <span className="text-[10px] text-gray-400 normal-case">(optional – one title per line, matched to URLs above)</span>
+                        </span>
+                        <textarea
+                          rows={3}
+                          className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all resize-none font-mono"
+                          placeholder="Studio walkthrough\nDetail closeups\nInstallation view"
+                          value={formState.videoTitlesInput}
+                          onChange={(e) => setFormState({ ...formState, videoTitlesInput: e.target.value })}
+                        />
+                      </label>
+
+                      <label className="block">
+                        <span className="text-xs uppercase tracking-wider text-gray-600 mb-2 block flex items-center gap-2">
+                          Video Types
+                          <span className="text-[10px] text-gray-400 normal-case">(optional – process, detail, installation, exhibition)</span>
+                        </span>
+                        <textarea
+                          rows={3}
+                          className="w-full border border-gray-300 rounded-md px-4 py-3 text-sm focus:ring-2 focus:ring-black focus:border-black transition-all resize-none font-mono"
+                          placeholder="detail\nprocess\ninstallation"
+                          value={formState.videoTypesInput}
+                          onChange={(e) => setFormState({ ...formState, videoTypesInput: e.target.value })}
+                        />
+                      </label>
                     </div>
                   </div>
 
@@ -1231,11 +1374,11 @@ function AdminDashboard() {
                   <div className="p-6 space-y-4">
                     {/* Search */}
                     <div className="relative">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                      <Search className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search by title or category..."
-                        className="w-full pl-11 pr-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-black focus:border-black transition-all"
                         value={inventoryFilter.query}
                         onChange={(e) => handleInventoryFilterChange('query', e.target.value)}
                       />
