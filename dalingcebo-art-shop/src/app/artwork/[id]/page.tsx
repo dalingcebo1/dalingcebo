@@ -681,7 +681,7 @@ export default function ArtworkDetail() {
                 <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={2} />
               </button>
               {/* Thumbnail indicators */}
-              <div className="absolute bottom-6 flex gap-3 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full" style={{ left: '50%', transform: 'translateX(-50%)' }}>
+              <div className="flex gap-3 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full" style={{ position: 'absolute', bottom: '1.5rem', left: '50%', transform: 'translateX(-50%)' }}>
                 {imageList.map((_, index) => (
                   <button
                     key={index}
