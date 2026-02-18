@@ -363,7 +363,7 @@ export default function ArtworkDetail() {
                         <>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : totalMediaItems - 1))}
-                            className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            className="flex items-center justify-center p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
                             style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}
                             aria-label="Previous image"
                           >
@@ -371,7 +371,7 @@ export default function ArtworkDetail() {
                           </button>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev < totalMediaItems - 1 ? prev + 1 : 0))}
-                            className="p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            className="flex items-center justify-center p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
                             style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)' }}
                             aria-label="Next image"
                           >
@@ -663,7 +663,7 @@ export default function ArtworkDetail() {
                   e.stopPropagation()
                   setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))
                 }}
-                className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
+                className="flex items-center justify-center p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
                 style={{ position: 'absolute', left: '1.5rem', top: '50%', transform: 'translateY(-50%)' }}
                 aria-label="Previous image"
               >
@@ -674,7 +674,7 @@ export default function ArtworkDetail() {
                   e.stopPropagation()
                   setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))
                 }}
-                className="p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
+                className="flex items-center justify-center p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
                 style={{ position: 'absolute', right: '1.5rem', top: '50%', transform: 'translateY(-50%)' }}
                 aria-label="Next image"
               >
