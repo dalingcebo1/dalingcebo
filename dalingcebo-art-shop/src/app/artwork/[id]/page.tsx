@@ -690,7 +690,7 @@ export default function ArtworkDetail() {
                       setSelectedImage(index)
                     }}
                     className={`rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                      selectedImage === index ? 'bg-white w-12 h-3.5' : 'bg-white/50 hover:bg-white/75 w-3.5 h-3.5'
+                      selectedImage === index ? 'bg-white w-14 h-3.5' : 'bg-white/50 hover:bg-white/75 w-3.5 h-3.5'
                     }`}
                     aria-label={`View image ${index + 1} of ${imageList.length}`}
                     aria-current={selectedImage === index}
