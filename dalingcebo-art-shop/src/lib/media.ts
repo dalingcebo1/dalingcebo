@@ -1,7 +1,7 @@
 const ARTWORK_PLACEHOLDERS = {
-  card: 'https://placehold.co/840x1120.png?text=Artwork',
-  thumb: 'https://placehold.co/420x560.png?text=Preview',
-  admin: 'https://placehold.co/200x200.png?text=No+Image'
+  card: '/images/artwork-placeholder.svg',
+  thumb: '/images/artwork-placeholder.svg',
+  admin: '/images/artwork-placeholder.svg'
 } as const
 
 const DEFAULT_ASPECT_RATIO = 0.8
