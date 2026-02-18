@@ -136,10 +136,10 @@ export default function ArtworkDetail() {
       .slice(0, 4)
   }, [catalogue, artwork])
 
+  // Grey placeholder data URL for empty image slots
+  const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
+
   const imageList = useMemo(() => {
-    // Grey placeholder data URL - matches aspect ratio of artwork
-    const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
-    
     if (!artwork) return [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
     const gallery = (artwork.images || []).filter(Boolean)
     const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
@@ -147,9 +147,7 @@ export default function ArtworkDetail() {
     // Fill remaining slots with grey placeholders to always have 4 images
     const placeholders = [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
     return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
-  }, [artwork])
-
-  const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
+  }, [artwork, greyPlaceholder])
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
