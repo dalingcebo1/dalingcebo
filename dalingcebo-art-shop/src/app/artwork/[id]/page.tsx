@@ -27,6 +27,9 @@ interface SelectedVariant {
   processingDays: number
 }
 
+// Grey placeholder data URL for empty image slots
+const GREY_PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
+
 export default function ArtworkDetail() {
   const params = useParams<{ id: string }>()
   const router = useRouter()
@@ -643,7 +646,7 @@ export default function ArtworkDetail() {
           </Button>
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
-              src={imageList[selectedImage] ?? getArtworkPlaceholder()}
+              src={imageList[selectedImage] ?? GREY_PLACEHOLDER}
               alt={`${artwork.title} - Full view`}
               fill
               className="object-contain"
