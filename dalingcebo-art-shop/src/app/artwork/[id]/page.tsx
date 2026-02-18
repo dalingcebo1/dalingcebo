@@ -363,17 +363,19 @@ export default function ArtworkDetail() {
                         <>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : totalMediaItems - 1))}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 flex p-2.5 bg-white/95 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            className="absolute top-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            style={{ left: '1rem', transform: 'translateY(-50%)' }}
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.5} />
+                            <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" strokeWidth={2} />
                           </button>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev < totalMediaItems - 1 ? prev + 1 : 0))}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 flex p-2.5 bg-white/95 hover:bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            className="absolute top-1/2 p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            style={{ right: '1rem', transform: 'translateY(-50%)' }}
                             aria-label="Next image"
                           >
-                            <ChevronRight className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.5} />
+                            <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" strokeWidth={2} />
                           </button>
                         </>
                       )}
@@ -392,15 +394,15 @@ export default function ArtworkDetail() {
 
                     {/* Pagination Dots - Centered within columns 5-8 equivalent */}
                     {totalMediaItems > 1 && (
-                      <div className="flex justify-center gap-2.5 mt-6">
+                      <div className="flex justify-center gap-3 mt-6">
                         {Array.from({ length: totalMediaItems }).map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImage(index)}
                             className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                               selectedImage === index 
-                                ? 'w-12 h-4 bg-black' 
-                                : 'w-4 h-4 bg-gray-300 hover:bg-gray-400'
+                                ? 'w-14 h-3.5 bg-black' 
+                                : 'w-3.5 h-3.5 bg-gray-400 hover:bg-gray-500'
                             }`}
                             aria-label={
                               index < imageList.length
@@ -661,23 +663,25 @@ export default function ArtworkDetail() {
                   e.stopPropagation()
                   setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))
                 }}
-                className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="absolute top-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
+                style={{ left: '1.5rem', transform: 'translateY(-50%)' }}
                 aria-label="Previous image"
               >
-                <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={1.5} />
+                <ChevronLeft className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={2} />
               </button>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
                   setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))
                 }}
-                className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+                className="absolute top-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black z-10"
+                style={{ right: '1.5rem', transform: 'translateY(-50%)' }}
                 aria-label="Next image"
               >
-                <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={1.5} />
+                <ChevronRight className="w-6 h-6 text-white" aria-hidden="true" strokeWidth={2} />
               </button>
               {/* Thumbnail indicators */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full">
+              <div className="absolute bottom-6 flex gap-3 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full" style={{ left: '50%', transform: 'translateX(-50%)' }}>
                 {imageList.map((_, index) => (
                   <button
                     key={index}
@@ -685,8 +689,8 @@ export default function ArtworkDetail() {
                       e.stopPropagation()
                       setSelectedImage(index)
                     }}
-                    className={`w-3 h-3 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                      selectedImage === index ? 'bg-white w-10' : 'bg-white/50 hover:bg-white/75'
+                    className={`rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                      selectedImage === index ? 'bg-white w-12 h-3.5' : 'bg-white/50 hover:bg-white/75 w-3.5 h-3.5'
                     }`}
                     aria-label={`View image ${index + 1} of ${imageList.length}`}
                     aria-current={selectedImage === index}
