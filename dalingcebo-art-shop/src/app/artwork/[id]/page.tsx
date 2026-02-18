@@ -318,7 +318,7 @@ export default function ArtworkDetail() {
         <div className="mx-auto px-4 sm:px-5 lg:px-6" style={{ maxWidth: '1320px' }}>
           
           {/* ROW 1: Breadcrumb - columns 1-12, margin-bottom 32px */}
-          <section className="mb-8">
+          <section className="mb-16">
             <Breadcrumb items={breadcrumbs} />
           </section>
           
@@ -394,15 +394,15 @@ export default function ArtworkDetail() {
 
                     {/* Pagination Dots - Centered within columns 5-8 equivalent */}
                     {totalMediaItems > 1 && (
-                      <div className="flex justify-center gap-3 mt-6">
+                      <div className="flex justify-center gap-4 mt-12">
                         {Array.from({ length: totalMediaItems }).map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImage(index)}
                             className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                               selectedImage === index 
-                                ? 'w-14 h-3.5 bg-black' 
-                                : 'w-3.5 h-3.5 bg-gray-400 hover:bg-gray-500'
+                                ? 'w-16 h-5 bg-black' 
+                                : 'w-5 h-5 bg-gray-600 hover:bg-gray-800'
                             }`}
                             aria-label={
                               index < imageList.length
