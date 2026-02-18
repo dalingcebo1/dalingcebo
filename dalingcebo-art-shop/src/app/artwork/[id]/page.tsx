@@ -137,14 +137,19 @@ export default function ArtworkDetail() {
   }, [catalogue, artwork])
 
   const imageList = useMemo(() => {
-    if (!artwork) return [getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder()]
+    // Grey placeholder data URL - matches aspect ratio of artwork
+    const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
+    
+    if (!artwork) return [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
     const gallery = (artwork.images || []).filter(Boolean)
     const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
     
-    // Ensure we always have 4 placeholders
-    const placeholders = [getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder(), getArtworkPlaceholder()]
+    // Fill remaining slots with grey placeholders to always have 4 images
+    const placeholders = [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
     return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
   }, [artwork])
+
+  const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
@@ -333,7 +338,7 @@ export default function ArtworkDetail() {
                       <div className="relative w-full h-full flex items-center justify-center">
                         <Image
                           key={selectedImage}
-                          src={imageList[selectedImage] ?? getArtworkPlaceholder()}
+                          src={imageList[selectedImage] ?? greyPlaceholder}
                           alt={`${artwork.title} - Image ${selectedImage + 1} of ${imageList.length}`}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 66vw"
@@ -342,38 +347,22 @@ export default function ArtworkDetail() {
                         />
                       </div>
                       
-                      {/* Arrow Navigation - Outside grid alignment (absolute) */}
+                      {/* Arrow Navigation - On sides of image */}
                       {imageList.length > 1 && (
                         <>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
-                            className="absolute -left-12 top-1/2 -translate-y-1/2 hidden lg:flex p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            className="absolute left-4 top-1/2 -translate-y-1/2 p-2 hover:opacity-70 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded z-10"
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                            <ChevronLeft className="w-6 h-6 text-black" strokeWidth={1.5} aria-hidden="true" />
                           </button>
                           <button
                             onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
-                            className="absolute -right-12 top-1/2 -translate-y-1/2 hidden lg:flex p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 p-2 hover:opacity-70 transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded z-10"
                             aria-label="Next image"
                           >
-                            <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
-                          </button>
-                          
-                          {/* Mobile arrows - visible on small screens */}
-                          <button
-                            onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))}
-                            className="absolute left-3 top-1/2 -translate-y-1/2 lg:hidden p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-                            aria-label="Previous image"
-                          >
-                            <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" />
-                          </button>
-                          <button
-                            onClick={() => setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))}
-                            className="absolute right-3 top-1/2 -translate-y-1/2 lg:hidden p-2 bg-white/90 hover:bg-white rounded-full shadow-sm transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2"
-                            aria-label="Next image"
-                          >
-                            <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" />
+                            <ChevronRight className="w-6 h-6 text-black" strokeWidth={1.5} aria-hidden="true" />
                           </button>
                         </>
                       )}
@@ -388,17 +377,17 @@ export default function ArtworkDetail() {
                       </button>
                     </div>
 
-                    {/* Pagination Dots - Centered within columns 5-8 equivalent */}
+                    {/* Pagination Dots - Centered below image */}
                     {imageList.length > 1 && (
-                      <div className="flex justify-center gap-2 mt-4">
+                      <div className="flex justify-center gap-2.5 mt-6">
                         {imageList.map((_, index) => (
                           <button
                             key={index}
                             onClick={() => setSelectedImage(index)}
                             className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                               selectedImage === index 
-                                ? 'w-8 h-2 bg-black' 
-                                : 'w-2 h-2 bg-gray-300 hover:bg-gray-400'
+                                ? 'w-10 h-3 bg-black' 
+                                : 'w-3 h-3 bg-gray-300 hover:bg-gray-400'
                             }`}
                             aria-label={`View image ${index + 1} of ${imageList.length}${selectedImage === index ? ' (currently selected)' : ''}`}
                             aria-current={selectedImage === index}
@@ -640,7 +629,7 @@ export default function ArtworkDetail() {
           </Button>
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
-              src={imageList[selectedImage] ?? getArtworkPlaceholder()}
+              src={imageList[selectedImage] ?? greyPlaceholder}
               alt={`${artwork.title} - Full view`}
               fill
               className="object-contain"
@@ -670,8 +659,8 @@ export default function ArtworkDetail() {
               >
                 <ChevronRight className="w-5 h-5 text-white" aria-hidden="true" />
               </button>
-              {/* Thumbnail indicators */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/30 backdrop-blur-sm px-4 py-2 rounded-full">
+              {/* Pagination indicators */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2.5 bg-black/30 backdrop-blur-sm px-4 py-2.5 rounded-full">
                 {imageList.map((_, index) => (
                   <button
                     key={index}
@@ -679,8 +668,8 @@ export default function ArtworkDetail() {
                       e.stopPropagation()
                       setSelectedImage(index)
                     }}
-                    className={`w-2 h-2 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
-                      selectedImage === index ? 'bg-white w-8' : 'bg-white/50 hover:bg-white/75'
+                    className={`rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white ${
+                      selectedImage === index ? 'bg-white w-10 h-3' : 'bg-white/50 hover:bg-white/75 w-3 h-3'
                     }`}
                     aria-label={`View image ${index + 1} of ${imageList.length}`}
                     aria-current={selectedImage === index}
