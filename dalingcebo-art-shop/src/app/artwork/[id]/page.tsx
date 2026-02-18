@@ -27,6 +27,9 @@ interface SelectedVariant {
   processingDays: number
 }
 
+// Grey placeholder data URL for empty image slots
+const GREY_PLACEHOLDER = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
+
 export default function ArtworkDetail() {
   const params = useParams<{ id: string }>()
   const router = useRouter()
@@ -136,18 +139,15 @@ export default function ArtworkDetail() {
       .slice(0, 4)
   }, [catalogue, artwork])
 
-  // Grey placeholder data URL for empty image slots
-  const greyPlaceholder = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="1000"%3E%3Crect width="800" height="1000" fill="%23E5E7EB"/%3E%3C/svg%3E'
-
   const imageList = useMemo(() => {
-    if (!artwork) return [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
+    if (!artwork) return [GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER]
     const gallery = (artwork.images || []).filter(Boolean)
     const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
     
     // Fill remaining slots with grey placeholders to always have 4 images
-    const placeholders = [greyPlaceholder, greyPlaceholder, greyPlaceholder, greyPlaceholder]
+    const placeholders = [GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER, GREY_PLACEHOLDER]
     return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
-  }, [artwork, greyPlaceholder])
+  }, [artwork])
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
@@ -336,7 +336,7 @@ export default function ArtworkDetail() {
                       <div className="relative w-full h-full flex items-center justify-center">
                         <Image
                           key={selectedImage}
-                          src={imageList[selectedImage] ?? greyPlaceholder}
+                          src={imageList[selectedImage] ?? GREY_PLACEHOLDER}
                           alt={`${artwork.title} - Image ${selectedImage + 1} of ${imageList.length}`}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 90vw, 66vw"
@@ -627,7 +627,7 @@ export default function ArtworkDetail() {
           </Button>
           <div className="relative max-w-6xl max-h-[90vh] w-full h-full" onClick={(e) => e.stopPropagation()}>
             <Image
-              src={imageList[selectedImage] ?? greyPlaceholder}
+              src={imageList[selectedImage] ?? GREY_PLACEHOLDER}
               alt={`${artwork.title} - Full view`}
               fill
               className="object-contain"
