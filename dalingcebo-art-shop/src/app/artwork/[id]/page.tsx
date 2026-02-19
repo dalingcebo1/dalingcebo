@@ -392,26 +392,33 @@ export default function ArtworkDetail() {
                       )}
                     </div>
 
-                    {/* Pagination Dots - Centered within columns 5-8 equivalent */}
+                    {/* Pagination Dots and Image Counter - Centered within columns 5-8 equivalent */}
                     {totalMediaItems > 1 && (
-                      <div className="flex justify-center gap-3 mt-6">
-                        {Array.from({ length: totalMediaItems }).map((_, index) => (
-                          <button
-                            key={index}
-                            onClick={() => setSelectedImage(index)}
-                            className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
-                              selectedImage === index 
-                                ? 'w-14 h-3.5 bg-black' 
-                                : 'w-3.5 h-3.5 bg-gray-400 hover:bg-gray-500'
-                            }`}
-                            aria-label={
-                              index < imageList.length
-                                ? `View image ${index + 1} of ${totalMediaItems}${selectedImage === index ? ' (currently selected)' : ''}`
-                                : `View video ${index - imageList.length + 1} of ${videoList.length}`
-                            }
-                            aria-current={selectedImage === index}
-                          />
-                        ))}
+                      <div className="flex flex-col items-center gap-3 mt-6">
+                        {/* Image Counter */}
+                        <div className="text-sm text-gray-900 font-medium">
+                          {selectedImage + 1} / {totalMediaItems}
+                        </div>
+                        {/* Pagination Dots */}
+                        <div className="flex justify-center gap-3">
+                          {Array.from({ length: totalMediaItems }).map((_, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setSelectedImage(index)}
+                              className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
+                                selectedImage === index 
+                                  ? 'w-14 h-3.5 bg-black' 
+                                  : 'w-3.5 h-3.5 bg-black/30 hover:bg-black'
+                              }`}
+                              aria-label={
+                                index < imageList.length
+                                  ? `View image ${index + 1} of ${totalMediaItems}${selectedImage === index ? ' (currently selected)' : ''}`
+                                  : `View video ${index - imageList.length + 1} of ${videoList.length}`
+                              }
+                              aria-current={selectedImage === index}
+                            />
+                          ))}
+                        </div>
                       </div>
                     )}
                   </div>
