@@ -347,12 +347,8 @@ a:focus-visible {
 }
 
 /* Minimal navigation */
+/* Note: Position and z-index are controlled by Tailwind classes in Header component */
 .yeezy-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
   padding: 20px;
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
