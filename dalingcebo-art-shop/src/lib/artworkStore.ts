@@ -109,6 +109,9 @@ function mapRowToArtwork(row: any): Artwork {
     images: (row.images || []).map(normalizeGoogleDriveUrl),
     tags: row.tags || [],
     inventory: row.inventory,
+    status: row.status || 'available',
+    reservedUntil: row.reserved_until || null,
+    reservedByEmail: row.reserved_by_email || null,
     videos: Array.isArray(row.artwork_videos) ? row.artwork_videos.map(mapVideoRow) : []
   }
 }
