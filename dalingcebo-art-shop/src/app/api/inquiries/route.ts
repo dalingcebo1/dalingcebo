@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { listInquiries, recordInquiry } from '@/lib/inquiryStore'
 import { inquiryPayloadSchema } from '@/lib/validations/schemas'
-import { getArtworkById } from '@/lib/artworkStore'
 import { createServiceRoleClient } from '@/lib/db/supabase'
 import { sendEnquiryReceived, sendPreorderConfirmation, sendAdminPreorderAlert } from '@/lib/email'
 
@@ -27,6 +26,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const RESERVATION_DURATION_HOURS = 48
+
   try {
     const json = await request.json()
     const payload = inquiryPayloadSchema.parse(json)
@@ -42,47 +43,29 @@ export async function POST(request: Request) {
 
       const supabase = createServiceRoleClient()
       
-      // Fetch the artwork and check availability
-      const { data: artwork, error: artworkError } = await supabase
-        .from('artworks')
-        .select('*')
-        .eq('id', payload.artworkId)
-        .single()
-
-      if (artworkError || !artwork) {
-        return NextResponse.json(
-          { message: 'Artwork not found' },
-          { status: 404 }
-        )
-      }
-
-      // Check if artwork is available
-      if (artwork.status === 'sold' || artwork.status === 'reserved') {
-        return NextResponse.json(
-          { message: 'This artwork is currently unavailable' },
-          { status: 409 }
-        )
-      }
-
-      // Perform transaction: Update artwork status and create inquiry
+      // Calculate reservation expiry time
       const reservedUntil = new Date()
-      reservedUntil.setHours(reservedUntil.getHours() + 48)
+      reservedUntil.setHours(reservedUntil.getHours() + RESERVATION_DURATION_HOURS)
 
-      // Update artwork to reserved status
-      const { error: updateError } = await supabase
+      // Perform atomic update with optimistic locking to prevent race conditions
+      // Only update if status is currently 'available'
+      const { data: artwork, error: updateError } = await supabase
         .from('artworks')
         .update({
           status: 'reserved',
           reserved_until: reservedUntil.toISOString(),
           reserved_by_email: payload.email
-        } as never)
+        })
         .eq('id', payload.artworkId)
+        .eq('status', 'available') // Optimistic locking: only update if still available
+        .select()
+        .single()
 
-      if (updateError) {
-        console.error('Error updating artwork:', updateError)
+      if (updateError || !artwork) {
+        // Artwork either doesn't exist or is no longer available
         return NextResponse.json(
-          { message: 'Failed to reserve artwork' },
-          { status: 500 }
+          { message: 'This artwork is currently unavailable' },
+          { status: 409 }
         )
       }
 
