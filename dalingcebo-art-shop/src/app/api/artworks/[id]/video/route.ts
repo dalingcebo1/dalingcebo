@@ -92,7 +92,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       }
 
       if (Array.isArray(input)) {
-        const mapped = input
+        return input
           .map((item): InputVideo | null => {
             if (typeof item === 'string') {
               return { url: item.trim() }
@@ -108,7 +108,6 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
             return null
           })
           .filter((v): v is InputVideo => v !== null && !!v.url)
-        return mapped
       }
 
       const asString = String(input || '')

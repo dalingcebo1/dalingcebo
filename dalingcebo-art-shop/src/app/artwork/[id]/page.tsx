@@ -81,7 +81,7 @@ export default function ArtworkDetail() {
   }, [isLightboxOpen])
 
   // Function to fetch artwork data
-  const fetchArtwork = useCallback(async (signal?: AbortSignal) => {
+  const fetchArtwork = useCallback(async (signal?: AbortSignal, silent = false) => {
     // Skip fetch if ID is invalid
     if (!isValidId) {
       setIsLoading(false)
@@ -90,7 +90,9 @@ export default function ArtworkDetail() {
     }
 
     try {
-      setIsLoading(true)
+      if (!silent) {
+        setIsLoading(true)
+      }
       const response = await fetch(`/api/artworks/${params.id}`, { signal })
       if (!response.ok) {
         if (response.status === 404) {
@@ -107,7 +109,9 @@ export default function ArtworkDetail() {
       const data: Artwork = await response.json()
       
       setArtwork(data)
-      setSelectedImage(0)
+      if (!silent) {
+        setSelectedImage(0)
+      }
       setError(null)
     } catch (err) {
       if ((err as Error).name === 'AbortError') return
@@ -115,7 +119,9 @@ export default function ArtworkDetail() {
       setError(message)
       setArtwork(null)
     } finally {
-      setIsLoading(false)
+      if (!silent) {
+        setIsLoading(false)
+      }
     }
   }, [params.id, isValidId])
 
@@ -688,7 +694,7 @@ export default function ArtworkDetail() {
         onClose={() => setIsInquiryOpen(false)}
         artwork={artwork ? { id: artwork.id, title: artwork.title } : undefined}
         startMode={inquiryMode}
-        onSuccess={() => fetchArtwork()}
+        onSuccess={() => fetchArtwork(undefined, true)}
       />
 
       {/* Lightbox (images only) */}
