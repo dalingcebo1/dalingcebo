@@ -31,6 +31,13 @@
 html {
   scroll-behavior: smooth;
   font-size: 16px;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
@@ -40,7 +47,6 @@ body {
   font-family: 'Exo 2', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 300;
   line-height: 1.3;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   padding-top: var(--nav-height);
