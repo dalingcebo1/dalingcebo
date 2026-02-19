@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.googleusercontent.com',
+        hostname: '**.googleusercontent.com',
       },
       {
         protocol: 'https',
@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.amazonaws.com',
+        hostname: '**.amazonaws.com',
       },
       {
         protocol: 'https',
@@ -39,7 +39,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.supabase.co',
+        hostname: '**.supabase.co',
       },
     ],
     formats: ['image/avif', 'image/webp'],

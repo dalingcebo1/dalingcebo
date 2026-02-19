@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/db/supabase'
-import { ensureAdminRequest } from '../helpers'
+import { ensureAdminRequest } from '@/app/api/artworks/helpers'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'

@@ -42,12 +42,32 @@ async function getArtworkByIdFromJSON(id: number): Promise<Artwork | undefined> 
 
 function normalizeGoogleDriveUrl(url: string): string {
   if (!url) return ''
-  // Handle sharing URL: https://drive.google.com/file/d/ID/view?usp=sharing
-  if (url.includes('drive.google.com') && url.includes('/file/d/')) {
-    const id = url.split('/file/d/')[1].split('/')[0]
+  const trimmed = url.trim()
+
+  const extractId = (): string | null => {
+    if (trimmed.includes('/file/d/')) {
+      return trimmed.split('/file/d/')[1]?.split('/')[0] ?? null
+    }
+
+    const googleUserMatch = trimmed.match(/googleusercontent\.com\/d\/([^/?]+)/)
+    if (googleUserMatch?.[1]) {
+      return googleUserMatch[1]
+    }
+
+    const idParamMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/)
+    if (idParamMatch?.[1]) {
+      return idParamMatch[1]
+    }
+
+    return null
+  }
+
+  const id = extractId()
+  if (id) {
     return `https://drive.google.com/uc?export=view&id=${id}`
   }
-  return url
+
+  return trimmed
 }
 
 // Helper to map DB response to Artwork type

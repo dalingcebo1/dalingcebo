@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import Header from '@/components/Header'
@@ -48,6 +48,8 @@ export default function ArtworkDetail() {
   const [inquiryMode, setInquiryMode] = useState<'inquiry' | 'reserve'>('inquiry')
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant | null>(null)
+  const [isMediaFading, setIsMediaFading] = useState(false)
+  const fadeTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   const placeholderImage = getArtworkPlaceholder()
 
@@ -131,7 +133,11 @@ export default function ArtworkDetail() {
   const imageList = useMemo(() => {
     if (!artwork) return [placeholderImage, placeholderImage, placeholderImage, placeholderImage]
     const gallery = (artwork.images || []).filter(Boolean)
-    const baseImages = gallery.length > 0 ? gallery : [getArtworkPrimaryImage(artwork)]
+    const primary = getArtworkPrimaryImage(artwork)
+
+    // Always start with the primary image, then append any distinct additional images
+    const uniqueExtras = gallery.filter((src) => src && src !== primary)
+    const baseImages = [primary, ...uniqueExtras]
     
     // Ensure we always have 4 placeholders
     const placeholders = [placeholderImage, placeholderImage, placeholderImage, placeholderImage]
@@ -151,6 +157,26 @@ export default function ArtworkDetail() {
 
   const handleVariantChange = useCallback((variantData: SelectedVariant) => {
     setSelectedVariant(variantData)
+  }, [])
+
+  const changeMedia = useCallback((nextIndex: number) => {
+    if (nextIndex === selectedImage) return
+    if (fadeTimeoutRef.current) {
+      clearTimeout(fadeTimeoutRef.current)
+    }
+    setIsMediaFading(true)
+    fadeTimeoutRef.current = setTimeout(() => {
+      setSelectedImage(nextIndex)
+      requestAnimationFrame(() => setIsMediaFading(false))
+    }, 180)
+  }, [selectedImage])
+
+  useEffect(() => {
+    return () => {
+      if (fadeTimeoutRef.current) {
+        clearTimeout(fadeTimeoutRef.current)
+      }
+    }
   }, [])
 
   const handleAddToCart = () => {
@@ -332,8 +358,14 @@ export default function ArtworkDetail() {
                   {/* Main Carousel Container */}
                   <div className="relative">
                     {/* Main Carousel Media (images first, then optional video) */}
-                    <div className="relative bg-gray-50 overflow-hidden mx-auto" style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh' }}>
-                      <div className="relative w-full h-full flex items-center justify-center">
+                    <div
+                      className="relative bg-gray-50 overflow-hidden mx-auto"
+                      style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh', width: '85%' }}
+                    >
+                      <div
+                        className="relative w-full h-full flex items-center justify-center"
+                        style={{ transition: 'opacity 250ms ease', opacity: isMediaFading ? 0 : 1 }}
+                      >
                         {isVideoSlide ? (
                           <div className="w-full h-full flex items-center justify-center bg-black">
                             <div className="w-full h-full max-h-[70vh]">
@@ -362,20 +394,20 @@ export default function ArtworkDetail() {
                       {totalMediaItems > 1 && (
                         <>
                           <button
-                            onClick={() => setSelectedImage((prev) => (prev > 0 ? prev - 1 : totalMediaItems - 1))}
-                            className="flex items-center justify-center p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            onClick={() => changeMedia(selectedImage > 0 ? selectedImage - 1 : totalMediaItems - 1)}
+                            className="flex items-center justify-center p-2 bg-transparent border-none transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
                             style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}
                             aria-label="Previous image"
                           >
-                            <ChevronLeft className="w-5 h-5 text-gray-900" aria-hidden="true" strokeWidth={2} />
+                            <ChevronLeft className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.8} />
                           </button>
                           <button
-                            onClick={() => setSelectedImage((prev) => (prev < totalMediaItems - 1 ? prev + 1 : 0))}
-                            className="flex items-center justify-center p-3 bg-white/90 hover:bg-white rounded-full shadow-lg hover:shadow-xl transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
+                            onClick={() => changeMedia(selectedImage < totalMediaItems - 1 ? selectedImage + 1 : 0)}
+                            className="flex items-center justify-center p-2 bg-transparent border-none transition-opacity duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 z-10"
                             style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)' }}
                             aria-label="Next image"
                           >
-                            <ChevronRight className="w-5 h-5 text-gray-900" aria-hidden="true" strokeWidth={2} />
+                            <ChevronRight className="w-6 h-6 text-gray-900" aria-hidden="true" strokeWidth={1.8} />
                           </button>
                         </>
                       )}
@@ -392,33 +424,28 @@ export default function ArtworkDetail() {
                       )}
                     </div>
 
-                    {/* Pagination Dots and Image Counter - Centered within columns 5-8 equivalent */}
+                    {/* Pagination - numbered buttons for clear visibility */}
                     {totalMediaItems > 1 && (
-                      <div className="flex flex-col items-center gap-3 mt-6">
-                        {/* Image Counter */}
-                        <div className="text-sm text-gray-900 font-medium" role="status" aria-live="polite">
-                          {selectedImage + 1} / {totalMediaItems}
-                        </div>
-                        {/* Pagination Dots */}
-                        <div className="flex justify-center gap-3">
-                          {Array.from({ length: totalMediaItems }).map((_, index) => (
-                            <button
-                              key={index}
-                              onClick={() => setSelectedImage(index)}
-                              className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
-                                selectedImage === index 
-                                  ? 'w-14 h-3.5 bg-black' 
-                                  : 'w-3.5 h-3.5 bg-black/30 hover:bg-black/60'
-                              }`}
-                              aria-label={
-                                index < imageList.length
-                                  ? `View image ${index + 1} of ${totalMediaItems}${selectedImage === index ? ' (currently selected)' : ''}`
-                                  : `View video ${index - imageList.length + 1} of ${videoList.length}`
-                              }
-                              aria-current={selectedImage === index}
-                            />
-                          ))}
-                        </div>
+                      <div className="flex justify-center items-center gap-3 mt-8">
+                        {Array.from({ length: totalMediaItems }).map((_, index) => (
+                          <button
+                            key={index}
+                            onClick={() => changeMedia(index)}
+                            className={`min-w-[44px] h-11 px-3 rounded-lg transition-all duration-200 text-base font-bold border-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black ${
+                              selectedImage === index
+                                ? 'bg-black text-white shadow-lg scale-110'
+                                : 'bg-transparent text-gray-400 hover:text-black'
+                            }`}
+                            aria-label={
+                              index < imageList.length
+                                ? `View image ${index + 1} of ${totalMediaItems}${selectedImage === index ? ' (currently selected)' : ''}`
+                                : `View video ${index - imageList.length + 1} of ${videoList.length}`
+                            }
+                            aria-current={selectedImage === index}
+                          >
+                            {index + 1}
+                          </button>
+                        ))}
                       </div>
                     )}
                   </div>
@@ -444,7 +471,7 @@ export default function ArtworkDetail() {
                   </div>
                   
                   {/* Price → 8px → Tag */}
-                  <div className="mt-2">
+                  <div className="mt-2 mb-10">
                     {/* Tag: 12px uppercase, letter-spacing 0.08em */}
                     <p className="text-[12px] text-gray-500 uppercase tracking-[0.08em]">
                       {artwork.edition}
@@ -466,50 +493,58 @@ export default function ArtworkDetail() {
             </section>
 
             {/* ROW 4: CTA Buttons - minimal modern icon layout */}
-            <section className="mt-8">
+            <section className="mt-16 pt-8 pb-12 mb-4">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
-                  <div className="flex flex-row justify-center items-start gap-8 sm:gap-12">
+                  <div className="flex flex-row justify-center items-start gap-10 sm:gap-16">
                     {artwork.inStock ? (
                       <>
                         {/* Add to Cart - Minimal icon with text */}
                         <button
                           onClick={handleAddToCart}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
                           aria-label="Add artwork to shopping cart"
                         >
                           <ShoppingCart className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Add to Cart</span>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
+                            Add to Cart
+                          </span>
                         </button>
                         
                         {/* Reserve - Minimal icon with text */}
                         <button
                           onClick={handleReserve}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
                           aria-label="Reserve this artwork"
                         >
                           <Bookmark className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Reserve</span>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
+                            Reserve
+                          </span>
                         </button>
                         
                         {/* Inquire - Minimal icon with text */}
                         <button
                           onClick={handleInquire}
-                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
+                          className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
                           aria-label="Inquire about this artwork"
                         >
                           <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
-                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Inquire</span>
+                          <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
+                            Inquire
+                          </span>
                         </button>
                       </>
                     ) : (
                       <button
                         onClick={handleInquire}
-                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200"
+                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
                         aria-label="Get notified when artwork becomes available"
                       >
                         <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
-                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium">Notify Me</span>
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
+                          Notify Me
+                        </span>
                       </button>
                     )}
                   </div>
