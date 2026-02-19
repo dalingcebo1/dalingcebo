@@ -396,7 +396,7 @@ export default function ArtworkDetail() {
                     {totalMediaItems > 1 && (
                       <div className="flex flex-col items-center gap-3 mt-6">
                         {/* Image Counter */}
-                        <div className="text-sm text-gray-900 font-medium">
+                        <div className="text-sm text-gray-900 font-medium" role="status" aria-live="polite">
                           {selectedImage + 1} / {totalMediaItems}
                         </div>
                         {/* Pagination Dots */}
@@ -408,7 +408,7 @@ export default function ArtworkDetail() {
                               className={`transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black rounded-full ${
                                 selectedImage === index 
                                   ? 'w-14 h-3.5 bg-black' 
-                                  : 'w-3.5 h-3.5 bg-black/30 hover:bg-black'
+                                  : 'w-3.5 h-3.5 bg-black/30 hover:bg-black/60'
                               }`}
                               aria-label={
                                 index < imageList.length
