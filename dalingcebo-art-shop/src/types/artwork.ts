@@ -53,6 +53,9 @@ export interface Artwork {
   inventory?: number;
   baseProcessingDays?: number; // Default processing time
   processingNotes?: string;
+  status?: 'available' | 'sold' | 'reserved';
+  reservedUntil?: string | null;
+  reservedByEmail?: string | null;
   variants?: ArtworkVariant[]; // Available frame/canvas options
   videos?: ArtworkVideo[]; // Associated videos
 }

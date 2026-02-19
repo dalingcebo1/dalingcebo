@@ -106,6 +106,9 @@ export interface Database {
           tags: string[]
           base_processing_days: number
           processing_notes: string | null
+          status: 'available' | 'sold' | 'reserved'
+          reserved_until: string | null
+          reserved_by_email: string | null
           created_at: string
           updated_at: string
         }
@@ -129,6 +132,9 @@ export interface Database {
           tags?: string[]
           base_processing_days?: number
           processing_notes?: string | null
+          status?: 'available' | 'sold' | 'reserved'
+          reserved_until?: string | null
+          reserved_by_email?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -152,6 +158,9 @@ export interface Database {
           tags?: string[]
           base_processing_days?: number
           processing_notes?: string | null
+          status?: 'available' | 'sold' | 'reserved'
+          reserved_until?: string | null
+          reserved_by_email?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -372,7 +381,7 @@ export interface Database {
       inquiries: {
         Row: {
           id: string
-          kind: 'artwork' | 'general'
+          kind: 'artwork' | 'general' | 'preorder'
           name: string
           email: string
           phone: string | null
@@ -386,7 +395,7 @@ export interface Database {
         }
         Insert: {
           id?: string
-          kind: 'artwork' | 'general'
+          kind: 'artwork' | 'general' | 'preorder'
           name: string
           email: string
           phone?: string | null
@@ -400,7 +409,7 @@ export interface Database {
         }
         Update: {
           id?: string
-          kind?: 'artwork' | 'general'
+          kind?: 'artwork' | 'general' | 'preorder'
           name?: string
           email?: string
           phone?: string | null

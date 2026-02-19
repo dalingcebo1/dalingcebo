@@ -37,7 +37,7 @@ const optionalPhoneSchema = z
   .optional()
   .refine((value) => !value || phoneRegex.test(value), 'Enter a valid phone number')
 
-const inquiryKindSchema = z.enum(['artwork', 'general'])
+const inquiryKindSchema = z.enum(['artwork', 'general', 'preorder'])
 
 export const contactFormSchema = z.object({
   name: nameSchema,

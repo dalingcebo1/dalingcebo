@@ -756,6 +756,85 @@ function AdminDashboard() {
     }
   }
 
+  const handleReleaseHold = async (artworkId: number) => {
+    if (!confirm('Are you sure you want to release this reservation and make the artwork available again?')) {
+      return
+    }
+
+    try {
+      const headers: HeadersInit = { 'Content-Type': 'application/json' }
+      if (authToken) {
+        headers['x-admin-key'] = authToken
+      }
+
+      const response = await fetch(`/api/artworks/${artworkId}`, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ 
+          status: 'available',
+          reserved_until: null,
+          reserved_by_email: null
+        }),
+      })
+
+      if (!response.ok) {
+        const { message } = await response.json().catch(() => ({ message: 'Unable to release hold' }))
+        throw new Error(message || 'Unable to release hold.')
+      }
+
+      showToast('Reservation released successfully.')
+      
+      // Refresh inquiries to update UI
+      const inquiryRes = await fetch('/api/inquiries')
+      if (inquiryRes.ok) {
+        const inquiryData = await inquiryRes.json()
+        setInquiries(Array.isArray(inquiryData) ? inquiryData : [])
+      }
+    } catch (err) {
+      showToast((err as Error).message, 'error')
+    }
+  }
+
+  const handleMarkSold = async (artworkId: number) => {
+    if (!confirm('Are you sure you want to mark this artwork as sold?')) {
+      return
+    }
+
+    try {
+      const headers: HeadersInit = { 'Content-Type': 'application/json' }
+      if (authToken) {
+        headers['x-admin-key'] = authToken
+      }
+
+      const response = await fetch(`/api/artworks/${artworkId}`, {
+        method: 'PATCH',
+        headers,
+        body: JSON.stringify({ 
+          status: 'sold',
+          in_stock: false,
+          reserved_until: null,
+          reserved_by_email: null
+        }),
+      })
+
+      if (!response.ok) {
+        const { message } = await response.json().catch(() => ({ message: 'Unable to mark as sold' }))
+        throw new Error(message || 'Unable to mark as sold.')
+      }
+
+      showToast('Artwork marked as sold.')
+      
+      // Refresh inquiries to update UI
+      const inquiryRes = await fetch('/api/inquiries')
+      if (inquiryRes.ok) {
+        const inquiryData = await inquiryRes.json()
+        setInquiries(Array.isArray(inquiryData) ? inquiryData : [])
+      }
+    } catch (err) {
+      showToast((err as Error).message, 'error')
+    }
+  }
+
   const handleUpdateOrderStatus = async (orderId: string, currentStatus: string) => {
     try {
       const headers: HeadersInit = { 'Content-Type': 'application/json' }
@@ -1598,11 +1677,23 @@ function AdminDashboard() {
                 <div className="max-h-[calc(100vh-24rem)] overflow-y-auto">
                   <div className="divide-y divide-gray-200">
                     {inquiries.map((inquiry) => (
-                      <div key={inquiry.id} className="p-6 hover:bg-gray-50 transition-colors">
+                      <div 
+                        key={inquiry.id} 
+                        className={`p-6 transition-colors ${
+                          inquiry.kind === 'preorder' 
+                            ? 'bg-amber-50 hover:bg-amber-100 border-l-4 border-amber-500' 
+                            : 'hover:bg-gray-50'
+                        }`}
+                      >
                         <div className="flex items-start justify-between gap-6 mb-4">
                           <div className="flex-1">
-                            <div className="flex items-center gap-3 mb-2">
+                            <div className="flex items-center gap-3 mb-2 flex-wrap">
                               <h3 className="font-medium text-gray-900">{inquiry.name}</h3>
+                              {inquiry.kind === 'preorder' && (
+                                <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-white">
+                                  RESERVATION REQUEST
+                                </span>
+                              )}
                               <span className={`px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
                                 inquiry.status === 'new'
                                   ? 'bg-black text-white'
@@ -1639,16 +1730,34 @@ function AdminDashboard() {
                               })}
                             </p>
                           </div>
-                          <button
-                            className={`px-4 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                              inquiry.status === 'contacted'
-                                ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500'
-                                : 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500'
-                            }`}
-                            onClick={() => handleMarkInquiryContacted(inquiry.id, inquiry.status)}
-                          >
-                            {inquiry.status === 'contacted' ? 'Mark Uncontacted' : 'Mark Contacted'}
-                          </button>
+                          <div className="flex flex-col gap-2">
+                            <button
+                              className={`px-4 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                                inquiry.status === 'contacted'
+                                  ? 'bg-gray-100 text-gray-700 hover:bg-gray-200 focus:ring-gray-500'
+                                  : 'bg-green-600 text-white hover:bg-green-700 focus:ring-green-500'
+                              }`}
+                              onClick={() => handleMarkInquiryContacted(inquiry.id, inquiry.status)}
+                            >
+                              {inquiry.status === 'contacted' ? 'Mark Uncontacted' : 'Mark Contacted'}
+                            </button>
+                            {inquiry.kind === 'preorder' && inquiry.artworkId && (
+                              <>
+                                <button
+                                  className="px-4 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500"
+                                  onClick={() => handleMarkSold(inquiry.artworkId!)}
+                                >
+                                  Mark Sold
+                                </button>
+                                <button
+                                  className="px-4 py-2 rounded-lg text-xs font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 bg-red-600 text-white hover:bg-red-700 focus:ring-red-500"
+                                  onClick={() => handleReleaseHold(inquiry.artworkId!)}
+                                >
+                                  Release Hold
+                                </button>
+                              </>
+                            )}
+                          </div>
                         </div>
                         <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                           <p className="text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">

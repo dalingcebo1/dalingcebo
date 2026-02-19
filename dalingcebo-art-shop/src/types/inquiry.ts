@@ -1,5 +1,5 @@
 export type InquiryStatus = 'new' | 'contacted'
-export type InquiryKind = 'artwork' | 'general'
+export type InquiryKind = 'artwork' | 'general' | 'preorder'
 
 export interface InquiryRecord {
   id: string
