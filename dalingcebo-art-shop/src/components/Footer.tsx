@@ -30,7 +30,7 @@ export default function Footer() {
 
           {/* Bottom - Copyright and legal - horizontally distributed */}
           <div className="border-t border-gray-200 pt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-xs text-gray-500 yeezy-body">
-            <p>© 2025 Dalingcebo</p>
+            <span>© 2025 Dalingcebo</span>
             <Link href="/privacy" className="hover:text-black transition-colors">
               Privacy
             </Link>
