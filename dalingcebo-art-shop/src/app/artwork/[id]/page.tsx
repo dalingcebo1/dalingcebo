@@ -501,7 +501,7 @@ export default function ArtworkDetail() {
             </section>
 
             {/* ROW 4: CTA Buttons - minimal modern icon layout */}
-            <section className="mt-16 pt-8 pb-20 mb-12">
+            <section className="mt-16 pt-8 pb-20 mb-12 relative z-10">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
                   <div className="flex flex-row justify-center items-start gap-10 sm:gap-16">
