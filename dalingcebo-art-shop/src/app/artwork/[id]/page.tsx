@@ -360,7 +360,7 @@ export default function ArtworkDetail() {
                     {/* Main Carousel Media (images first, then optional video) */}
                     <div
                       className="relative bg-gray-50 overflow-hidden mx-auto"
-                      style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh', width: '72.25%' }}
+                      style={{ aspectRatio: heroAspectRatio, maxHeight: '70vh', width: '85%' }}
                     >
                       <div
                         className="relative w-full h-full flex items-center justify-center"
@@ -426,7 +426,7 @@ export default function ArtworkDetail() {
 
                     {/* Pagination - numbered buttons for clear visibility */}
                     {totalMediaItems > 1 && (
-                      <div className="flex justify-center items-center gap-3 mt-12">
+                      <div className="flex justify-center items-center gap-3 mt-8">
                         {Array.from({ length: totalMediaItems }).map((_, index) => (
                           <button
                             key={index}
@@ -493,7 +493,7 @@ export default function ArtworkDetail() {
             </section>
 
             {/* ROW 4: CTA Buttons - minimal modern icon layout */}
-            <section className="mt-16 pt-8 pb-16 mb-8">
+            <section className="mt-16 pt-8 pb-12 mb-4">
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
                   <div className="flex flex-row justify-center items-start gap-10 sm:gap-16">
