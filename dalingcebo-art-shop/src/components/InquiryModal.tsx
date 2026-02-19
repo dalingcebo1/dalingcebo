@@ -12,6 +12,7 @@ interface InquiryModalProps {
     title: string
   }
   startMode?: InquiryMode
+  onSuccess?: () => void
 }
 
 interface InquiryFormState {
@@ -28,7 +29,7 @@ const defaultState: InquiryFormState = {
   message: '',
 }
 
-export default function InquiryModal({ isOpen, onClose, artwork, startMode }: InquiryModalProps) {
+export default function InquiryModal({ isOpen, onClose, artwork, startMode, onSuccess }: InquiryModalProps) {
   const [formState, setFormState] = useState<InquiryFormState>(defaultState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
@@ -94,6 +95,12 @@ export default function InquiryModal({ isOpen, onClose, artwork, startMode }: In
         setFeedback({ type: 'success', message: 'Inquiry sent. We will be in touch within 48 hours.' })
       }
       setFormState(defaultState)
+      
+      // Call onSuccess callback if provided
+      if (onSuccess) {
+        onSuccess()
+      }
+      
       setTimeout(onClose, 2000)
     } catch (error) {
       setFeedback({ type: 'error', message: (error as Error).message })

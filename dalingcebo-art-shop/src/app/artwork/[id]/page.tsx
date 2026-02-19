@@ -7,7 +7,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import Toast from '@/components/Toast'
 import LoadingSpinner from '@/components/LoadingSpinner'
-import InquiryModal from '@/components/InquiryModal'
+import InquiryModal, { type InquiryMode } from '@/components/InquiryModal'
 import VariantSelector from '@/components/VariantSelector'
 import VideoPlayer from '@/components/VideoPlayer'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -45,7 +45,7 @@ export default function ArtworkDetail() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isInquiryOpen, setIsInquiryOpen] = useState(false)
-  const [inquiryMode, setInquiryMode] = useState<'inquiry' | 'reserve'>('inquiry')
+  const [inquiryMode, setInquiryMode] = useState<InquiryMode>('inquiry')
   const [isLightboxOpen, setIsLightboxOpen] = useState(false)
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant | null>(null)
   const [isMediaFading, setIsMediaFading] = useState(false)
@@ -80,7 +80,8 @@ export default function ArtworkDetail() {
     }
   }, [isLightboxOpen])
 
-  useEffect(() => {
+  // Function to fetch artwork data
+  const fetchArtwork = useCallback(async (signal?: AbortSignal) => {
     // Skip fetch if ID is invalid
     if (!isValidId) {
       setIsLoading(false)
@@ -88,40 +89,41 @@ export default function ArtworkDetail() {
       return
     }
 
-    const controller = new AbortController()
-    async function fetchArtwork() {
-      try {
-        setIsLoading(true)
-        const response = await fetch(`/api/artworks/${params.id}`, { signal: controller.signal })
-        if (!response.ok) {
-          if (response.status === 404) {
-            throw new Error('not-found')
-          }
-          if (response.status === 400) {
-            throw new Error('invalid-link')
-          }
-          if (response.status >= 500) {
-            throw new Error('server-error')
-          }
-          throw new Error('Unable to load artwork details.')
+    try {
+      setIsLoading(true)
+      const response = await fetch(`/api/artworks/${params.id}`, { signal })
+      if (!response.ok) {
+        if (response.status === 404) {
+          throw new Error('not-found')
         }
-        const data: Artwork = await response.json()
-        
-        setArtwork(data)
-        setSelectedImage(0)
-        setError(null)
-      } catch (err) {
-        if ((err as Error).name === 'AbortError') return
-        const message = (err as Error).message
-        setError(message)
-        setArtwork(null)
-      } finally {
-        setIsLoading(false)
+        if (response.status === 400) {
+          throw new Error('invalid-link')
+        }
+        if (response.status >= 500) {
+          throw new Error('server-error')
+        }
+        throw new Error('Unable to load artwork details.')
       }
+      const data: Artwork = await response.json()
+      
+      setArtwork(data)
+      setSelectedImage(0)
+      setError(null)
+    } catch (err) {
+      if ((err as Error).name === 'AbortError') return
+      const message = (err as Error).message
+      setError(message)
+      setArtwork(null)
+    } finally {
+      setIsLoading(false)
     }
-    fetchArtwork()
-    return () => controller.abort()
   }, [params.id, isValidId])
+
+  useEffect(() => {
+    const controller = new AbortController()
+    fetchArtwork(controller.signal)
+    return () => controller.abort()
+  }, [fetchArtwork])
 
   const relatedArtworks = useMemo(() => {
     if (!artwork) return []
@@ -686,6 +688,7 @@ export default function ArtworkDetail() {
         onClose={() => setIsInquiryOpen(false)}
         artwork={artwork ? { id: artwork.id, title: artwork.title } : undefined}
         startMode={inquiryMode}
+        onSuccess={() => fetchArtwork()}
       />
 
       {/* Lightbox (images only) */}
