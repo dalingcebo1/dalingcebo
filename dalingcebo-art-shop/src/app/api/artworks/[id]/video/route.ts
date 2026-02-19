@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServiceRoleClient } from '@/lib/db/supabase'
 import { ensureAdminRequest } from '@/app/api/artworks/helpers'
+import type { Database } from '@/lib/db/schema'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -91,8 +92,8 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       }
 
       if (Array.isArray(input)) {
-        return input
-          .map((item) => {
+        const mapped = input
+          .map((item): InputVideo | null => {
             if (typeof item === 'string') {
               return { url: item.trim() }
             }
@@ -106,7 +107,8 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
             }
             return null
           })
-          .filter((v): v is InputVideo => !!v && !!v.url)
+          .filter((v): v is InputVideo => v !== null && !!v.url)
+        return mapped
       }
 
       const asString = String(input || '')
@@ -166,7 +168,7 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       throw new Error(deleteResult.error.message)
     }
 
-    const records = parsedVideos.map(({ video, parsed }, index) => ({
+    const records: Database['public']['Tables']['artwork_videos']['Insert'][] = parsedVideos.map(({ video, parsed }, index) => ({
       artwork_id: artworkId,
       title: video.title?.trim() || fallbackTitle,
       description: fallbackDescription,
