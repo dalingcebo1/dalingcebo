@@ -479,7 +479,7 @@ export default function ArtworkDetail() {
                   </div>
                   
                   {/* Tag → 32px → Buttons (Variant selector if exists) */}
-                  {artwork.inStock && (
+                  {(artwork.status === 'available' || !artwork.status) && artwork.inStock && (
                     <div className="mt-8">
                       <VariantSelector 
                         artworkId={artwork.id} 
@@ -497,7 +497,30 @@ export default function ArtworkDetail() {
               <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12 md:col-start-4 md:col-span-6">
                   <div className="flex flex-row justify-center items-start gap-10 sm:gap-16">
-                    {artwork.inStock ? (
+                    {artwork.status === 'reserved' ? (
+                      <div className="flex flex-col items-center gap-3 p-4">
+                        <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mb-2">
+                          <Bookmark className="w-8 h-8 text-amber-600" fill="currentColor" strokeWidth={1.5} aria-hidden="true" />
+                        </div>
+                        <span className="text-sm font-medium text-amber-600 uppercase tracking-wider">
+                          Reserved
+                        </span>
+                        <p className="text-xs text-gray-600 text-center max-w-xs">
+                          Currently on hold for another customer
+                        </p>
+                      </div>
+                    ) : artwork.status === 'sold' || !artwork.inStock ? (
+                      <button
+                        onClick={handleInquire}
+                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
+                        aria-label="Get notified when artwork becomes available"
+                      >
+                        <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
+                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
+                          Notify Me
+                        </span>
+                      </button>
+                    ) : (
                       <>
                         {/* Add to Cart - Minimal icon with text */}
                         <button
@@ -535,17 +558,6 @@ export default function ArtworkDetail() {
                           </span>
                         </button>
                       </>
-                    ) : (
-                      <button
-                        onClick={handleInquire}
-                        className="flex flex-col items-center gap-2 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2 rounded p-2 transition-all duration-200 bg-transparent border-none min-w-[120px]"
-                        aria-label="Get notified when artwork becomes available"
-                      >
-                        <MessageSquare className="w-7 h-7 sm:w-8 sm:h-8 text-black group-hover:opacity-70 transition-opacity duration-200" strokeWidth={1.5} aria-hidden="true" />
-                        <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-gray-600 group-hover:text-black transition-colors duration-200 font-medium px-2">
-                          Notify Me
-                        </span>
-                      </button>
                     )}
                   </div>
                 </div>
@@ -584,8 +596,14 @@ export default function ArtworkDetail() {
                       {/* Detail group 4 - 24px vertical spacing */}
                       <div>
                         <p className="text-[12px] uppercase tracking-[0.08em] text-gray-500 mb-2">Status</p>
-                        <p className={`text-[16px] md:text-[18px] ${artwork.inStock ? 'text-green-700' : 'text-red-700'}`}>
-                          {artwork.inStock ? 'Available' : 'Sold'}
+                        <p className={`text-[16px] md:text-[18px] ${
+                          artwork.status === 'reserved' ? 'text-amber-600' :
+                          artwork.status === 'sold' || !artwork.inStock ? 'text-red-700' : 
+                          'text-green-700'
+                        }`}>
+                          {artwork.status === 'reserved' ? 'Reserved' :
+                           artwork.status === 'sold' || !artwork.inStock ? 'Sold' :
+                           'Available'}
                         </p>
                       </div>
                     </div>

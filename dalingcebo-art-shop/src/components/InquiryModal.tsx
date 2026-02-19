@@ -61,8 +61,14 @@ export default function InquiryModal({ isOpen, onClose, artwork, startMode }: In
     setFeedback(null)
 
     try {
+      // Determine the correct 'kind' based on the mode
+      let kind: 'general' | 'artwork' | 'preorder' = 'general'
+      if (artwork) {
+        kind = startMode === 'reserve' ? 'preorder' : 'artwork'
+      }
+
       const payload = {
-        kind: artwork ? 'artwork' : 'general',
+        kind,
         name: formState.name.trim(),
         email: formState.email.trim(),
         phone: formState.phone.trim() || undefined,
@@ -82,9 +88,13 @@ export default function InquiryModal({ isOpen, onClose, artwork, startMode }: In
         throw new Error(data?.message || 'Unable to send inquiry')
       }
 
-      setFeedback({ type: 'success', message: 'Inquiry sent. We will be in touch within 48 hours.' })
+      if (kind === 'preorder') {
+        setFeedback({ type: 'success', message: 'Reservation confirmed! Check your email for details.' })
+      } else {
+        setFeedback({ type: 'success', message: 'Inquiry sent. We will be in touch within 48 hours.' })
+      }
       setFormState(defaultState)
-      setTimeout(onClose, 1500)
+      setTimeout(onClose, 2000)
     } catch (error) {
       setFeedback({ type: 'error', message: (error as Error).message })
     } finally {
