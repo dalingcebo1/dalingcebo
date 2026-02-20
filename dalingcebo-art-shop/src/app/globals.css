@@ -331,7 +331,7 @@ a:focus-visible {
 
 /* Layout helpers */
 .yeezy-container {
-  max-width: 1200px;
+  max-width: 840px;
   margin: 0 auto;
   padding: 0 20px;
 }
