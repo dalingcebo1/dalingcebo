@@ -8,12 +8,15 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import PageShell from '@/components/layout/PageShell'
+import ArtworkSpotlight from '@/components/ArtworkSpotlight'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage } from '@/lib/media'
+import { Artwork } from '@/types/artwork'
 
 export default function LargePaintings() {
   const [zoomLevel, setZoomLevel] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null)
   const router = useRouter()
   const { artworks, isLoading, error, reload } = useArtworks()
 
@@ -83,7 +86,7 @@ export default function LargePaintings() {
               return (
               <div
                 key={artwork.id}
-                onClick={() => router.push(`/artwork/${artwork.id}`)}
+                onClick={() => setSelectedArtwork(artwork)}
                 className="yeezy-grid-item yeezy-transition group cursor-pointer"
               >
                 {/* Sold Out Badge */}
@@ -149,6 +152,15 @@ export default function LargePaintings() {
           </div>        </PageShell>
 
       <Footer />
+
+      {/* Artwork Spotlight */}
+      {selectedArtwork && (
+        <ArtworkSpotlight
+          artwork={selectedArtwork}
+          isOpen={!!selectedArtwork}
+          onClose={() => setSelectedArtwork(null)}
+        />
+      )}
     </main>
   )
 }
