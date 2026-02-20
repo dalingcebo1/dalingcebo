@@ -78,6 +78,7 @@ export default function SmallPaintings() {
             {!isLoading && !error && smallArtworks.map((artwork) => {
               const primaryImage = getArtworkPrimaryImage(artwork)
               const aspectRatio = getArtworkAspectRatio(artwork.size)
+              const hasMultipleImages = artwork.images && artwork.images.length > 1
 
               return (
               <div
@@ -85,6 +86,23 @@ export default function SmallPaintings() {
                 onClick={() => router.push(`/artwork/${artwork.id}`)}
                 className="yeezy-grid-item yeezy-transition group cursor-pointer"
               >
+                {/* Sold Out Badge */}
+                {!artwork.inStock && (
+                  <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-black text-white text-[9px] uppercase tracking-[0.3em] font-medium">
+                    Sold
+                  </div>
+                )}
+                
+                {/* Multiple Images Indicator */}
+                {hasMultipleImages && (
+                  <div className="absolute top-3 left-3 z-10 flex items-center gap-1 px-2.5 py-1 bg-white/90 backdrop-blur-sm text-[9px] uppercase tracking-[0.2em] font-medium text-gray-700 rounded-full">
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    {artwork.images.length}
+                  </div>
+                )}
+
                 <div
                   className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden"
                   style={{ aspectRatio }}
@@ -93,7 +111,9 @@ export default function SmallPaintings() {
                     src={primaryImage}
                     alt={artwork.title}
                     fill
-                    className="object-contain transition-transform duration-700 group-hover:scale-[1.02]"
+                    className={`object-contain transition-transform duration-700 ${
+                      !artwork.inStock ? 'opacity-60' : 'group-hover:scale-[1.02]'
+                    }`}
                     sizes="(max-width: 768px) 100vw, 50vw"
                   />
                 </div>
