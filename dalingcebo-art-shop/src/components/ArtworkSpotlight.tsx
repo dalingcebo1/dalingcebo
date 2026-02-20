@@ -73,14 +73,22 @@ export default function ArtworkSpotlight({ artwork, isOpen, onClose }: ArtworkSp
     }
   }, [isOpen, isLightboxOpen, isInquiryOpen, onClose])
 
+  // Maximum number of gallery image slots to display
+  const MAX_GALLERY_SLOTS = 4
+
   const imageList = useMemo(() => {
     const gallery = (artwork.images || []).filter(Boolean)
     const primary = getArtworkPrimaryImage(artwork)
     const uniqueExtras = gallery.filter((src) => src && src !== primary)
     const baseImages = [primary, ...uniqueExtras]
-    const placeholders = [placeholderImage, placeholderImage, placeholderImage, placeholderImage]
-    return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, 4)
+    const placeholders = Array(MAX_GALLERY_SLOTS).fill(placeholderImage)
+    return baseImages.concat(placeholders.slice(baseImages.length)).slice(0, MAX_GALLERY_SLOTS)
   }, [artwork, placeholderImage])
+
+  // Count of actual (non-placeholder) images
+  const actualImageCount = useMemo(() => {
+    return imageList.filter(img => img !== placeholderImage).length
+  }, [imageList, placeholderImage])
 
   const videoList = useMemo(() => {
     if (!artwork.videos || !Array.isArray(artwork.videos)) return []
@@ -461,12 +469,13 @@ export default function ArtworkSpotlight({ artwork, isOpen, onClose }: ArtworkSp
               sizes="90vw"
             />
           </div>
-          {imageList.length > 1 && (
+          {actualImageCount > 1 && (
             <>
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  setSelectedImage((prev) => (prev > 0 ? prev - 1 : imageList.length - 1))
+                  // Navigate only through actual images, not placeholders
+                  setSelectedImage((prev) => (prev > 0 ? prev - 1 : actualImageCount - 1))
                 }}
                 className="absolute left-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 aria-label="Previous image"
@@ -476,7 +485,8 @@ export default function ArtworkSpotlight({ artwork, isOpen, onClose }: ArtworkSp
               <button
                 onClick={(e) => {
                   e.stopPropagation()
-                  setSelectedImage((prev) => (prev < imageList.length - 1 ? prev + 1 : 0))
+                  // Navigate only through actual images, not placeholders
+                  setSelectedImage((prev) => (prev < actualImageCount - 1 ? prev + 1 : 0))
                 }}
                 className="absolute right-6 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
                 aria-label="Next image"
