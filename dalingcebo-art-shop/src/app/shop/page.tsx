@@ -7,15 +7,12 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import LoadingSpinner from '@/components/LoadingSpinner'
 import PageShell from '@/components/layout/PageShell'
-import ArtworkSpotlight from '@/components/ArtworkSpotlight'
 import { useArtworks } from '@/hooks/useArtworks'
 import { getArtworkAspectRatio, getArtworkPrimaryImage } from '@/lib/media'
-import { Artwork } from '@/types/artwork'
 
 export default function Shop() {
   const [zoomLevel, setZoomLevel] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
-  const [selectedArtwork, setSelectedArtwork] = useState<Artwork | null>(null)
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -315,7 +312,7 @@ export default function Shop() {
             return (
               <div
                 key={artwork.id}
-                onClick={() => setSelectedArtwork(artwork)}
+                onClick={() => router.push(`/artwork/${artwork.id}`)}
                 className="yeezy-grid-item yeezy-transition group cursor-pointer"
               >
                 {/* Sold Out Badge */}
@@ -385,15 +382,6 @@ export default function Shop() {
       </PageShell>
 
       <Footer />
-
-      {/* Artwork Spotlight */}
-      {selectedArtwork && (
-        <ArtworkSpotlight
-          artwork={selectedArtwork}
-          isOpen={!!selectedArtwork}
-          onClose={() => setSelectedArtwork(null)}
-        />
-      )}
     </main>
   )
 }
