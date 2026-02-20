@@ -69,7 +69,11 @@ export default function SmallPaintings() {
         if (isLightboxOpen) {
           setIsLightboxOpen(false)
         } else if (!showGrid && selectedArtwork) {
-          handleBackToGrid()
+          // Inline the back to grid behavior to avoid stale closure
+          setSelectedArtwork(null)
+          setShowGrid(true)
+          setSelectedImage(0)
+          setSelectedVariant(null)
         }
       }
     }
