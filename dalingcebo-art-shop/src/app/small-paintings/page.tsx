@@ -86,7 +86,7 @@ export default function SmallPaintings() {
                 className="yeezy-grid-item yeezy-transition group cursor-pointer"
               >
                 <div
-                  className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden rounded-lg"
+                  className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden"
                   style={{ aspectRatio }}
                 >
                   <Image
