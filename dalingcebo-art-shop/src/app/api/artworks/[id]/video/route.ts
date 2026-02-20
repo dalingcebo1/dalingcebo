@@ -178,9 +178,10 @@ export async function PUT(request: Request, context: { params: Promise<{ id: str
       is_featured: index === 0,
     }))
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = await supabase
       .from('artwork_videos')
-      .insert(records)
+      .insert(records as any)
       .select('*')
 
     if (error) {

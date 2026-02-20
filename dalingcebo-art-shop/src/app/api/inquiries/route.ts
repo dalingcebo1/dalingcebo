@@ -49,7 +49,9 @@ export async function POST(request: Request) {
 
       // Perform atomic update with optimistic locking to prevent race conditions
       // Only update if status is currently 'available'
-      const { data: artwork, error: updateError } = await supabase
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const supabaseAny = supabase as any
+      const { data: artwork, error: updateError } = await supabaseAny
         .from('artworks')
         .update({
           status: 'reserved',
