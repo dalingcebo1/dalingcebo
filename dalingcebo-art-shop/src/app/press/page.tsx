@@ -22,7 +22,7 @@ export default function PressPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Press' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-8">
             <div className="border-t border-gray-200 pt-8">
               <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">ABOUT THE ARTIST</h2>

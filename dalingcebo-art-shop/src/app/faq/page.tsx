@@ -57,7 +57,7 @@ export default function FAQPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'FAQ' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-8">
             {faqs.map((faq, index) => (
               <div key={index} className="border-t border-gray-200 pt-8">

@@ -22,7 +22,7 @@ export default function Returns() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Returns' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-12">
             <div>
               <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">14-DAY RETURN POLICY</h2>

@@ -22,7 +22,7 @@ export default function Care() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Care' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-12">
               <div>
                 <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">GENERAL GUIDELINES</h2>

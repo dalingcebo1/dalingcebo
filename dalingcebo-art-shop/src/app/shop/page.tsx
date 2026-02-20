@@ -273,7 +273,7 @@ export default function Shop() {
         </div>
 
         {/* Gallery Grid - Same layout as large-paintings/small-paintings */}
-        <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`grid ${getGridColumns()} gap-6 md:gap-8 fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           {isLoading && (
             <div className="col-span-full flex justify-center py-16">
               <LoadingSpinner />

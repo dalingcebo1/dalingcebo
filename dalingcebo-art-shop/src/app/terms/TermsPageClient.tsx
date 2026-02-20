@@ -22,7 +22,7 @@ export default function Terms() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Terms' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-12 yeezy-body text-gray-700 leading-relaxed">
             <div>
               <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">AGREEMENT TO TERMS</h2>

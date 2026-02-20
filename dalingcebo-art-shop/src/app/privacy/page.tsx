@@ -22,7 +22,7 @@ export default function PrivacyPage() {
         breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Privacy' }]}
         maxWidth="narrow"
       >
-        <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
           <div className="space-y-8 yeezy-body text-base text-gray-700 leading-relaxed">
             <div className="border-t border-gray-200 pt-8">
               <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">INTRODUCTION</h2>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
               <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">CHANGES TO THIS POLICY</h2>
               <p>
                 We may update this privacy policy from time to time. We will notify you of any 
-                changes by posting the new policy on this page and updating the &quot;Last updated&quot; date.
+                changes by posting the new policy on this page and updating the &ldquo;Last updated&rdquo; date.
               </p>
             </div>
           </div>
