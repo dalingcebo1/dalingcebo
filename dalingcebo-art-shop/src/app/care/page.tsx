@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import Breadcrumb from '@/components/Breadcrumb'
+import PageShell from '@/components/layout/PageShell'
 
 export default function Care() {
   const [isVisible, setIsVisible] = useState(false)
@@ -16,29 +16,14 @@ export default function Care() {
     <main className="min-h-screen">
       <Header showBackButton={false} />
       
-      <section className="border-b border-gray-200 bg-white">
-        <div className="yeezy-container py-4">
-          <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Care' }]} />
-        </div>
-      </section>
-
-      {/* Hero Section */}
-      <section className="yeezy-hero bg-black text-white">
-        <div className={`yeezy-hero-content fade-in-slow ${isVisible ? '' : ''}`}>
-          <h1 className="yeezy-main-logo text-white mb-8">
-            ARTWORK CARE
-          </h1>
-          <p className="yeezy-body text-gray-400 max-w-2xl mx-auto">
-            Preserve your investment for generations to come.
-          </p>
-        </div>
-      </section>
-      
-      <section className="yeezy-section">
-        <div className="yeezy-container max-w-4xl">
-          <div className={`fade-in-slow ${isVisible ? '' : ''}`} style={{ animationDelay: '0.3s' }}>
-            
-            <div className="space-y-12">
+      <PageShell
+        title="ARTWORK CARE"
+        subtitle="Preserve your investment for generations to come."
+        breadcrumbs={[{ label: 'Home', href: '/' }, { label: 'Care' }]}
+        maxWidth="narrow"
+      >
+        <div className={`fade-in-slow`} style={{ animationDelay: '0.3s' }}>
+          <div className="space-y-12">
               <div>
                 <h2 className="yeezy-subheading text-sm mb-4 tracking-[0.3em] text-gray-600">GENERAL GUIDELINES</h2>
                 <p className="yeezy-body text-base text-gray-700 leading-relaxed mb-4">
@@ -105,8 +90,7 @@ export default function Care() {
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </PageShell>
 
       <Footer />
     </main>
