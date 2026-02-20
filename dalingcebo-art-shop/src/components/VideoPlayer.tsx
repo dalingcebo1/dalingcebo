@@ -8,12 +8,25 @@ import { StandaloneVideo } from '@/types/video'
 interface VideoPlayerProps {
   video: ArtworkVideo | StandaloneVideo
   autoplay?: boolean
+  muted?: boolean
+  loop?: boolean
   onClose?: () => void
 }
 
-export default function VideoPlayer({ video, autoplay = false, onClose }: VideoPlayerProps) {
+export default function VideoPlayer({ video, autoplay = false, muted = false, loop = false, onClose }: VideoPlayerProps) {
   // YouTube embed
   if (video.youtubeId) {
+    // Build YouTube URL parameters
+    const params = new URLSearchParams()
+    if (autoplay) params.set('autoplay', '1')
+    if (muted) params.set('mute', '1')
+    if (loop) {
+      params.set('loop', '1')
+      params.set('playlist', video.youtubeId) // Required for YouTube loop
+    }
+    const queryString = params.toString()
+    const embedUrl = `https://www.youtube.com/embed/${video.youtubeId}${queryString ? '?' + queryString : ''}`
+    
     return (
       <div className="relative w-full aspect-video bg-black">
         {onClose && (
@@ -26,7 +39,7 @@ export default function VideoPlayer({ video, autoplay = false, onClose }: VideoP
           </button>
         )}
         <iframe
-          src={`https://www.youtube.com/embed/${video.youtubeId}${autoplay ? '?autoplay=1' : ''}`}
+          src={embedUrl}
           title={video.title}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
@@ -53,6 +66,9 @@ export default function VideoPlayer({ video, autoplay = false, onClose }: VideoP
           src={video.storageUrl}
           controls
           autoPlay={autoplay}
+          muted={muted}
+          loop={loop}
+          playsInline
           className="w-full h-full"
           poster={video.thumbnailUrl}
         >

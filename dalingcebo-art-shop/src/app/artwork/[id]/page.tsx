@@ -379,7 +379,9 @@ export default function ArtworkDetail() {
                             <div className="w-full h-full max-h-[70vh]">
                               <VideoPlayer
                                 video={videoList[selectedImage - imageList.length]}
-                                autoplay={false}
+                                autoplay={true}
+                                muted={true}
+                                loop={true}
                               />
                             </div>
                           </div>
