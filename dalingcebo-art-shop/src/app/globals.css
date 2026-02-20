@@ -266,13 +266,36 @@ a:focus-visible {
   background: #e5e5e5;
 }
 
+/* Custom grid column utilities - ensuring they override Tailwind */
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+
+@media (min-width: 768px) {
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  
+  .md\:grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
+  }
+}
+
 .yeezy-grid-item {
   background: var(--background);
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 0.5rem;
+  border-radius: 0;
+  padding: 5%;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -302,7 +325,7 @@ a:focus-visible {
   display: flex;
   align-items: flex-end;
   padding: 20px;
-  border-radius: 0.75rem;
+  border-radius: 0;
   pointer-events: none;
 }
 
@@ -331,7 +354,7 @@ a:focus-visible {
 
 /* Layout helpers */
 .yeezy-container {
-  max-width: 1200px;
+  max-width: 840px;
   margin: 0 auto;
   padding: 0 20px;
 }

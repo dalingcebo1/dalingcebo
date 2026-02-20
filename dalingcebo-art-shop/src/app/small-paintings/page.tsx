@@ -29,16 +29,16 @@ export default function SmallPaintings() {
   const getGridColumns = () => {
     switch (zoomLevel) {
       case 0:
-        // Default view: dense 4-column grid on desktop
-        return 'grid-cols-2 md:grid-cols-4'
+        // Default view: 3-column grid on desktop
+        return 'grid-cols-2 md:grid-cols-3'
       case 1:
-        // Mid zoom: more breathing room with 2 columns on desktop
-        return 'grid-cols-2 md:grid-cols-2'
+        // Mid zoom: 2 columns on desktop
+        return 'grid-cols-1 md:grid-cols-2'
       case 2:
         // Max zoom: single column for full-width artworks
         return 'grid-cols-1 md:grid-cols-1'
       default:
-        return 'grid-cols-2 md:grid-cols-4'
+        return 'grid-cols-2 md:grid-cols-3'
     }
   }
 
@@ -86,7 +86,7 @@ export default function SmallPaintings() {
                 className="yeezy-grid-item yeezy-transition group cursor-pointer"
               >
                 <div
-                  className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden rounded-lg"
+                  className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden"
                   style={{ aspectRatio }}
                 >
                   <Image

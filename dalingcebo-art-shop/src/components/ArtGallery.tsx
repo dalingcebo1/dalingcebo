@@ -31,16 +31,16 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
   const getGridColumns = () => {
     switch (zoomLevel) {
       case 0:
-        // Default view: dense 4-column grid on desktop
-        return 'grid-cols-2 md:grid-cols-4'
+        // Default view: 3-column grid on desktop
+        return 'grid-cols-2 md:grid-cols-3'
       case 1:
-        // Mid zoom: more breathing room with 2 columns on desktop
-        return 'grid-cols-2 md:grid-cols-2'
+        // Mid zoom: 2 columns on desktop
+        return 'grid-cols-1 md:grid-cols-2'
       case 2:
         // Max zoom: single column for full-width artworks
         return 'grid-cols-1 md:grid-cols-1'
       default:
-        return 'grid-cols-2 md:grid-cols-4'
+        return 'grid-cols-2 md:grid-cols-3'
     }
   }
 
@@ -332,7 +332,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
             <div
               key={artwork.id}
               onClick={() => router.push(`/artwork/${artwork.id}`)}
-              className="yeezy-grid-item yeezy-transition group cursor-pointer rounded-sm overflow-hidden bg-white relative"
+              className="yeezy-grid-item yeezy-transition group cursor-pointer overflow-hidden bg-white relative"
             >
               {/* Sold Out Badge */}
               {!artwork.inStock && (
@@ -352,7 +352,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               )}
 
               <div
-                className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden rounded-lg"
+                className="yeezy-image bg-gray-50 flex items-center justify-center relative overflow-hidden"
                 style={{ aspectRatio }}
               >
                 <Image
@@ -368,7 +368,7 @@ export default function ArtGallery({ zoomLevel }: ArtGalleryProps) {
               </div>
 
               {/* Enhanced overlay with artwork details */}
-              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-95 transition-opacity duration-300 flex items-end p-5 rounded-sm pointer-events-none">
+              <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-95 transition-opacity duration-300 flex items-end p-5 pointer-events-none">
                 <div className="w-full space-y-3">
                   <div className="flex justify-between items-start gap-4">
                     <div className="flex-1">
